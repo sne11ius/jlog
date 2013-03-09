@@ -1,0 +1,27 @@
+package nu.wasis.jlog.exception.mapper;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+import org.apache.log4j.Logger;
+
+import com.sun.jersey.api.NotFoundException;
+
+@Provider
+public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
+
+	public static final Logger LOG = Logger.getLogger(DefaultExceptionMapper.class);
+
+	@Override
+	public Response toResponse(Throwable e) {
+		if (e instanceof NotFoundException) {
+			return Response.status(404).entity("Unknown post index.").build();
+		}
+		LOG.debug("Mapping exception: " + e.getMessage());
+		LOG.debug(e);
+		return Response.status(400).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
+	}
+
+}

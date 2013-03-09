@@ -1,0 +1,61 @@
+package nu.wasis.jlog.service;
+
+import java.util.Collections;
+import java.util.List;
+
+import nu.wasis.jlog.model.Comment;
+import nu.wasis.jlog.model.Post;
+import nu.wasis.jlog.util.Constants;
+import nu.wasis.jlog.util.MongoUtils;
+import nu.wasis.jlog.util.PostDateComparator;
+
+import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+
+import com.github.jmkgreen.morphia.Datastore;
+import com.github.jmkgreen.morphia.Morphia;
+
+public class PostService {
+
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(PostService.class);
+
+    final Datastore ds = new Morphia().createDatastore(MongoUtils.getMongo(), Constants.DB_NAME);
+
+    public static final PostService INSTANCE = new PostService();
+
+    private PostService() {
+        // singleton ... sortof ;)
+    }
+
+    public List<Post> getPosts() {
+        final List<Post> allPosts = ds.find(Post.class).asList();
+        Collections.sort(allPosts, new PostDateComparator());
+        return allPosts;
+    }
+
+    public Post getPost(final String postId) {
+        return ds.get(Post.class, new ObjectId(postId));
+    }
+
+    public void save(final Post post) {
+        ds.save(post);
+    }
+
+    public void deletePost(final Post post) {
+        ds.delete(post);
+    }
+
+    public void deleteAll() {
+        for (final Post post : getPosts()) {
+            deletePost(post);
+        }
+    }
+
+    public void addComment(final String postId, final Comment comment) {
+        final Post post = getPost(postId);
+        post.getComments().add(comment);
+        save(post);
+    }
+
+}

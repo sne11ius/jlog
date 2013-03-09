@@ -1,0 +1,80 @@
+<!doctype html>
+<html ng-app>
+<head>
+	<meta charset="utf-8">
+	<title>wasis.nu/mit/blog</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn" />
+	<style type="text/css">
+	    * {
+	        font-family: 'Vollkorn', serif;
+	    }
+	    h1 {
+	        font-size: 1.7em;
+	        line-height: 0.0001em;
+	    }
+	    h2 {
+	        font-size: 1.2em;
+	        line-height: 0.0001em;
+	    }
+	    .post {
+	        margin: 0.5em;
+	        border: 1px solid black;
+	        background-color: #ddd;
+	        border-radius: 0.5em;
+	        padding: 0.2em 0.4em 0.2em 0.4em;
+	    }
+	    hr {
+	       width: 100%;
+	       height: 1px;
+	       border-width: 0px;
+	       border-top-width: 1px;
+	    }
+	    .date {
+	        float: right;
+	    }
+	</style>
+	<script>
+	(function() {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
+        po.src = 'https://plus.google.com/js/client:plusone.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
+    })();
+	$.get(window.location.href + '/posts/count', function(numPosts) {
+		for (var i = 0; i < numPosts; ++i) {
+			$.get(window.location.href + '/posts/byindex/' + i, function(post) {
+				$('body').append(
+						'<div class="post">' +
+						    '<div class="date">' + post.author + ', ' + new Date(post.date).toISOString() + '</div>' +
+						    '<div class="title">' +
+						        '<h2>' + post.title + '</h2>' +
+						        '<hr>' +
+						    '</div>' +
+						    '<div class="body">' + post.body + '</div>' +
+						'</div>');
+			});
+		}
+	});
+	</script>
+</head>
+<body>
+    <div class="post" style="margin-bottom:1.9em; margin-top:1.3em;">
+        <h1>wasis.nu/mit/blog?</h1>
+        <div id="gConnect" style="float:right; position:relative; top:-2.1em;">
+            <button class="g-signin"
+                data-scope="https://www.googleapis.com/auth/plus.login"
+                data-requestvisibleactions="http://schemas.google.com/CommentActivity"
+                data-clientId="${client_id}"
+                data-accesstype="offline"
+                data-callback="onSignInCallback"
+                data-theme="light"
+                data-width="iconOnly"
+                data-cookiepolicy="single_host_origin"></button>
+        </div>
+    </div>
+</body>
+</html>

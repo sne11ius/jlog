@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="1.933" errors="0" skipped="0" tests="1" name="nu.wasis.jlog.MainTest">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_10\jre\bin"/>
+    <property name="java.vm.version" value="23.4-b01"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 1"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\coli\Documents\src\jlog"/>
+    <property name="java.runtime.version" value="1.7.0_10-ea-b06"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="basedir" value="C:\Users\coli\Documents\src\jlog"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.7.0_10\jre\lib\endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="surefire.real.class.path" value="C:\Users\coli\AppData\Local\Temp\surefirebooter8520494448396564936.jar"/>
+    <property name="java.io.tmpdir" value="C:\Users\coli\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 7"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_10\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Panda Security\WaAgent\Common;C:\Program Files\SlikSvn\bin\;C:\Program Files\Mercurial\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\TortoiseHg\;C:\Program Files (x86)\GnuWin32\bin;C:\Users\coli\Documents\bin\ffmpeg-20130205-git-5a83115-win64-static\bin;C:\Users\coli\Documents\bin\apache-maven-2.2.1\bin;C:\Program Files (x86)\Git\cmd;."/>
+    <property name="surefire.test.class.path" value="C:\Users\coli\Documents\src\jlog\target\test-classes;C:\Users\coli\Documents\src\jlog\target\classes;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-grizzly2\1.8\jersey-grizzly2-1.8.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-http\2.1.1\grizzly-http-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-framework\2.1.1\grizzly-framework-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\gmbal\gmbal-api-only\3.0.0-b023\gmbal-api-only-3.0.0-b023.jar;C:\Users\coli\.m2\repository\org\glassfish\external\management-api\3.0.0-b012\management-api-3.0.0-b012.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-http-server\2.1.1\grizzly-http-server-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-rcm\2.1.1\grizzly-rcm-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-http-servlet\2.1.1\grizzly-http-servlet-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-framework\2.1.1\grizzly-framework-2.1.1-tests.jar;C:\Users\coli\.m2\repository\org\glassfish\javax.servlet\3.1\javax.servlet-3.1.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-server\1.8\jersey-server-1.8.jar;C:\Users\coli\.m2\repository\asm\asm\3.1\asm-3.1.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-core\1.8\jersey-core-1.8.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-json\1.8\jersey-json-1.8.jar;C:\Users\coli\.m2\repository\org\codehaus\jettison\jettison\1.1\jettison-1.1.jar;C:\Users\coli\.m2\repository\stax\stax-api\1.0.1\stax-api-1.0.1.jar;C:\Users\coli\.m2\repository\com\sun\xml\bind\jaxb-impl\2.2.3-1\jaxb-impl-2.2.3-1.jar;C:\Users\coli\.m2\repository\javax\xml\bind\jaxb-api\2.2.2\jaxb-api-2.2.2.jar;C:\Users\coli\.m2\repository\javax\xml\stream\stax-api\1.0-2\stax-api-1.0-2.jar;C:\Users\coli\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-core-asl\1.7.1\jackson-core-asl-1.7.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-mapper-asl\1.7.1\jackson-mapper-asl-1.7.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-jaxrs\1.7.1\jackson-jaxrs-1.7.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-xc\1.7.1\jackson-xc-1.7.1.jar;C:\Users\coli\.m2\repository\junit\junit\4.8.2\junit-4.8.2.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-client\1.8\jersey-client-1.8.jar;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="51.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="6.1"/>
+    <property name="user.home" value="C:\Users\coli"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.7"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="coli"/>
+    <property name="java.class.path" value="C:\Users\coli\Documents\src\jlog\target\test-classes;C:\Users\coli\Documents\src\jlog\target\classes;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-grizzly2\1.8\jersey-grizzly2-1.8.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-http\2.1.1\grizzly-http-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-framework\2.1.1\grizzly-framework-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\gmbal\gmbal-api-only\3.0.0-b023\gmbal-api-only-3.0.0-b023.jar;C:\Users\coli\.m2\repository\org\glassfish\external\management-api\3.0.0-b012\management-api-3.0.0-b012.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-http-server\2.1.1\grizzly-http-server-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-rcm\2.1.1\grizzly-rcm-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-http-servlet\2.1.1\grizzly-http-servlet-2.1.1.jar;C:\Users\coli\.m2\repository\org\glassfish\grizzly\grizzly-framework\2.1.1\grizzly-framework-2.1.1-tests.jar;C:\Users\coli\.m2\repository\org\glassfish\javax.servlet\3.1\javax.servlet-3.1.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-server\1.8\jersey-server-1.8.jar;C:\Users\coli\.m2\repository\asm\asm\3.1\asm-3.1.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-core\1.8\jersey-core-1.8.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-json\1.8\jersey-json-1.8.jar;C:\Users\coli\.m2\repository\org\codehaus\jettison\jettison\1.1\jettison-1.1.jar;C:\Users\coli\.m2\repository\stax\stax-api\1.0.1\stax-api-1.0.1.jar;C:\Users\coli\.m2\repository\com\sun\xml\bind\jaxb-impl\2.2.3-1\jaxb-impl-2.2.3-1.jar;C:\Users\coli\.m2\repository\javax\xml\bind\jaxb-api\2.2.2\jaxb-api-2.2.2.jar;C:\Users\coli\.m2\repository\javax\xml\stream\stax-api\1.0-2\stax-api-1.0-2.jar;C:\Users\coli\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-core-asl\1.7.1\jackson-core-asl-1.7.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-mapper-asl\1.7.1\jackson-mapper-asl-1.7.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-jaxrs\1.7.1\jackson-jaxrs-1.7.1.jar;C:\Users\coli\.m2\repository\org\codehaus\jackson\jackson-xc\1.7.1\jackson-xc-1.7.1.jar;C:\Users\coli\.m2\repository\junit\junit\4.8.2\junit-4.8.2.jar;C:\Users\coli\.m2\repository\com\sun\jersey\jersey-client\1.8\jersey-client-1.8.jar;"/>
+    <property name="java.vm.specification.version" value="1.7"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.7.0_10\jre"/>
+    <property name="sun.java.command" value="C:\Users\coli\AppData\Local\Temp\surefirebooter8520494448396564936.jar C:\Users\coli\AppData\Local\Temp\surefire4260198063316300957tmp C:\Users\coli\AppData\Local\Temp\surefire7059603370745695288tmp"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="de"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.7.0_10-ea"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.7.0_10\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.7.0_10\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_10\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_10\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_10\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_10\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_10\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_10\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_10\jre\classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="localRepository" value="C:\Users\coli\.m2\repository"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase time="1.895" classname="nu.wasis.jlog.MainTest" name="testApplicationWadl"/>
+</testsuite>
