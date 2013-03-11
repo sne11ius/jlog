@@ -14,6 +14,8 @@ import org.bson.types.ObjectId;
 
 import com.github.jmkgreen.morphia.Datastore;
 import com.github.jmkgreen.morphia.Morphia;
+import com.github.jmkgreen.morphia.query.Query;
+import com.mongodb.QueryBuilder;
 
 public class PostService {
 
@@ -44,6 +46,12 @@ public class PostService {
 
     public void deletePost(final Post post) {
         ds.delete(post);
+    }
+
+    public void deletePost(ObjectId id) {
+    	final Post post = new Post();
+    	post.setId(id);
+    	ds.delete(post);
     }
 
     public void deleteAll() {

@@ -34,7 +34,7 @@ public class IndexResource {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getIndex(@Context HttpServletRequest request) throws IOException, TemplateException {
+	public String getIndex(@Context final HttpServletRequest request) throws IOException, TemplateException {
 		//InputStream resourceStream = IndexResource.class.getClassLoader().getResourceAsStream("index.html");
 		//return IOUtils.toString(resourceStream);
 		HttpSession session = request.getSession(true);

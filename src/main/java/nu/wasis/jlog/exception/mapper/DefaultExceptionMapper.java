@@ -5,6 +5,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import nu.wasis.jlog.exception.NotAllowedException;
+
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.NotFoundException;
@@ -18,6 +20,9 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
 	public Response toResponse(Throwable e) {
 		if (e instanceof NotFoundException) {
 			return Response.status(404).entity("Unknown post index.").build();
+		}
+		if (e instanceof NotAllowedException) {
+			return Response.status(403).entity(e.getMessage()).build();
 		}
 		LOG.debug("Mapping exception: " + e.getMessage());
 		LOG.debug(e);
