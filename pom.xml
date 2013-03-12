@@ -134,7 +134,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>nu.wasis.jlog.Main</mainClass>
+							<mainClass>nu.wasis.jlog.JLog</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
