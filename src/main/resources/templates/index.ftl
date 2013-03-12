@@ -65,5 +65,6 @@
             </ol>
         </div>
     </div>
+    <div class="date" style="font-size:0.7em">Natürlich in C gehackt, mit dietlibc, libowfat, unter gatling laufend und mit einem tinyldap-Backend. &trade;</div>
 </body>
 </html>
