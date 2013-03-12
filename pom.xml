@@ -6,6 +6,11 @@
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jlog</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jersey-version>1.8</jersey-version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -139,9 +144,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<jersey-version>1.8</jersey-version>
-	</properties>
 	<repositories>
 		<repository>
 			<id>glassfish.java.net</id>
@@ -154,6 +156,16 @@
 			<name>Java.net Maven 2 Repository</name>
 			<url>http://download.java.net/maven/2</url>
 			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>google-maven-repository</id>
+			<name>google-maven-repository</name>
+			<url>https://code.google.com/p/google-maven-repository/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>google-api-services</id>
+			<url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
 		</repository>
 	</repositories>
 </project>
