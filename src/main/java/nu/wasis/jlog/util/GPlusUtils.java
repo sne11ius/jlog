@@ -100,7 +100,12 @@ public class GPlusUtils {
 	}
 
 	private static Person getCurrentGPlusUser(final String tokenData) throws IOException {
-		final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(JSON_FACTORY).setTransport(TRANSPORT).setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET).build().setFromTokenResponse(JSON_FACTORY.fromString(tokenData, GoogleTokenResponse.class));
+		final GoogleCredential credential = new GoogleCredential.Builder()
+												.setJsonFactory(JSON_FACTORY)
+												.setTransport(TRANSPORT)
+												.setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET)
+												.build()
+												.setFromTokenResponse(JSON_FACTORY.fromString(tokenData, GoogleTokenResponse.class));
 		final Plus service = new Plus.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(PrivateConstants.APPLICATION_NAME).build();
 		final Person me = service.people().get("me").execute();
 		return me;

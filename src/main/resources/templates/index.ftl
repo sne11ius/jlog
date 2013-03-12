@@ -4,9 +4,11 @@
     <meta charset="utf-8">
     <title>wasis.nu/mit/blog</title>
     <script><#include "jq.js"></script>
+    <script><#include "gritter.js"></script>
     <script><#include "gplushelper.js"></script>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn" />
     <style type="text/css"><#include "styles.css"></style>
+    <style type="text/css"><#include "gritter.css"></style>
     <script>
         <#include "angularjs.min.js">
         <#include "angularjs-resource.min.js">
@@ -33,16 +35,33 @@
         </#if>
     </div>
     <div ng-controller="PostListController">
-        #posts: {{posts.length}}
+        <#if isowner>
+            <div class="post">
+                <form ng-submit="addPost()">
+                    <input type="text" ng-model="postTitle" placeholder="title" style="width:99.5%;"></input>
+                    <hr>
+                    <textarea ng-model="postBody" placeholder="body" style="width:99.5%;"></textarea>
+                    <input class="btn-primary" type="submit" value="submit post">
+                </form>
+            </div>
+        </#if>
         <div class="post" ng-repeat="post in posts">
-            <span class="date">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}} <a href="#">{{post.link}}</a> [<a href ng-click="remove(post);">delete</a>]</span>
+            <span class="date">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<#if isowner> <a href="#">{{post.link}}</a> [<a href ng-click="remove(post);">delete</a>]</#if></span>
             <h2>{{post.title}}</h2>
             <hr>
             <p>{{post.body}}</p>
             <hr>
-            <h3>Comments</h3>
-            <ol>
-                <li class="comment"><p>This is a comment for the post. <nobr>&mdash; Firstname Lastname / 2013-05-04T01:02:03:04</nobr></p></li>
+            <#if loggedin>
+                <form ng-submit="addComment(post)">
+                    <textarea ng-model="post.newcomment.body" rows="2" placeholder="comment" style="width:99.5%;"></textarea>
+                    <input class="btn-primary" type="submit" value="submit comment">
+                </form>
+            </#if>
+            <h3 ng-show="post.comments.length != 0">Comments</h3>
+            <ol ng-show="post.comments.length != 0">
+                <li ng-repeat="comment in post.comments" class="comment">
+                    <p>{{comment.body}} <nobr>&mdash; {{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}</nobr></p>
+                </li>
             </ol>
         </div>
     </div>

@@ -7,7 +7,7 @@ import com.github.jmkgreen.morphia.annotations.Embedded;
 @Embedded
 public class Comment {
 
-    private User user;
+    private User author;
     private String body;
 
     private Date date = new Date();
@@ -18,16 +18,16 @@ public class Comment {
 
     public Comment(final User user, final String body) {
         super();
-        this.user = user;
+        this.author = user;
         this.body = body;
     }
 
-    public User getUser() {
-        return user;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUser(final User user) {
-        this.user = user;
+    public void setAuthor(final User user) {
+        this.author = user;
     }
 
     public String getBody() {

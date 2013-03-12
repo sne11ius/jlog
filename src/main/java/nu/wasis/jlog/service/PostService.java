@@ -14,13 +14,11 @@ import org.bson.types.ObjectId;
 
 import com.github.jmkgreen.morphia.Datastore;
 import com.github.jmkgreen.morphia.Morphia;
-import com.github.jmkgreen.morphia.query.Query;
-import com.mongodb.QueryBuilder;
 
 public class PostService {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(PostService.class);
+	private static final Logger LOG = Logger.getLogger(PostService.class);
 
     final Datastore ds = new Morphia().createDatastore(MongoUtils.getMongo(), Constants.DB_NAME);
 

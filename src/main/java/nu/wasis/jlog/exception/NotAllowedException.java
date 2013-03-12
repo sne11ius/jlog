@@ -2,6 +2,8 @@ package nu.wasis.jlog.exception;
 
 public class NotAllowedException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public NotAllowedException() {
 		super();
 	}
