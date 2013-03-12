@@ -1,19 +1,22 @@
+<#compress>
 <!doctype html>
 <html ng-app="JLog">
 <head>
     <meta charset="utf-8">
     <title>wasis.nu/mit/blog</title>
-    <script><#include "jq.js"></script>
-    <script><#include "gritter.js"></script>
-    <script><#include "gplushelper.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn" />
-    <style type="text/css"><#include "styles.css"></style>
-    <style type="text/css"><#include "gritter.css"></style>
     <script>
+        <#include "jq.js">
+        <#include "gritter.js">
+        <#include "gplushelper.js">
         <#include "angularjs.min.js">
         <#include "angularjs-resource.min.js">
         <#include "app.js">
     </script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn" />
+    <style type="text/css">
+        <#include "styles.css">
+        <#include "gritter.css">
+    </style>
 </head>
 <body>
     <div class="post" style="margin-bottom:1.9em; margin-top:1.3em;">
@@ -68,3 +71,4 @@
     <div class="date" style="font-size:0.7em">Nat&uuml;rlich in C gehackt, mit dietlibc, libowfat, unter gatling laufend und mit einem tinyldap-Backend. &trade;</div>
 </body>
 </html>
+</#compress>
