@@ -3,7 +3,7 @@ app.run(function($resource) {
 });
 
 angular.module('postService', ['ngResource']).factory('Post', function($resource){
-    return $resource('./blog/posts/:id', {id:'@id'});
+    return $resource('./posts/:id', {id:'@id'});
 });
 
 function PostListController($scope, Post, $http) {
@@ -39,7 +39,7 @@ function PostListController($scope, Post, $http) {
     };
     
     $scope.addComment = function(post) {
-    	$http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
+    	$http.post('./posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
     		post.comments.push(comment);
     		post.newcomment = '';
     	}).error(function(error) {

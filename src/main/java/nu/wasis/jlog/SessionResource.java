@@ -21,7 +21,7 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
 
-@Path("/session")
+@Path("session")
 public class SessionResource {
 
 	@POST
