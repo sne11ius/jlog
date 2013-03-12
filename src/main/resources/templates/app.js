@@ -17,7 +17,7 @@ function PostListController($scope, Post, $http) {
     			if ($scope.posts[i].id == item.id) {
     				$scope.posts.splice(i, 1);
     				jQuery.gritter.add({ title: 'Success', text: 'Post removed.' });
-    				return
+    				return;
     			}
     		}
     	}, function(error) {
