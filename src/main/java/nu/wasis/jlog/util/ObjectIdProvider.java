@@ -26,48 +26,52 @@ import org.codehaus.jackson.map.module.SimpleModule;
 @Provider
 public class ObjectIdProvider implements ContextResolver<ObjectMapper> {
 
-	private final ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
-	public ObjectIdProvider() {
-		mapper = createMapper();
-	}
+    public ObjectIdProvider() {
+        mapper = createMapper();
+    }
 
-	@Override
-	public ObjectMapper getContext(Class<?> type) {
-		return mapper;
-	}
+    @Override
+    public ObjectMapper getContext(final Class<?> type) {
+        return mapper;
+    }
 
-	private static ObjectMapper createMapper() {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(AUTO_DETECT_GETTERS, false);
-		mapper.configure(AUTO_DETECT_SETTERS, false);
-		// mapper.setDeserializationConfig(mapper.getDeserializationConfig().without(FAIL_ON_UNKNOWN_PROPERTIES));
-		// mapper.setSerializationConfig(mapper.getSerializationConfig().withSerializationInclusion(NON_DEFAULT));
-		mapper.setVisibilityChecker(Std.defaultInstance().withFieldVisibility(ANY));
+    private static ObjectMapper createMapper() {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(AUTO_DETECT_GETTERS, false);
+        mapper.configure(AUTO_DETECT_SETTERS, false);
+        // mapper.setDeserializationConfig(mapper.getDeserializationConfig().without(FAIL_ON_UNKNOWN_PROPERTIES));
+        // mapper.setSerializationConfig(mapper.getSerializationConfig().withSerializationInclusion(NON_DEFAULT));
+        mapper.setVisibilityChecker(Std.defaultInstance().withFieldVisibility(ANY));
 
-		mapper.registerModule(new SimpleModule("jersey", new Version(1, 0, 0, null)) //
-				.addSerializer(_id, _idSerializer()) //
-				.addDeserializer(_id, _idDeserializer()));
-		return mapper;
-	}
+        mapper.registerModule(new SimpleModule("jersey", new Version(1, 0, 0, null)) //
+        .addSerializer(_id, _idSerializer()) //
+                                                                                    .addDeserializer(_id,
+                                                                                                     _idDeserializer()));
+        return mapper;
+    }
 
-	private static Class<ObjectId> _id = ObjectId.class;
+    private static Class<ObjectId> _id = ObjectId.class;
 
-	private static JsonDeserializer<ObjectId> _idDeserializer() {
-		return new JsonDeserializer<ObjectId>() {
-			@Override
-			public ObjectId deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-				return new ObjectId(jp.readValueAs(String.class));
-			}
-		};
-	}
+    private static JsonDeserializer<ObjectId> _idDeserializer() {
+        return new JsonDeserializer<ObjectId>() {
+            @Override
+            public ObjectId deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException,
+                                                                                               JsonProcessingException {
+                return new ObjectId(jp.readValueAs(String.class));
+            }
+        };
+    }
 
-	private static JsonSerializer<Object> _idSerializer() {
-		return new JsonSerializer<Object>() {
-			@Override
-			public void serialize(Object obj, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException, JsonProcessingException {
-				jsonGenerator.writeString(obj == null ? null : obj.toString());
-			}
-		};
-	}
+    private static JsonSerializer<Object> _idSerializer() {
+        return new JsonSerializer<Object>() {
+            @Override
+            public void serialize(final Object obj, final JsonGenerator jsonGenerator, final SerializerProvider provider)
+                                                                                                                         throws IOException,
+                                                                                                                         JsonProcessingException {
+                jsonGenerator.writeString(obj == null ? null : obj.toString());
+            }
+        };
+    }
 }

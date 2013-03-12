@@ -18,7 +18,7 @@ import com.github.jmkgreen.morphia.Morphia;
 public class PostService {
 
     @SuppressWarnings("unused")
-	private static final Logger LOG = Logger.getLogger(PostService.class);
+    private static final Logger LOG = Logger.getLogger(PostService.class);
 
     final Datastore ds = new Morphia().createDatastore(MongoUtils.getMongo(), Constants.DB_NAME);
 
@@ -46,10 +46,10 @@ public class PostService {
         ds.delete(post);
     }
 
-    public void deletePost(ObjectId id) {
-    	final Post post = new Post();
-    	post.setId(id);
-    	ds.delete(post);
+    public void deletePost(final ObjectId id) {
+        final Post post = new Post();
+        post.setId(id);
+        ds.delete(post);
     }
 
     public void deleteAll() {

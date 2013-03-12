@@ -29,41 +29,41 @@ import freemarker.template.TemplateException;
 @Path("/")
 public class IndexResource {
 
-	@SuppressWarnings("unused")
-	private static final Logger LOG = Logger.getLogger(IndexResource.class);
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(IndexResource.class);
 
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getIndex(@Context final HttpServletRequest request) throws IOException, TemplateException {
-		//InputStream resourceStream = IndexResource.class.getClassLoader().getResourceAsStream("index.html");
-		//return IOUtils.toString(resourceStream);
-		HttpSession session = request.getSession(true);
-		final Configuration cfg = createConfig();
-		final String state = new BigInteger(130, new SecureRandom()).toString(32);
-		session.setAttribute("state", state);
-		final StringWriter writer = new StringWriter();
-		final Template template = cfg.getTemplate("index.ftl");
-		final Map<String, Object> map = createTemplateMap(state, request);
-		template.process(map, writer);
-		return writer.toString();
-	}
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public String getIndex(@Context final HttpServletRequest request) throws IOException, TemplateException {
+        // InputStream resourceStream = IndexResource.class.getClassLoader().getResourceAsStream("index.html");
+        // return IOUtils.toString(resourceStream);
+        final HttpSession session = request.getSession(true);
+        final Configuration cfg = createConfig();
+        final String state = new BigInteger(130, new SecureRandom()).toString(32);
+        session.setAttribute("state", state);
+        final StringWriter writer = new StringWriter();
+        final Template template = cfg.getTemplate("index.ftl");
+        final Map<String, Object> map = createTemplateMap(state, request);
+        template.process(map, writer);
+        return writer.toString();
+    }
 
-	private Map<String, Object> createTemplateMap(final String state, final HttpServletRequest request) {
-		final Map<String, Object> map = new HashMap<String, Object>();
-		map.put("posts", PostService.INSTANCE.getPosts());
-		map.put("client_id", PrivateConstants.CLIENT_ID);
-		map.put("state", state);
-		map.put("nickname", GPlusUtils.getCurrentUsername(request));
-		map.put("loggedin", GPlusUtils.isLoggedIn(request));
-		map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
-		return map;
-	}
+    private Map<String, Object> createTemplateMap(final String state, final HttpServletRequest request) {
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("posts", PostService.INSTANCE.getPosts());
+        map.put("client_id", PrivateConstants.CLIENT_ID);
+        map.put("state", state);
+        map.put("nickname", GPlusUtils.getCurrentUsername(request));
+        map.put("loggedin", GPlusUtils.isLoggedIn(request));
+        map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
+        return map;
+    }
 
-	private Configuration createConfig() {
-		final Configuration config = new Configuration();
-		config.setClassForTemplateLoading(IndexResource.class, "/templates");
-		config.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
-		return config;
-	}
+    private Configuration createConfig() {
+        final Configuration config = new Configuration();
+        config.setClassForTemplateLoading(IndexResource.class, "/templates");
+        config.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
+        return config;
+    }
 
 }

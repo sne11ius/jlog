@@ -24,15 +24,16 @@ import com.google.api.services.oauth2.model.Tokeninfo;
 @Path("session")
 public class SessionResource {
 
-	@POST
-	@Path("connect")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response connect(@Context final HttpServletRequest request, @QueryParam("state") final String state, @QueryParam("gplus_id") final String gplusId, final String body) throws IOException {
-		final String tokenData = (String) request.getSession(true).getAttribute("token");
+    @POST
+    @Path("connect")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response connect(@Context final HttpServletRequest request, @QueryParam("state") final String state,
+                            @QueryParam("gplus_id") final String gplusId, final String body) throws IOException {
+        final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData != null) {
             return Response.status(400).entity("{\"message\": \"Already connected.\"}").build();
         }
-        
+
         // Ensure that this is no request forgery going on, and that the user
         // sending us this connect request is the user that was supposed to.
         final String sessionState = (String) request.getSession(true).getAttribute("state");
@@ -53,36 +54,35 @@ public class SessionResource {
                                                                           .setTransport(GPlusUtils.TRANSPORT)
                                                                           .setClientSecrets(PrivateConstants.CLIENT_ID,
                                                                                             PrivateConstants.CLIENT_SECRET)
-                                                                          .build()
-                                                                          .setFromTokenResponse(tokenResponse);
+                                                                          .build().setFromTokenResponse(tokenResponse);
 
         // Check that the token is valid.
         final Oauth2 oauth2 = new Oauth2.Builder(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY, credential).build();
         final Tokeninfo tokenInfo = oauth2.tokeninfo().setAccessToken(credential.getAccessToken()).execute();
         // If there was an error in the token info, abort.
         if (tokenInfo.containsKey("error")) {
-        	return Response.status(401).entity(tokenInfo.get("error").toString()).build();
+            return Response.status(401).entity(tokenInfo.get("error").toString()).build();
         }
         // Make sure the token we got is for the intended user.
         if (!tokenInfo.getUserId().equals(gplusId)) {
-        	return Response.status(401).entity("Token's user ID doesn't match given user ID.").build();
+            return Response.status(401).entity("Token's user ID doesn't match given user ID.").build();
         }
         // Make sure the token we got is for our app.
         if (!tokenInfo.getIssuedTo().equals(PrivateConstants.CLIENT_ID)) {
-        	return Response.status(401).entity("Token's client ID does not match app's.").build();
+            return Response.status(401).entity("Token's client ID does not match app's.").build();
         }
         // Store the token in the session for later use.
         request.getSession(true).setAttribute("token", tokenResponse.toString());
         return Response.ok().entity("{\"message\":\"Successfully connected user.\"}").build();
-	}
-	
-	@POST
-	@Path("disconnect")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response disconnect(@Context HttpServletRequest request) throws IOException {
+    }
+
+    @POST
+    @Path("disconnect")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response disconnect(@Context final HttpServletRequest request) throws IOException {
         final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData == null) {
-        	Response.status(401).entity("Current user not connected.").build();
+            Response.status(401).entity("Current user not connected.").build();
         }
         // Build credential from stored token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY)
@@ -100,5 +100,5 @@ public class SessionResource {
         // Reset the user's session.
         request.getSession(true).removeAttribute("token");
         return Response.ok().entity("{\"message\":\"Successfully disconnected.\"}").build();
-	}
+    }
 }

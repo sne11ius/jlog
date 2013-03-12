@@ -30,83 +30,84 @@ import com.sun.jersey.api.NotFoundException;
 @Path("/posts")
 public class PostsResource {
 
-	@SuppressWarnings("unused")
-	private static final Logger LOG = Logger.getLogger(PostsResource.class);
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(PostsResource.class);
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Post> getPosts() {
-		final List<Post> posts = PostService.INSTANCE.getPosts();
-		return posts;
-	}
-	
-	@GET
-	@Path("count")
-	@Produces(MediaType.APPLICATION_JSON)
-	public int getCount() {
-		return PostService.INSTANCE.getPosts().size();
-	}
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Post> getPosts() {
+        final List<Post> posts = PostService.INSTANCE.getPosts();
+        return posts;
+    }
 
-	@GET
-	@Path("{postId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Post getPost(@PathParam("postId") final String id) {
-		final Post post = PostService.INSTANCE.getPost(id);
-		if (null == post) {
-			throw new NotFoundException("No post with id " + id);
-		}
-		return post;
-	}
-	
-	@GET
-	@Path("byindex/{postIndex}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Post getPost(@PathParam("postIndex") final int index) {
-		final List<Post> allPosts = PostService.INSTANCE.getPosts();
-		if (index >= allPosts.size()) {
-			throw new NotFoundException("No post with index " + index);
-		}
-		return allPosts.get(index);
-	}
-	
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Post addPost(@Context final HttpServletRequest request, final Post post) {
-		if (!GPlusUtils.isOwnerLoggedIn(request)) {
-			throw new NotAllowedException("Must be owner to do this.");
-		}
-		if (StringUtils.isBlank(post.getTitle()) || StringUtils.isBlank(post.getBody())) {
-			throw new IllegalDataException("Title and body must not be empty.");
-		}
-		post.setAuthor(GPlusUtils.getCurrentUser(request));
-		PostService.INSTANCE.save(post);
-		return post;
-	}
-	
-	@DELETE
-	@Path("{postId}")
-	public void deletePost(@Context final HttpServletRequest request, @PathParam("postId") final String id) {
-		if (!GPlusUtils.isOwnerLoggedIn(request)) {
-			throw new NotAllowedException("Must be owner to do this.");
-		}
-		PostService.INSTANCE.deletePost(new ObjectId(id));
-	}
-	
-	@POST
-	@Path("{postId}/comments")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Comment addComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId, final Comment comment) {
-		if (!GPlusUtils.isLoggedIn(request)) {
-			throw new NotAllowedException("Must be logged in to do this.");
-		}
-		if (StringUtils.isBlank(comment.getBody())) {
-			throw new IllegalDataException("Body must not be empty.");
-		}
-		comment.setAuthor(GPlusUtils.getCurrentUser(request));
-		comment.setBody(StringEscapeUtils.escapeHtml(comment.getBody()));
-		PostService.INSTANCE.addComment(postId, comment);
-		return comment;
-	}
+    @GET
+    @Path("count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public int getCount() {
+        return PostService.INSTANCE.getPosts().size();
+    }
+
+    @GET
+    @Path("{postId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Post getPost(@PathParam("postId") final String id) {
+        final Post post = PostService.INSTANCE.getPost(id);
+        if (null == post) {
+            throw new NotFoundException("No post with id " + id);
+        }
+        return post;
+    }
+
+    @GET
+    @Path("byindex/{postIndex}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Post getPost(@PathParam("postIndex") final int index) {
+        final List<Post> allPosts = PostService.INSTANCE.getPosts();
+        if (index >= allPosts.size()) {
+            throw new NotFoundException("No post with index " + index);
+        }
+        return allPosts.get(index);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Post addPost(@Context final HttpServletRequest request, final Post post) {
+        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+            throw new NotAllowedException("Must be owner to do this.");
+        }
+        if (StringUtils.isBlank(post.getTitle()) || StringUtils.isBlank(post.getBody())) {
+            throw new IllegalDataException("Title and body must not be empty.");
+        }
+        post.setAuthor(GPlusUtils.getCurrentUser(request));
+        PostService.INSTANCE.save(post);
+        return post;
+    }
+
+    @DELETE
+    @Path("{postId}")
+    public void deletePost(@Context final HttpServletRequest request, @PathParam("postId") final String id) {
+        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+            throw new NotAllowedException("Must be owner to do this.");
+        }
+        PostService.INSTANCE.deletePost(new ObjectId(id));
+    }
+
+    @POST
+    @Path("{postId}/comments")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Comment addComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId,
+                              final Comment comment) {
+        if (!GPlusUtils.isLoggedIn(request)) {
+            throw new NotAllowedException("Must be logged in to do this.");
+        }
+        if (StringUtils.isBlank(comment.getBody())) {
+            throw new IllegalDataException("Body must not be empty.");
+        }
+        comment.setAuthor(GPlusUtils.getCurrentUser(request));
+        comment.setBody(StringEscapeUtils.escapeHtml(comment.getBody()));
+        PostService.INSTANCE.addComment(postId, comment);
+        return comment;
+    }
 }
