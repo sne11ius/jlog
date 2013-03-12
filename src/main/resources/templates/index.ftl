@@ -49,7 +49,7 @@
             <span class="date">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<#if isowner> <a href="#">{{post.link}}</a> [<a href ng-click="remove(post);">delete</a>]</#if></span>
             <h2>{{post.title}}</h2>
             <hr>
-            <p>{{post.body}}</p>
+            <p ng-bind-html-unsafe="post.body"></p>
             <hr>
             <#if loggedin>
                 <form ng-submit="addComment(post)">

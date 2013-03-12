@@ -27,6 +27,7 @@ function PostListController($scope, Post, $http) {
     
     $scope.addPost = function() {
     	var post = new Post({title: $scope.postTitle, body: $scope.postBody});
+    	jQuery.gritter.add({ title: 'Submit', text: 'Submitting post...<br>' + $scope.postBody });
     	post.$save(function(data) {
     		$scope.posts.unshift(new Post(data));
     		jQuery.gritter.add({ title: 'Success', text: 'Post added.' });
@@ -39,6 +40,7 @@ function PostListController($scope, Post, $http) {
     };
     
     $scope.addComment = function(post) {
+    	jQuery.gritter.add({ title: 'Submit', text: 'Submitting comment...<br>' + post.newcomment.body});
     	$http.post('./posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
     		post.comments.push(comment);
     		post.newcomment = '';
