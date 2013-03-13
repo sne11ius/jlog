@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import com.github.jmkgreen.morphia.annotations.Id;
 import com.google.gson.Gson;
 
-public class AbstractDBObject {
+public abstract class AbstractDBObject {
 
     @Id
     private ObjectId id;
