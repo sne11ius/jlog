@@ -20,21 +20,17 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(final Throwable e) {
         if (e instanceof NotFoundException) {
-            return makeResponse(404, e);
+            return Response.status(404).entity("Unknown post index.").build();
         }
         if (e instanceof NotAllowedException) {
-            return makeResponse(403, e);
+            return Response.status(403).entity(e.getMessage()).build();
         }
         if (e instanceof IllegalDataException) {
-            return makeResponse(400, e);
+            return Response.status(400).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
         }
         LOG.debug("Mapping unknown Exception of class: " + e.getClass().getName());
         LOG.debug(e);
         return Response.status(400).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
-    }
-
-    static Response makeResponse(final int type, final Throwable e) {
-        return Response.status(type).entity(e.getMessage()).build();
     }
 
 }

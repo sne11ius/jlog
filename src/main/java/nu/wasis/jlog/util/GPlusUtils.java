@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import nu.wasis.jlog.exception.InternalErrorException;
-import nu.wasis.jlog.exception.NoLoginException;
 import nu.wasis.jlog.model.User;
 
 import org.apache.log4j.Logger;
@@ -25,16 +23,21 @@ import com.google.gson.GsonBuilder;
 
 public class GPlusUtils {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(GPlusUtils.class);
 
-    /** Default HTTP transport to use to make HTTP requests. */
+    /**
+     * Default HTTP transport to use to make HTTP requests.
+     */
     public static final HttpTransport TRANSPORT = new NetHttpTransport();
 
-    /** Default JSON factory to use to deserialize JSON. */
+    /**
+     * Default JSON factory to use to deserialize JSON.
+     */
     public static final JacksonFactory JSON_FACTORY = new JacksonFactory();
 
-    /** Gson object to serialize JSON responses to requests to this servlet. */
+    /**
+     * Gson object to serialize JSON responses to requests to this servlet.
+     */
     public static final Gson GSON;
     static {
         final GsonBuilder gb = new GsonBuilder();
@@ -51,27 +54,41 @@ public class GPlusUtils {
     }
 
     public static String getCurrentUserId(final HttpServletRequest request) {
-        final String tokenData = checkRequestAuthenticatioon(request);
+        final String tokenData = (String) request.getSession().getAttribute("token");
+        if (tokenData == null) {
+            LOG.error("Not logged in.");
+            return "";
+        }
         try {
             final Person me = getCurrentGPlusUser(tokenData);
             return me.getId();
         } catch (final IOException e) {
-            throw new InternalErrorException(e);
+            LOG.error(e);
+            return "";
         }
     }
 
     public static String getCurrentUsername(final HttpServletRequest request) {
-        final String tokenData = checkRequestAuthenticatioon(request);
+        final String tokenData = (String) request.getSession().getAttribute("token");
+        if (tokenData == null) {
+            LOG.error("Not logged in.");
+            return "[unknown]";
+        }
         try {
             final Person me = getCurrentGPlusUser(tokenData);
             return me.getDisplayName();
         } catch (final IOException e) {
-            throw new InternalErrorException(e);
+            LOG.error(e);
+            return "[unknown]";
         }
     }
 
     public static User getCurrentUser(final HttpServletRequest request) {
-        final String tokenData = checkRequestAuthenticatioon(request);
+        final String tokenData = (String) request.getSession().getAttribute("token");
+        if (tokenData == null) {
+            LOG.error("Not logged in.");
+            return null;
+        }
         try {
             final Person me = getCurrentGPlusUser(tokenData);
             final String firstname = me.getDisplayName().split(" ")[0];
@@ -79,7 +96,8 @@ public class GPlusUtils {
             final String email = "";// me.getEmails().get(0).toString();
             return new User(email, firstname, lastname);
         } catch (final IOException e) {
-            throw new InternalErrorException(e);
+            LOG.error(e);
+            return null;
         }
     }
 
@@ -121,14 +139,6 @@ public class GPlusUtils {
                                                                                   .build();
         final Person me = service.people().get("me").execute();
         return me;
-    }
-
-    private static String checkRequestAuthenticatioon(final HttpServletRequest request) {
-        final String tokenData = (String) request.getSession().getAttribute("token");
-        if (tokenData == null) {
-            throw new NoLoginException("Not logged in.");
-        }
-        return tokenData;
     }
 
 }
