@@ -8,7 +8,7 @@
         <#include "jq.js">
         <#include "gritter.js">
         <#include "gplushelper.js">
-        <@compress single_line=true> 
+        <@compress single_line=true>
             <#include "angularjs.min.js">
             <#include "angularjs-resource.min.js">
             <#include "app.js">
@@ -18,10 +18,13 @@
     <style type="text/css">
         <@compress single_line=true> 
             <#include "styles.css">
+        </@compress>
+        <@compress single_line=true> 
             <#include "gritter.css">
         </@compress>
     </style>
 </head>
+<@compress single_line=true>
 <body>
     <div class="post" style="margin-bottom:1.9em; margin-top:1.3em;">
         <h1>wasis.nu/mit/blog?</h1>
@@ -53,7 +56,7 @@
             </div>
         </#if>
         <div class="post" ng-repeat="post in posts">
-            <span class="date">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<#if isowner> <a href="#">{{post.link}}</a> [<a href ng-click="remove(post);">delete</a>]</#if></span>
+            <span class="date">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<#if isowner> <a href="#">{{post.link}}</a> [<a href ng-click="removePost(post);">delete</a>]</#if></span>
             <h2>{{post.title}}</h2>
             <hr>
             <p ng-bind-html-unsafe="post.body"></p>
@@ -67,7 +70,7 @@
             <h3 ng-show="post.comments.length != 0">Comments</h3>
             <ol ng-show="post.comments.length != 0">
                 <li ng-repeat="comment in post.comments" class="comment">
-                    <p><span class="comment-body" ng-bind-html-unsafe="comment.body"></span <nobr>&mdash; {{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}</nobr></p>
+                    <p><span class="comment-body" ng-bind-html-unsafe="comment.body"></span <nobr>&mdash; {{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<#if isowner> [<a href ng-click="removeComment(post, comment);">delete</a>]</#if></nobr></p>
                 </li>
             </ol>
         </div>
@@ -82,5 +85,6 @@
                                                                                             
     </div>
 </body>
+</@compress>
 </html>
 </#compress>

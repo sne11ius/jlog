@@ -52,7 +52,7 @@ public class PostService {
         ds.delete(post);
     }
 
-    public void deleteAll() {
+    public void deletePosts() {
         for (final Post post : getPosts()) {
             deletePost(post);
         }
@@ -61,6 +61,12 @@ public class PostService {
     public void addComment(final String postId, final Comment comment) {
         final Post post = getPost(postId);
         post.getComments().add(comment);
+        save(post);
+    }
+
+    public void deleteComment(final String postId, final String commentId) {
+        final Post post = getPost(postId);
+        post.removeComment(commentId);
         save(post);
     }
 

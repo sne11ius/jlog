@@ -112,4 +112,14 @@ public class PostsResource {
         PostService.INSTANCE.addComment(postId, comment);
         return comment;
     }
+
+    @DELETE
+    @Path("{postId}/comments/{commentId}")
+    public void deleteComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId,
+                              @PathParam("commentId") final String commentId) {
+        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+            throw new NotAllowedException("Must be owner to do this.");
+        }
+        PostService.INSTANCE.deleteComment(postId, commentId);
+    }
 }

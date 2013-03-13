@@ -15,7 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import nu.wasis.jlog.service.PostService;
 import nu.wasis.jlog.util.GPlusUtils;
 import nu.wasis.jlog.util.PrivateConstants;
 
@@ -35,8 +34,6 @@ public class IndexResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request) throws IOException, TemplateException {
-        // InputStream resourceStream = IndexResource.class.getClassLoader().getResourceAsStream("index.html");
-        // return IOUtils.toString(resourceStream);
         final HttpSession session = request.getSession(true);
         final Configuration cfg = createConfig();
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
@@ -50,7 +47,6 @@ public class IndexResource {
 
     private Map<String, Object> createTemplateMap(final String state, final HttpServletRequest request) {
         final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("posts", PostService.INSTANCE.getPosts());
         map.put("client_id", PrivateConstants.CLIENT_ID);
         map.put("state", state);
         map.put("nickname", GPlusUtils.getCurrentUsername(request));

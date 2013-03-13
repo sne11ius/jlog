@@ -7,6 +7,10 @@ import com.google.gson.Gson;
 
 public abstract class AbstractDBObject {
 
+    public AbstractDBObject() {
+        this.id = new ObjectId();
+    }
+
     @Id
     private ObjectId id;
 

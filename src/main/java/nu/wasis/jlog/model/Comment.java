@@ -5,7 +5,7 @@ import java.util.Date;
 import com.github.jmkgreen.morphia.annotations.Embedded;
 
 @Embedded
-public class Comment {
+public class Comment extends AbstractDBObject {
 
     private User author;
     private String body;

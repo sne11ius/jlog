@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.bson.types.ObjectId;
+
 import com.github.jmkgreen.morphia.annotations.Entity;
 
 @XmlRootElement
@@ -26,6 +28,19 @@ public class Post extends AbstractDBObject {
         this.title = title;
         this.body = body;
         this.author = author;
+    }
+
+    public void addComment(final Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(final String commentId) {
+        for (int i = 0; i < comments.size(); ++i) {
+            if (comments.get(i).getId().equals(new ObjectId(commentId))) {
+                comments.remove(i);
+                return;
+            }
+        }
     }
 
     public String getTitle() {
