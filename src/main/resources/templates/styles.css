@@ -39,3 +39,8 @@ hr {
 .comment {
     font-size: 0.9em;
 }
+
+pre {
+	font-family: 'Droid Sans Mono', sans-serif;
+    font-size: 0.9em;
+}

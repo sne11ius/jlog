@@ -14,7 +14,8 @@
             <#include "app.js">
         </@compress>
     </script>
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn" />
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <style type="text/css">
         <@compress single_line=true> 
             <#include "styles.css">
