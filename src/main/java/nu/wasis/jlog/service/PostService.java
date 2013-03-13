@@ -70,4 +70,17 @@ public class PostService {
         save(post);
     }
 
+    public void cleanIds() {
+        LOG.debug("Cleaning ids...");
+        for (final Post post : getPosts()) {
+            for (final Comment comment : post.getComments()) {
+                if (null == comment.getId()) {
+                    LOG.debug("Found comment without id...");
+                    comment.setId(new ObjectId());
+                }
+            }
+            save(post);
+        }
+    }
+
 }
