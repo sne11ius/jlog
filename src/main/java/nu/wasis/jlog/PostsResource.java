@@ -106,7 +106,9 @@ public class PostsResource {
             throw new IllegalDataException("Body must not be empty.");
         }
         comment.setAuthor(GPlusUtils.getCurrentUser(request));
-        comment.setBody(StringEscapeUtils.escapeHtml(comment.getBody()));
+        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+            comment.setBody(StringEscapeUtils.escapeHtml(comment.getBody()));
+        }
         PostService.INSTANCE.addComment(postId, comment);
         return comment;
     }
