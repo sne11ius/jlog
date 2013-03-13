@@ -67,12 +67,20 @@
             <h3 ng-show="post.comments.length != 0">Comments</h3>
             <ol ng-show="post.comments.length != 0">
                 <li ng-repeat="comment in post.comments" class="comment">
-                    <p>{{comment.body}} <nobr>&mdash; {{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}</nobr></p>
+                    <p><span class="comment-body" ng-bind-html-unsafe="comment.body"></span <nobr>&mdash; {{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}</nobr></p>
                 </li>
             </ol>
         </div>
     </div>
-    <div class="date" style="font-size:0.7em">Nat&uuml;rlich in C gehackt, mit dietlibc, libowfat, unter gatling laufend und mit einem tinyldap-Backend. &trade;</div>
+    <div class="date" style="font-size:0.7em">Nat&uuml;rlich in C gehackt, mit <a
+                                                href="http://www.fefe.de/dietlibc/">dietlibc</a>, <a
+                                                href="http://www.fefe.de/libowfat/">libowfat</a>, unter <a
+                                                href="http://www.fefe.de/gatling/">gatling</a> laufend und mit einem <a
+                                                href="http://www.fefe.de/tinyldap/">tinyldap-Backend</a>.<a
+                                                href="http://www.blog.refefe.de/faq.html">
+                                                &trade;</a><br>
+                                                                                            
+    </div>
 </body>
 </html>
 </#compress>
