@@ -8,14 +8,18 @@
         <#include "jq.js">
         <#include "gritter.js">
         <#include "gplushelper.js">
-        <#include "angularjs.min.js">
-        <#include "angularjs-resource.min.js">
-        <#include "app.js">
+        <@compress single_line=true> 
+            <#include "angularjs.min.js">
+            <#include "angularjs-resource.min.js">
+            <#include "app.js">
+        </@compress>
     </script>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn" />
     <style type="text/css">
-        <#include "styles.css">
-        <#include "gritter.css">
+        <@compress single_line=true> 
+            <#include "styles.css">
+            <#include "gritter.css">
+        </@compress>
     </style>
 </head>
 <body>
