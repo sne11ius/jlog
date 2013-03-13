@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.bson.types.ObjectId;
 
 import com.github.jmkgreen.morphia.annotations.Entity;
+import com.sun.jersey.api.NotFoundException;
 
 @XmlRootElement
 @Entity("Posts")
@@ -41,6 +42,7 @@ public class Post extends AbstractDBObject {
                 return;
             }
         }
+        throw new NotFoundException("No comment with that id in this post ;)");
     }
 
     public String getTitle() {

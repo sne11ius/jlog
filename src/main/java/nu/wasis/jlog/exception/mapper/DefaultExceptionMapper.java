@@ -1,6 +1,5 @@
 package nu.wasis.jlog.exception.mapper;
 
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -20,17 +19,21 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(final Throwable e) {
         if (e instanceof NotFoundException) {
-            return Response.status(404).entity("Unknown post index.").build();
+            return buildResponse(404, e);
         }
         if (e instanceof NotAllowedException) {
-            return Response.status(403).entity(e.getMessage()).build();
+            return buildResponse(403, e);
         }
         if (e instanceof IllegalDataException) {
-            return Response.status(400).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
+            return buildResponse(400, e);
         }
         LOG.debug("Mapping unknown Exception of class: " + e.getClass().getName());
         LOG.debug(e);
-        return Response.status(400).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
+        return buildResponse(400, e);
+    }
+
+    private Response buildResponse(final int status, final Throwable e) {
+        return Response.status(status).entity(e.getMessage()).build();
     }
 
 }
