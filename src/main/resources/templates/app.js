@@ -13,55 +13,56 @@ function PostListController($scope, Post, $http) {
     
     $scope.addPost = function() {
         var post = new Post({title: $scope.postTitle, body: $scope.postBody});
-        jQuery.gritter.add({ title: 'Submit', text: 'Submitting post...<br>' + $scope.postBody });
+        toastr.info('Submitting post...<br>' + $scope.postBody);
         post.$save(function(data) {
             $scope.posts.unshift(new Post(data));
-            jQuery.gritter.add({ title: 'Success', text: 'Post added.' });
+            toastr.success('Post added.');
         },
         function(error) {
-            jQuery.gritter.add({ title: 'Error adding post', text: error });
+            toastr.error(error, 'Error adding post');
         });
         $scope.postTitle = '';
         $scope.postBody = '';
     };
     
     $scope.removePost = function(item) {
-        jQuery.gritter.add({ title: 'Delete', text: 'Deleting post...<br>' + $scope.postBody });
+        toastr.info('Deleting post...<br>' + $scope.postBody);
     	item.$remove(function(data) {
     		for (var i = 0; i < $scope.posts.length; ++i) {
     			if ($scope.posts[i].id == item.id) {
     				$scope.posts.splice(i, 1);
-    				jQuery.gritter.add({ title: 'Success', text: 'Post deleted.' });
+    	            toastr.success('Post deleted.');
     				return;
     			}
     		}
     	}, function(error) {
-    		jQuery.gritter.add({ title: 'Error deleting post', text: error });
+    	    toastr.error(error, 'Error deleting post');
     	});
     };
     
     $scope.addComment = function(post) {
-    	jQuery.gritter.add({ title: 'Submit', text: 'Submitting comment...<br>' + post.newcomment.body});
+    	toastr.info('Submitting comment...<br>' + post.newcomment.body);
     	$http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
     		post.comments.push(comment);
     		post.newcomment = '';
+    		toastr.success('Comment added.');
     	}).error(function(error) {
-    		jQuery.gritter.add({ title: 'Error adding comment', text: error });
+    		toastr.error(error, 'Error adding comment');
     	});
     };
     
     $scope.removeComment = function(post, comment) {
-        jQuery.gritter.add({ title: 'Delete', text: 'Deleting comment...<br>' + comment.body});
+        toastr.info('Deleting comment...<br>' + comment.body);
         $http.delete('./blog/posts/' + post.id + '/comments/' + comment.id).success(function(data) {
             for (var i = 0; i < post.comments.length; ++i) {
                 if (post.comments[i].id == comment.id) {
                     post.comments.splice(i, 1);
-                    jQuery.gritter.add({ title: 'Success', text: 'Comment deleted.' });
+                    toastr.success('Comment deleted.');
                     return;
                 }
             }
         }).error(function(error) {
-            jQuery.gritter.add({ title: 'Error deleting comment', text: error });
+            toastr.error(error, 'Error deleting comment');
         });
     }
 };

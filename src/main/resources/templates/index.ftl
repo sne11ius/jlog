@@ -6,22 +6,18 @@
     <title>wasis.nu/mit/blog</title>
     <script>
         <#include "jq.js">
-        <#include "gritter.js">
+        <#include "toastr.js">
+        <#include "angularjs.min.js">
         <#include "gplushelper.js">
-        <@compress single_line=true>
-            <#include "angularjs.min.js">
-            <#include "angularjs-resource.min.js">
-            <#include "app.js">
-        </@compress>
+        <#include "angularjs-resource.min.js">
+        <#include "app.js">
     </script>
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <style type="text/css">
         <@compress single_line=true> 
             <#include "styles.css">
-        </@compress>
-        <@compress single_line=true> 
-            <#include "gritter.css">
+            <#include "toastr.css">
         </@compress>
     </style>
 </head>
