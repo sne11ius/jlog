@@ -81,7 +81,7 @@
                                                 href="http://www.fefe.de/libowfat/">libowfat</a>, unter <a
                                                 href="http://www.fefe.de/gatling/">gatling</a> laufend und mit einem <a
                                                 href="http://www.fefe.de/tinyldap/">tinyldap-Backend</a>.<a
-                                                href="http://www.blog.refefe.de/faq.html">
+                                                href="http://blog.refefe.de/faq.html">
                                                 &trade;</a><br>
                                                                                             
     </div>
