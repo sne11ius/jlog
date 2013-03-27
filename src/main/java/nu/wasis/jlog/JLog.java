@@ -43,7 +43,6 @@ public class JLog {
     }
 
     public static void main(final String[] args) throws IOException {
-        PostService.INSTANCE.cleanIds();
         final HttpServer httpServer = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                                          + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));

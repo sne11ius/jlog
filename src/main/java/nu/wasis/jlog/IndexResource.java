@@ -49,7 +49,7 @@ public class IndexResource {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("client_id", PrivateConstants.CLIENT_ID);
         map.put("state", state);
-        map.put("nickname", GPlusUtils.getCurrentUsername(request));
+        map.put("username", GPlusUtils.getCurrentUsername(request));
         map.put("loggedin", GPlusUtils.isLoggedIn(request));
         map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
         return map;

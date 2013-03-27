@@ -1,12 +1,6 @@
-var app = angular.module( 'JLog', [ 'ngResource', 'postService' ] );
-app.run(function($resource) {
-});
+var app = angular.module( 'jlog', [ 'ngResource', 'postService' ] );
 
-angular.module('postService', ['ngResource']).factory('Post', function($resource){
-    return $resource('./blog/posts/:postId', {postId:'@id'});
-});
-
-function PostListController($scope, Post, $http) {
+app.controller('PostListController', function($scope, Post, $http) {
     $scope.posts = Post.query();
     
     $scope.comment = {body: ''};
@@ -27,28 +21,28 @@ function PostListController($scope, Post, $http) {
     
     $scope.removePost = function(item) {
         toastr.info('Deleting post...<br>' + $scope.postBody);
-    	item.$remove(function(data) {
-    		for (var i = 0; i < $scope.posts.length; ++i) {
-    			if ($scope.posts[i].id == item.id) {
-    				$scope.posts.splice(i, 1);
-    	            toastr.success('Post deleted.');
-    				return;
-    			}
-    		}
-    	}, function(error) {
-    	    toastr.error(error, 'Error deleting post');
-    	});
+        item.$remove(function(data) {
+            for (var i = 0; i < $scope.posts.length; ++i) {
+                if ($scope.posts[i].id == item.id) {
+                    $scope.posts.splice(i, 1);
+                    toastr.success('Post deleted.');
+                    return;
+                }
+            }
+        }, function(error) {
+            toastr.error(error, 'Error deleting post');
+        });
     };
     
     $scope.addComment = function(post) {
-    	toastr.info('Submitting comment...<br>' + post.newcomment.body);
-    	$http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
-    		post.comments.push(comment);
-    		post.newcomment = '';
-    		toastr.success('Comment added.');
-    	}).error(function(error) {
-    		toastr.error(error, 'Error adding comment');
-    	});
+        toastr.info('Submitting comment...<br>' + post.newcomment.body);
+        $http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
+            post.comments.push(comment);
+            post.newcomment = '';
+            toastr.success('Comment added.');
+        }).error(function(error) {
+            toastr.error(error, 'Error adding comment');
+        });
     };
     
     $scope.removeComment = function(post, comment) {
@@ -64,7 +58,132 @@ function PostListController($scope, Post, $http) {
         }).error(function(error) {
             toastr.error(error, 'Error deleting comment');
         });
-    }
-};
+    };
+    
+    $scope.isLoggedIn = ${loggedin?string};
+    $scope.isOwner = ${isowner?string};
+    
+    $scope.$on('loginDone', function(event, loginInfo) {
+        if(!$scope.$$phase) {
+            $scope.$apply(function() {
+                $scope.isLoggedIn = true;
+                $scope.isOwner = loginInfo.isOwner;
+            });
+        } else {
+            $scope.isLoggedIn = true;
+            $scope.isOwner = loginInfo.isOwner;
+        }
+        $('.login-loader').hide();
+        toastr.success('Login done.');
+    });
+    $scope.$on('logoutDone', function(event) {
+        if(!$scope.$$phase) {
+            $scope.$apply(function() {
+                $scope.isLoggedIn = false;
+                $scope.isOwner = false;
+            });
+        } else {
+            $scope.isLoggedIn = false;
+            $scope.isOwner = false;
+        }
+    });
+});
 
-PostListController.$inject = ['$scope', 'Post', '$http'];
+app.controller('LoginController', function($scope, $http) {
+    $scope.isLoggedIn = ${loggedin?string};
+    $scope.isOwner = ${isowner?string};
+    $scope.username = '${username}';
+    
+    $scope.disconnectServer = function() {
+        toastr.info('Disconnecting...');
+        $http.post(window.location.href + '/session/disconnect').success(function() {
+            toastr.success('Disconnected.');
+            if(!$scope.$$phase) {
+                $scope.$apply(function() {
+                    $scope.isLoggedIn = false;
+                    $scope.isOwner = false;
+                });
+            } else {
+                $scope.isLoggedIn = false;
+                $scope.isOwner = false;
+            }
+            var $rootScope = angular.element(document).scope();
+            $rootScope.$broadcast('logoutDone');
+        }).error(function(error) {
+            toastr.error(error, 'Error during disconnect');
+        });
+    };
+    
+    $scope.$on('login', function(event, data) {
+        gapi.client.load('plus', 'v1', function() {
+            var request = gapi.client.plus.people.get({
+                'userId' : 'me'
+            });
+            request.execute(function(profile) {
+                if ('undefined' != typeof profile.error) {
+                    console.log('this is not login you are looking for...');
+                    $('.login-loader').hide();
+                    return;
+                }
+                $.ajax({
+                    type : 'POST',
+                    url : window.location.href + '/session/connect?state=${state}&gplus_id=' + profile.id,
+                    contentType : 'application/octet-stream; charset=utf-8',
+                    success : function(loginInfo) {
+                        $scope.$apply(function() {
+                            $scope.isLoggedIn = true;
+                            $scope.username = loginInfo.user.firstname + ' ' + loginInfo.user.lastname;
+                            $scope.isOwner = loginInfo.isOwner;
+                        });
+                        var $rootScope = angular.element(document).scope();
+                        $rootScope.$broadcast('loginDone', loginInfo);
+                    },
+                    data : data.code
+                });
+            });
+        });
+    });
+});
+
+app.run(function($rootScope) {
+    var onSignInCallback = function(data) {
+        console.log(data);
+        if ('undefined' != typeof data.error) {
+            $('.login-loader').hide();
+        }
+        var $scope = angular.element(document).scope();
+        $scope.$broadcast('login', data);
+    };
+    var func = function() {
+        gapi.signin.render(
+            'g-signin', {
+                'scope'                 : 'https://www.googleapis.com/auth/plus.login',
+                'requestvisibleactions' : 'http://schemas.google.com/CommentActivity',
+                'clientId'              : '${client_id}',
+                'accesstype'            : 'offline',
+                'callback'              : onSignInCallback,
+                'theme'                 : 'light',
+                'width'                 : 'iconOnly',
+                'cookiepolicy'          : 'single_host_origin'
+            }
+        );
+    };
+    
+    window.doit = function() {
+        if ('undefined' == typeof gapi) {
+            window.setTimeout(window.doit, 500);
+        } else {
+            func();
+        }
+    };
+    window.doit();
+    
+    $('#g-signin').click(function() {
+        toastr.info('Requesting login...');
+        $('.login-loader').show();
+    });
+});
+
+angular.module('postService', ['ngResource']).factory('Post', function($resource){
+    return $resource('./blog/posts/:postId', {postId:'@id'});
+});

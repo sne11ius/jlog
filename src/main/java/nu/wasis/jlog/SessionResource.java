@@ -73,7 +73,9 @@ public class SessionResource {
         }
         // Store the token in the session for later use.
         request.getSession(true).setAttribute("token", tokenResponse.toString());
-        return Response.ok().entity("{\"message\":\"Successfully connected user.\"}").build();
+        return Response.ok()
+                       .entity("{\"user\":" + GPlusUtils.GSON.toJson(GPlusUtils.getCurrentUser(request))
+                                       + ", \"isOwner\":" + GPlusUtils.isOwnerLoggedIn(request) + "}").build();
     }
 
     @POST
@@ -82,7 +84,7 @@ public class SessionResource {
     public Response disconnect(@Context final HttpServletRequest request) throws IOException {
         final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData == null) {
-            Response.status(401).entity("Current user not connected.").build();
+            return Response.status(401).entity("Current user not connected.").build();
         }
         // Build credential from stored token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY)
