@@ -147,7 +147,6 @@ app.controller('LoginController', function($scope, $http) {
 
 app.run(function($rootScope) {
     var onSignInCallback = function(data) {
-        console.log(data);
         if ('undefined' != typeof data.error) {
             $('.login-loader').hide();
         }
