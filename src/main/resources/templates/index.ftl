@@ -48,7 +48,7 @@
         </div>
         <div class="post" ng-repeat="post in posts">
             <span class="date">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> [<a href ng-click="removePost(post);">delete</a>]</span></span>
-            <h2>{{post.title}}</h2>
+            <h2 ng-bind-html-unsafe="post.title"></h2>
             <hr>
             <p ng-bind-html-unsafe="post.body"></p>
             <hr>
