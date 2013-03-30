@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigInteger;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,15 +37,11 @@ public class IndexResource {
     private static final List<String> templateDirectories = Arrays.asList("css", "html", "js");
 
     static {
-        final URL baseUrl = IndexResource.class.getClassLoader().getResource(".");
-        // LOG.debug("baseUrl: " + baseUrl);
         for (final String templateDirectoryPath : templateDirectories) {
             try {
-                final String baseDirectoryName = new File(baseUrl.toURI()).getPath();
-                final File templateDirectory = new File(baseDirectoryName + File.separator + templateDirectoryPath);
-                // LOG.debug("Loading directory `" + templateDirectory.getAbsolutePath() + "'");
+                final File templateDirectory = new File(PrivateConstants.BASE_TEMPLATE_PATH + File.separator + templateDirectoryPath);
                 TemplateLoader.INSTANCE.addDirectory(templateDirectory);
-            } catch (final IOException | URISyntaxException e) {
+            } catch (final IOException e) {
                 LOG.error("Initialization of TemplateLoader failed:", e);
             }
         }
