@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -54,7 +55,8 @@ public class IndexResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") final boolean compress) throws IOException, TemplateException {
+    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress) throws IOException,
+                                                                                                                                           TemplateException {
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute("state", state);
