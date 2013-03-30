@@ -1,31 +1,31 @@
-<#compress>
+$COMPRESS_BEGIN
 <!doctype html>
-        <@compress single_line=true> 
+        $COMPRESS_SINGLE_LINE_BEGIN 
 <html ng-app="jlog">
 <head>
     <meta charset="utf-8">
     <title>wasis.nu/mit/blog</title>
     <script>
-        </@compress>
+        $COMPRESS_SINGLE_LINE_END
         <#include "jq.js">
         <#include "toastr.js">
         <#include "angularjs.min.js">
         <#include "angularjs-resource.min.js">
-        <@compress single_line=true>
+        $COMPRESS_SINGLE_LINE_BEGIN
             <#include "app.js">
-        </@compress>
+        $COMPRESS_SINGLE_LINE_END
     </script>
     <script src='https://plus.google.com/js/client:plusone.js'>{'parsetags': 'explicit'}</script>
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <style type="text/css">
-        <@compress single_line=true>
+        $COMPRESS_SINGLE_LINE_BEGIN
             <#include "toastr.css">
             <#include "styles.css">
-        </@compress>
+        $COMPRESS_SINGLE_LINE_END
     </style>
 </head>
-<@compress single_line=true>
+$COMPRESS_SINGLE_LINE_BEGIN
 <body>
     <div class="login-loader">
     </div>
@@ -74,6 +74,6 @@
                                                                                             
     </div>
 </body>
-</@compress>
+$COMPRESS_SINGLE_LINE_END
 </html>
-</#compress>
+$COMPRESS_END

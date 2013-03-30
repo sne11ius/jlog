@@ -67,10 +67,14 @@ public class IndexResource {
 
     private Map<String, String> buildReplacements(final boolean compress) {
         final Map<String, String> replacements = new HashMap<>();
-        final String compressBegin = compress ? "<@compress single_line=true>" : "";
-        final String compressEnd = compress ? "</@compress>" : "";
+        final String compressBegin = compress ? "<#compress>" : "";
+        final String compressEnd = compress ? "</#compress>" : "";
+        final String compressSingleLineBegin = compress ? "<@compress single_line=true>" : "";
+        final String compressSingleLineEnd = compress ? "</@compress>" : "";
         replacements.put("$COMPRESS_BEGIN", compressBegin);
         replacements.put("$COMPRESS_END", compressEnd);
+        replacements.put("$COMPRESS_SINGLE_LINE_BEGIN", compressSingleLineBegin);
+        replacements.put("$COMPRESS_SINGLE_LINE_END", compressSingleLineEnd);
         return replacements;
     }
 
