@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
 
-import nu.wasis.jlog.service.PostService;
-
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyWebContainerFactory;
@@ -44,8 +42,7 @@ public class JLog {
 
     public static void main(final String[] args) throws IOException {
         final HttpServer httpServer = startServer();
-        System.out.println(String.format("Jersey app started with WADL available at "
-                                         + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
+        System.out.println(String.format("Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
         System.in.read();
         httpServer.stop();
     }
