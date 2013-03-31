@@ -153,30 +153,18 @@ app.run(function($rootScope) {
         var $scope = angular.element(document).scope();
         $scope.$broadcast('login', data);
     };
-    var func = function() {
-        gapi.signin.render(
-            'g-signin', {
-                'scope'                 : 'https://www.googleapis.com/auth/plus.login',
-                'requestvisibleactions' : 'http://schemas.google.com/CommentActivity',
-                'clientId'              : '${client_id}',
-                'accesstype'            : 'offline',
-                'callback'              : onSignInCallback,
-                'theme'                 : 'light',
-                'width'                 : 'iconOnly',
-                'cookiepolicy'          : 'single_host_origin'
-            }
-        );
-    };
-    
-    window.doit = function() {
-        if ('undefined' == typeof gapi) {
-            window.setTimeout(window.doit, 500);
-        } else {
-            func();
+    gapi.signin.render(
+        'g-signin', {
+            'scope'                 : 'https://www.googleapis.com/auth/plus.login',
+            'requestvisibleactions' : 'http://schemas.google.com/CommentActivity',
+            'clientId'              : '${client_id}',
+            'accesstype'            : 'offline',
+            'callback'              : onSignInCallback,
+            'theme'                 : 'light',
+            'width'                 : 'iconOnly',
+            'cookiepolicy'          : 'single_host_origin'
         }
-    };
-    window.doit();
-    
+    );
     $('#gConnect').click(function() {
         toastr.info('Requesting login...');
         $('.login-loader').show();
