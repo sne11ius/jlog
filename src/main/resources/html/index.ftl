@@ -5,12 +5,15 @@ $COMPRESS_BEGIN
 <head>
     <meta charset="utf-8">
     <title>wasis.nu/mit/blog</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
         $COMPRESS_SINGLE_LINE_END
-        <#include "jq.js">
         <#include "toastr.js">
-        <#include "angularjs.min.js">
-        <#include "angularjs-resource.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
+    </script>
+    <script>
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "app.js">
         $COMPRESS_SINGLE_LINE_END

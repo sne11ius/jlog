@@ -177,7 +177,7 @@ app.run(function($rootScope) {
     };
     window.doit();
     
-    $('#g-signin').click(function() {
+    $('#gConnect').click(function() {
         toastr.info('Requesting login...');
         $('.login-loader').show();
     });
