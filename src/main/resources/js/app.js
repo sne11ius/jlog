@@ -113,8 +113,11 @@ app.controller('LoginController', function($scope, $http) {
             toastr.error(error, 'Error during disconnect');
         });
     };
-    
-    $scope.$on('login', function(event, data) {
+
+    $scope.onSignInCallback = function(data) {
+        if ('undefined' != typeof data.error) {
+            $('.login-loader').hide();
+        }
         gapi.client.load('plus', 'v1', function() {
             var request = gapi.client.plus.people.get({
                 'userId' : 'me'
@@ -142,29 +145,27 @@ app.controller('LoginController', function($scope, $http) {
                 });
             });
         });
-    });
+    };
+    
+    $scope.start = function() {
+        gapi.signin.render(
+           'g-signin', {
+                'scope'                 : 'https://www.googleapis.com/auth/plus.login',
+                'requestvisibleactions' : 'http://schemas.google.com/CommentActivity',
+                'clientId'              : '${client_id}',
+                'accesstype'            : 'offline',
+                'callback'              : $scope.onSignInCallback,
+                'theme'                 : 'light',
+                'width'                 : 'iconOnly',
+                'cookiepolicy'          : 'single_host_origin'
+            }
+        );
+    };
+    
+    $scope.start();
 });
 
-app.run(function($rootScope) {
-    var onSignInCallback = function(data) {
-        if ('undefined' != typeof data.error) {
-            $('.login-loader').hide();
-        }
-        var $scope = angular.element(document).scope();
-        $scope.$broadcast('login', data);
-    };
-    gapi.signin.render(
-        'g-signin', {
-            'scope'                 : 'https://www.googleapis.com/auth/plus.login',
-            'requestvisibleactions' : 'http://schemas.google.com/CommentActivity',
-            'clientId'              : '${client_id}',
-            'accesstype'            : 'offline',
-            'callback'              : onSignInCallback,
-            'theme'                 : 'light',
-            'width'                 : 'iconOnly',
-            'cookiepolicy'          : 'single_host_origin'
-        }
-    );
+app.run(function() {
     $('#gConnect').click(function() {
         toastr.info('Requesting login...');
         $('.login-loader').show();
