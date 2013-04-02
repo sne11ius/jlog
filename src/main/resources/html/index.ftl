@@ -62,7 +62,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
             <h3 ng-show="post.comments.length != 0">Comments</h3>
             <ol ng-show="post.comments.length != 0">
                 <li ng-repeat="comment in post.comments" class="comment">
-                    <p><span class="comment-body" ng-bind-html-unsafe="comment.body"></span <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> [<a href ng-click="removeComment(post, comment);">delete</a>]</span></nobr></p>
+                    <p><span class="comment-body" ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> [<a href ng-click="removeComment(post, comment);">delete</a>]</span></nobr></p>
                 </li>
             </ol>
         </div>
