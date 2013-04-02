@@ -12,7 +12,6 @@ $COMPRESS_BEGIN
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
-    </script>
     <script>
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "app.js">
