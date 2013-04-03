@@ -29,6 +29,9 @@ import org.apache.log4j.Logger;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * Renders the html/index.ftl file.
+ */
 @Path("/")
 public class IndexResource {
 
