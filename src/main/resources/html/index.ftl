@@ -23,7 +23,11 @@ $COMPRESS_BEGIN
     <style type="text/css">
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "toastr.css">
-            <#include "styles.css">
+            <#if isMobile>
+                <#include "styles_mobile.css">
+            <#else>
+                <#include "styles.css">
+            </#if>
         $COMPRESS_SINGLE_LINE_END
     </style>
 </head>
