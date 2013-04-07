@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
@@ -19,11 +20,13 @@ import freemarker.template.Template;
 
 public class TemplateLoader {
 
+    private static final Logger LOG = Logger.getLogger(TemplateLoader.class);
+
     public static final TemplateLoader INSTANCE = new TemplateLoader();
 
-    final List<File> files = new LinkedList<>();
-
+    private final List<File> files = new LinkedList<>();
     private final Configuration configuration = new Configuration();
+    private boolean stripCommentsEnabled = false;
 
     private TemplateLoader() {
         configuration.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
@@ -33,7 +36,13 @@ public class TemplateLoader {
         final StringTemplateLoader templateLoader = new StringTemplateLoader();
         for (final File file : files) {
             final String templateName = file.getName();
-            final String templateSource = readAndReplace(file, replacements);
+            String templateSource = readAndReplace(file, replacements);
+            if (isStripCommentsEnabled()) {
+                // from http://ostermiller.org/findcomment.html
+                templateSource = templateSource.replaceAll("/\\*(?:.|[\\n\\r])*?\\*/", "");
+                LOG.debug("result for " + file.getPath() + ":");
+                LOG.debug(templateSource);
+            }
             templateLoader.putTemplate(templateName, templateSource);
         }
         configuration.setTemplateLoader(templateLoader);
@@ -49,6 +58,14 @@ public class TemplateLoader {
         }
 
         files.addAll(Arrays.asList(directory.listFiles()));
+    }
+
+    public boolean isStripCommentsEnabled() {
+        return stripCommentsEnabled;
+    }
+
+    public void setStripCommentsEnabled(final boolean stripCommentsEnabled) {
+        this.stripCommentsEnabled = stripCommentsEnabled;
     }
 
     private String readAndReplace(final File file, final Map<String, String> replacements) throws IOException {

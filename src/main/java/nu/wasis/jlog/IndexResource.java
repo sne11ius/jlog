@@ -69,6 +69,7 @@ public class IndexResource {
         final StringWriter writer = new StringWriter();
         final UserAgentInfo userAgentInfo = new UserAgentInfo(userAgent, httpAccept);
         final String templateFilename = getTemplateFilename(request);
+        TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
         final Map<String, Object> map = createTemplateMap(request, state, userAgentInfo.getIsTierGenericMobile());
         template.process(map, writer);
@@ -77,6 +78,7 @@ public class IndexResource {
 
     private String getTemplateFilename(final HttpServletRequest request) {
         return "index.ftl";
+        // maybe later:
         // final UserAgentInfo userAgentInfo = new UserAgentInfo(getUserAgent(request), getHttpAccept(request));
         // return userAgentInfo.getIsTierGenericMobile() ? "index_mobile.ftl" : "index.ftl";
     }
