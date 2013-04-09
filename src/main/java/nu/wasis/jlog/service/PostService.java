@@ -30,6 +30,7 @@ public class PostService {
 
     public List<Post> getPosts() {
         final List<Post> allPosts = ds.find(Post.class).asList();
+        // TODO: mongo should do the sorting for us. Btw: isn't a date included in the id?
         Collections.sort(allPosts, new PostDateComparator());
         return allPosts;
     }
@@ -52,12 +53,6 @@ public class PostService {
         ds.delete(post);
     }
 
-    public void deletePosts() {
-        for (final Post post : getPosts()) {
-            deletePost(post);
-        }
-    }
-
     public void addComment(final String postId, final Comment comment) {
         final Post post = getPost(postId);
         post.getComments().add(comment);
@@ -68,19 +63,6 @@ public class PostService {
         final Post post = getPost(postId);
         post.removeComment(commentId);
         save(post);
-    }
-
-    public void cleanIds() {
-        LOG.debug("Cleaning ids...");
-        for (final Post post : getPosts()) {
-            for (final Comment comment : post.getComments()) {
-                if (null == comment.getId()) {
-                    LOG.debug("Found comment without id...");
-                    comment.setId(new ObjectId());
-                }
-            }
-            save(post);
-        }
     }
 
 }

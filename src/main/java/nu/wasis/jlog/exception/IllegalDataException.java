@@ -1,5 +1,8 @@
 package nu.wasis.jlog.exception;
 
+/**
+ * Wird verwendet, wenn ungültige Daten geposted werden.
+ */
 public class IllegalDataException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

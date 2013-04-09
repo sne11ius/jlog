@@ -9,7 +9,6 @@ public class Comment extends AbstractDBObject {
 
     private User author;
     private String body;
-
     private Date date = new Date();
 
     public Comment() {

@@ -61,18 +61,22 @@ public class IndexResource {
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress) throws IOException,
                                                                                                                                            TemplateException {
         final HttpSession session = request.getSession(true);
-        final String userAgent = getUserAgent(request);
-        final String httpAccept = getHttpAccept(request);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
         final StringWriter writer = new StringWriter();
-        final UserAgentInfo userAgentInfo = new UserAgentInfo(userAgent, httpAccept);
+        final UserAgentInfo userAgentInfo = getUserAgentInfo(request);
         final String templateFilename = getTemplateFilename(request);
         TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
         final Map<String, Object> map = createTemplateMap(request, state, userAgentInfo.getIsTierGenericMobile());
         template.process(map, writer);
         return writer.toString();
+    }
+
+    private UserAgentInfo getUserAgentInfo(final HttpServletRequest request) {
+        final String userAgent = getUserAgent(request);
+        final String httpAccept = getHttpAccept(request);
+        return new UserAgentInfo(userAgent, httpAccept);
     }
 
     private String getTemplateFilename(final HttpServletRequest request) {

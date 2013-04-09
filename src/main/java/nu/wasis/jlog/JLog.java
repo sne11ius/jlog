@@ -45,7 +45,7 @@ public class JLog {
 
     public static void main(final String[] args) throws IOException {
         final HttpServer httpServer = startServer();
-        System.out.println(String.format("jlog app started\nHit enter to stop it...", BASE_URI));
+        System.out.println("jlog app started\nHit enter to stop...");
         System.in.read();
         httpServer.stop();
     }

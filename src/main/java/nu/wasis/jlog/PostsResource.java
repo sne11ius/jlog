@@ -36,8 +36,7 @@ public class PostsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Post> getPosts() {
-        final List<Post> posts = PostService.INSTANCE.getPosts();
-        return posts;
+        return PostService.INSTANCE.getPosts();
     }
 
     @GET
@@ -97,8 +96,7 @@ public class PostsResource {
     @Path("{postId}/comments")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Comment addComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId,
-                              final Comment comment) {
+    public Comment addComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId, final Comment comment) {
         if (!GPlusUtils.isLoggedIn(request)) {
             throw new NotAllowedException("Must be logged in to do this.");
         }

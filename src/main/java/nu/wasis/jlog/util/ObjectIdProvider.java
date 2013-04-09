@@ -41,14 +41,10 @@ public class ObjectIdProvider implements ContextResolver<ObjectMapper> {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.configure(AUTO_DETECT_GETTERS, false);
         mapper.configure(AUTO_DETECT_SETTERS, false);
-        // mapper.setDeserializationConfig(mapper.getDeserializationConfig().without(FAIL_ON_UNKNOWN_PROPERTIES));
-        // mapper.setSerializationConfig(mapper.getSerializationConfig().withSerializationInclusion(NON_DEFAULT));
         mapper.setVisibilityChecker(Std.defaultInstance().withFieldVisibility(ANY));
 
-        mapper.registerModule(new SimpleModule("jersey", new Version(1, 0, 0, null)) //
-        .addSerializer(_id, _idSerializer()) //
-                                                                                    .addDeserializer(_id,
-                                                                                                     _idDeserializer()));
+        mapper.registerModule(new SimpleModule("jersey", new Version(1, 0, 0, null)).addSerializer(_id, _idSerializer())
+                                                                                    .addDeserializer(_id, _idDeserializer()));
         return mapper;
     }
 
@@ -57,8 +53,7 @@ public class ObjectIdProvider implements ContextResolver<ObjectMapper> {
     private static JsonDeserializer<ObjectId> _idDeserializer() {
         return new JsonDeserializer<ObjectId>() {
             @Override
-            public ObjectId deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException,
-                                                                                               JsonProcessingException {
+            public ObjectId deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
                 return new ObjectId(jp.readValueAs(String.class));
             }
         };
@@ -67,8 +62,7 @@ public class ObjectIdProvider implements ContextResolver<ObjectMapper> {
     private static JsonSerializer<Object> _idSerializer() {
         return new JsonSerializer<Object>() {
             @Override
-            public void serialize(final Object obj, final JsonGenerator jsonGenerator, final SerializerProvider provider)
-                                                                                                                         throws IOException,
+            public void serialize(final Object obj, final JsonGenerator jsonGenerator, final SerializerProvider provider) throws IOException,
                                                                                                                          JsonProcessingException {
                 jsonGenerator.writeString(obj == null ? null : obj.toString());
             }
