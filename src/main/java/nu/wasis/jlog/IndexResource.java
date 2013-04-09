@@ -56,7 +56,6 @@ public class IndexResource {
         }
     }
 
-    // TODO: strip all block comments
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress) throws IOException,
