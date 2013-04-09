@@ -92,15 +92,15 @@ public class IndexResource {
 
     private Map<String, String> buildReplacements(final boolean compress) {
         final Map<String, String> replacements = new HashMap<>();
-        final String compressBegin = compress ? "<#compress>" : "";
-        final String compressEnd = compress ? "</#compress>" : "";
-        final String compressSingleLineBegin = compress ? "<@compress single_line=true>" : "";
-        final String compressSingleLineEnd = compress ? "</@compress>" : "";
-        replacements.put("$COMPRESS_BEGIN", compressBegin);
-        replacements.put("$COMPRESS_END", compressEnd);
-        replacements.put("$COMPRESS_SINGLE_LINE_BEGIN", compressSingleLineBegin);
-        replacements.put("$COMPRESS_SINGLE_LINE_END", compressSingleLineEnd);
+        replacements.put("$COMPRESS_BEGIN", maybeEmpty(compress, "<#compress>"));
+        replacements.put("$COMPRESS_END", maybeEmpty(compress, "</#compress>"));
+        replacements.put("$COMPRESS_SINGLE_LINE_BEGIN", maybeEmpty(compress, "<@compress single_line=true>"));
+        replacements.put("$COMPRESS_SINGLE_LINE_END", maybeEmpty(compress, "</@compress>"));
         return replacements;
+    }
+
+    private String maybeEmpty(final boolean returnEmptyString, final String elseString) {
+        return returnEmptyString ? "" : elseString;
     }
 
     private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final boolean isMobile) {
