@@ -1,28 +1,6 @@
 // from https://code.google.com/p/mobileesp/source/browse/Java/UAgentInfo.java
 /* *******************************************
- * // Copyright 2010-2012, Anthony Hand // // File version date: April 23, 2012 //﻿ ﻿ Update: //﻿ ﻿ - Updated
- * DetectAmazonSilk(): Fixed an issue in the detection logic. // // File version date: April 22, 2012 - Second update
- * //﻿ ﻿ Update: To address additional Kindle issues... //﻿ ﻿ - Updated DetectRichCSS(): Excluded e-Ink Kindle devices.
- * //﻿ ﻿ - Created DetectAmazonSilk(): Created to detect Kindle Fire devices in Silk mode. //﻿ ﻿ - Updated
- * DetectMobileQuick(): Updated to include e-Ink Kindle devices and the Kindle Fire in Silk mode. // // File version
- * date: April 11, 2012 //﻿ ﻿ Update: //﻿ ﻿ - Added a new variable for the new BlackBerry Curve Touch (9380):
- * deviceBBCurveTouch. //﻿ ﻿ - Updated DetectBlackBerryTouch() to support the new BlackBerry Curve Touch (9380). // //
- * File version date: January 21, 2012 //﻿ ﻿ Update: //﻿ ﻿ - Moved Windows Phone 7 to the iPhone Tier. WP7.5's IE
- * 9-based browser is good enough now. //﻿ ﻿ - Added a new variable for 2 versions of the new BlackBerry Bold Touch
- * (9900 and 9930): deviceBBBoldTouch. //﻿ ﻿ - Updated DetectBlackBerryTouch() to support the 2 versions of the new
- * BlackBerry Bold Touch (9900 and 9930). //﻿ ﻿ - Updated DetectKindle() to focus on eInk devices only. The Kindle Fire
- * should be detected as a regular Android device. // // File version date: August 22, 2011 //﻿ ﻿ Update: //﻿ ﻿ -
- * Updated DetectAndroidTablet() to fix a bug I introduced in the last fix! // // File version date: August 16, 2011 //﻿
- * ﻿ Update: //﻿ ﻿ - Updated DetectAndroidTablet() to exclude Opera Mini, which was falsely reporting as running on a
- * tablet device when on a phone. // // // LICENSE INFORMATION // Licensed under the Apache License, Version 2.0 (the
- * "License"); // you may not use this file except in compliance with the License. // You may obtain a copy of the
- * License at // http://www.apache.org/licenses/LICENSE-2.0 // Unless required by applicable law or agreed to in
- * writing, // software distributed under the License is distributed on an // "AS IS" BASIS, WITHOUT WARRANTIES OR
- * CONDITIONS OF ANY KIND, // either express or implied. See the License for the specific // language governing
- * permissions and limitations under the License. // // // ABOUT THIS PROJECT // Project Owner: Anthony Hand // Email:
- * anthony.hand@gmail.com // Web Site: http://www.mobileesp.com // Source Files: http://code.google.com/p/mobileesp/ //
- * // Versions of this code are available for: // PHP, JavaScript, Java, ASP.NET (C#), and Ruby // //
- * *******************************************
+ * Copyright 2010-2012, Anthony Hand
  */
 package nu.wasis.jlog.util;
 
