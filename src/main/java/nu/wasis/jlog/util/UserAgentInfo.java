@@ -705,7 +705,7 @@ public class UserAgentInfo {
     }
 
     /**
-     * ﻿ Detects if the current device is a mobile device. This method catches most of the popular modern devices.
+     * Detects if the current device is a mobile device. This method catches most of the popular modern devices.
      * Excludes Apple iPads and other modern tablets.
      * 
      * @return detection of any mobile device using the quicker method

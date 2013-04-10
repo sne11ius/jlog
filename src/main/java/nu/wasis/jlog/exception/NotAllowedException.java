@@ -1,7 +1,7 @@
 package nu.wasis.jlog.exception;
 
 /**
- * Wird verwendet, wenn eine Aktion ausgelöst werden soll, für die nicht die notwendigen Rechte vorhanden sind.
+ * Wird verwendet, wenn eine Aktion ausgeloest werden soll, für die nicht die notwendigen Rechte vorhanden sind.
  */
 public class NotAllowedException extends RuntimeException {
 
