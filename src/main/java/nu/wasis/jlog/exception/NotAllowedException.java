@@ -1,8 +1,5 @@
 package nu.wasis.jlog.exception;
 
-/**
- * Wird verwendet, wenn eine Aktion ausgeloest werden soll, für die nicht die notwendigen Rechte vorhanden sind.
- */
 public class NotAllowedException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
