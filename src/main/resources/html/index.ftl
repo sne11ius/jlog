@@ -4,6 +4,7 @@ $COMPRESS_BEGIN
 <html ng-app="jlog">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>wasis.nu/mit/blog</title>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
