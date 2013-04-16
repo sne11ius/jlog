@@ -38,6 +38,25 @@ pre {
     font-size: 0.9em;
 }
 
+.blog-header {
+	margin-bottom: 1.9em;
+    margin-top:1.3em;
+}
+
+.logout-container {
+	float: right;
+	position: relative;
+	top:-1.7em;
+}
+
+.fast-max-width {
+	width: 99.5%;
+}
+
+.small {
+	font-size: 0.7em;
+}
+
 .post {
     margin: 0.5em;
     border: 1px solid black;

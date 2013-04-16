@@ -23,7 +23,6 @@ import javax.ws.rs.core.MediaType;
 import nu.wasis.jlog.util.GPlusUtils;
 import nu.wasis.jlog.util.PrivateConstants;
 import nu.wasis.jlog.util.TemplateLoader;
-import nu.wasis.jlog.util.UserAgentInfo;
 
 import org.apache.log4j.Logger;
 
@@ -40,8 +39,9 @@ public class IndexResource {
 
     private static final Logger LOG = Logger.getLogger(IndexResource.class);
 
-    private static final String USER_AGENT_HEADER = "User-Agent";
-    private static final String HTTP_ACCEPT = "Accept";
+    /*
+     * private static final String USER_AGENT_HEADER = "User-Agent"; private static final String HTTP_ACCEPT = "Accept";
+     */
 
     private static final List<String> templateDirectories = Arrays.asList("css", "html", "js", "bootstrap/css", "bootstrap/img", "bootstrap/js");
 
@@ -65,35 +65,31 @@ public class IndexResource {
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
         final StringWriter writer = new StringWriter();
-        final UserAgentInfo userAgentInfo = getUserAgentInfo(request);
         final String templateFilename = getTemplateFilename(request);
         TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
-        final Map<String, Object> map = createTemplateMap(request, state, userAgentInfo.getIsTierGenericMobile());
+        final Map<String, Object> map = createTemplateMap(request, state);
         template.process(map, writer);
         return writer.toString();
     }
 
-    private UserAgentInfo getUserAgentInfo(final HttpServletRequest request) {
-        final String userAgent = getUserAgent(request);
-        final String httpAccept = getHttpAccept(request);
-        return new UserAgentInfo(userAgent, httpAccept);
-    }
+    /*
+     * private UserAgentInfo getUserAgentInfo(final HttpServletRequest request) { final String userAgent =
+     * getUserAgent(request); final String httpAccept = getHttpAccept(request); return new UserAgentInfo(userAgent,
+     * httpAccept); }
+     */
 
     private String getTemplateFilename(final HttpServletRequest request) {
         return "index.ftl";
         // maybe later:
-        // final UserAgentInfo userAgentInfo = new UserAgentInfo(getUserAgent(request), getHttpAccept(request));
+        // final UserAgentInfo userAgentInfo = getUserAgentInfo(final HttpServletRequest request);
         // return userAgentInfo.getIsTierGenericMobile() ? "index_mobile.ftl" : "index.ftl";
     }
 
-    private String getUserAgent(final HttpServletRequest request) {
-        return request.getHeader(USER_AGENT_HEADER);
-    }
-
-    private String getHttpAccept(final HttpServletRequest request) {
-        return request.getHeader(HTTP_ACCEPT);
-    }
+    /*
+     * private String getUserAgent(final HttpServletRequest request) { return request.getHeader(USER_AGENT_HEADER); }
+     * private String getHttpAccept(final HttpServletRequest request) { return request.getHeader(HTTP_ACCEPT); }
+     */
 
     private Map<String, String> buildReplacements(final boolean compress) {
         final Map<String, String> replacements = new HashMap<>();
@@ -108,14 +104,13 @@ public class IndexResource {
         return returnActualString ? actualString : "";
     }
 
-    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final boolean isMobile) {
+    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("client_id", PrivateConstants.CLIENT_ID);
         map.put(STATE_ATTRIBUTE_KEY, state);
         map.put("username", GPlusUtils.getCurrentUsername(request));
         map.put("loggedin", GPlusUtils.isLoggedIn(request));
         map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
-        map.put("isMobile", isMobile);
         return map;
     }
 
