@@ -1,4 +1,4 @@
-Blog
+jlog
 ====
 
 Simple java blog with gplus login.

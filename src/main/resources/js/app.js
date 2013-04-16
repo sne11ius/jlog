@@ -4,7 +4,7 @@
 var app = angular.module( 'jlog', [ 'ngResource', 'postService' ] );
 
 /*******************************************************************************
- * Controls the post liste ;)
+ * Controls the post list ;)
  */
 app.controller('PostListController', function($scope, Post, $http) {
     /* Get all posts from the webservice */
@@ -214,7 +214,7 @@ angular.module('postService', ['ngResource']).factory('Post', function($resource
 });
 
 /*******************************************************************************
- * Define what we want to the if the app is `run', this could as well be omitted
+ * Define what we want to do if the app is `run', this could as well be omitted
  * and the jquery call put in global scope...
  */
 app.run(function() {
