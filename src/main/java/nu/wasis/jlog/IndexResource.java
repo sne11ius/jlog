@@ -43,7 +43,7 @@ public class IndexResource {
     private static final String USER_AGENT_HEADER = "User-Agent";
     private static final String HTTP_ACCEPT = "Accept";
 
-    private static final List<String> templateDirectories = Arrays.asList("css", "html", "js");
+    private static final List<String> templateDirectories = Arrays.asList("css", "html", "js", "bootstrap/css", "bootstrap/img", "bootstrap/js");
 
     static {
         for (final String templateDirectoryPath : templateDirectories) {
@@ -60,6 +60,7 @@ public class IndexResource {
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress) throws IOException,
                                                                                                                                            TemplateException {
+        LOG.debug("compress = " + compress);
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
@@ -103,8 +104,8 @@ public class IndexResource {
         return replacements;
     }
 
-    private String maybeEmpty(final boolean returnEmptyString, final String elseString) {
-        return returnEmptyString ? "" : elseString;
+    private String maybeEmpty(final boolean returnActualString, final String actualString) {
+        return returnActualString ? actualString : "";
     }
 
     private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final boolean isMobile) {

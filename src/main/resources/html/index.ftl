@@ -14,6 +14,7 @@ $COMPRESS_BEGIN
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
     <script>
+        <#include "bootstrap.min.js">
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "app.js">
         $COMPRESS_SINGLE_LINE_END
@@ -21,6 +22,9 @@ $COMPRESS_BEGIN
     <script src='https://plus.google.com/js/client:plusone.js'>{"parsetags": "explicit"}</script>
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+    <style>
+        <#include "bootstrap-responsive.min.css">
+    </style>
     <style type="text/css">
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "toastr.css">

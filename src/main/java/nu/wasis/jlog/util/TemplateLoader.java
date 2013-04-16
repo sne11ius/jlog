@@ -20,6 +20,7 @@ import freemarker.template.Template;
 
 public class TemplateLoader {
 
+    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(TemplateLoader.class);
 
     public static final TemplateLoader INSTANCE = new TemplateLoader();
@@ -40,8 +41,8 @@ public class TemplateLoader {
             if (isStripCommentsEnabled()) {
                 // from http://ostermiller.org/findcomment.html
                 templateSource = templateSource.replaceAll("/\\*(?:.|[\\n\\r])*?\\*/", "");
-                LOG.debug("result for " + file.getPath() + ":");
-                LOG.debug(templateSource);
+                // LOG.debug("result for " + file.getPath() + ":");
+                // LOG.debug(templateSource);
             }
             templateLoader.putTemplate(templateName, templateSource);
         }
