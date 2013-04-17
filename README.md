@@ -10,6 +10,7 @@ Stack
  - com.google.apis
  - (a little) freemarker
  - angularjs
+ - bootstrap
 
 Screens
 =======
