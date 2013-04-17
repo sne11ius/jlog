@@ -41,15 +41,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
             <div class="container">
                 <h1>wasis.nu/mit/blog?</h1>
                 <span ng-show="isLoggedIn" class="pull-right" id="logout-container">
-                    <span id="logout-username">
-                        {{username}}
-                        <span id="logout-seperator">
-                            &mdash;
-                        </span>
-                    </span>
-                    <a ng-click="disconnectServer()" href id="disconnect" class="btn">
-                        Logout
-                    </a>
+                    <span id="logout-username">{{username}}<span id="logout-seperator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a>
                 </span>
                 <span ng-show="!isLoggedIn" class="pull-right" id="login-container">
                     <button id="g-signin">
