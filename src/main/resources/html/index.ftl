@@ -59,14 +59,14 @@ $COMPRESS_SINGLE_LINE_BEGIN
             </form>
         </div>
         <div ng-repeat="post in posts">
-            <span class="pull-right">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> [<a href ng-click="removePost(post);">delete</a>]</span></span>
+            <span class="pull-right">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> <a href ng-click="removePost(post);" class="btn btn-mini btn-danger">delete post</a></span></span>
             <h2 ng-bind-html-unsafe="post.title" class="post-title"></h2>
             <p ng-bind-html-unsafe="post.body" class="post-body"></p>
             <div ng-show="post.comments.length != 0">
                 <h3>Comments</h3>
                 <ol>
                     <li ng-repeat="comment in post.comments">
-                        <p><span ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> [<a href ng-click="removeComment(post, comment);">delete</a>]</span></nobr></p>
+                        <p><span ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> <a href ng-click="removeComment(post, comment);" class="btn btn-mini btn-danger">delete comment</a></span></nobr></p>
                     </li>
                 </ol>
             </div>
@@ -77,14 +77,16 @@ $COMPRESS_SINGLE_LINE_BEGIN
             <hr>
         </div>
     </div>
-    <div>Nat&uuml;rlich in C gehackt, mit <a
-         href="http://www.fefe.de/dietlibc/">dietlibc</a>, <a
-         href="http://www.fefe.de/libowfat/">libowfat</a>, unter <a
-         href="http://www.fefe.de/gatling/">gatling</a> laufend und mit einem <a
-         href="http://www.fefe.de/tinyldap/">tinyldap-Backend</a>.<a
-         href="http://blog.refefe.de/faq.html">
-         &trade;</a><br>
-                                                                                            
+    <div class="navbar navbar-fixed-bottom well">
+    <div class="container">
+        <div class="pull-right">Nat&uuml;rlich in C gehackt, mit <a
+                 href="http://www.fefe.de/dietlibc/">dietlibc</a>, <a
+                 href="http://www.fefe.de/libowfat/">libowfat</a>, unter <a
+                 href="http://www.fefe.de/gatling/">gatling</a> laufend und mit einem <a
+                 href="http://www.fefe.de/tinyldap/">tinyldap-Backend</a>.<a
+                 href="http://blog.refefe.de/faq.html">&trade;</a>
+        </div>
+        </div>
     </div>
 </body>
 $COMPRESS_SINGLE_LINE_END
