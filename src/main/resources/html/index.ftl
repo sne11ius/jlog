@@ -51,30 +51,30 @@ $COMPRESS_SINGLE_LINE_BEGIN
         </div>
     </div>
     <div ng-controller="PostListController" class="container">
-        <div ng-show="isOwner">
+        <div ng-show="isOwner" id="add-post-container" class="well well-small">
             <form ng-submit="addPost()">
-                <input type="text" ng-model="postTitle" placeholder="title"></input>
-                <hr>
-                <textarea ng-model="postBody" placeholder="body"></textarea>
-                <input class="btn-primary" type="submit" value="submit post">
+                <input type="text" ng-model="postTitle" placeholder="title &ndash; don't forget you can use html here" class="input-block-level"></input>
+                <textarea ng-model="postBody" placeholder="body &ndash; don't forget you can use html here, too" class="input-block-level"></textarea>
+                <input class="btn pull-right" type="submit" value="create post">
             </form>
         </div>
         <div ng-repeat="post in posts">
-            <span>{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> [<a href ng-click="removePost(post);">delete</a>]</span></span>
-            <h2 ng-bind-html-unsafe="post.title"></h2>
-            <hr>
-            <p ng-bind-html-unsafe="post.body"></p>
-            <hr>
-            <form ng-show="isLoggedIn" ng-submit="addComment(post)">
-                <textarea ng-model="post.newcomment.body" rows="2" placeholder="comment"></textarea>
-                <input class="btn-primary" type="submit" value="submit comment">
+            <span class="pull-right">{{post.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> [<a href ng-click="removePost(post);">delete</a>]</span></span>
+            <h2 ng-bind-html-unsafe="post.title" class="post-title"></h2>
+            <p ng-bind-html-unsafe="post.body" class="post-body"></p>
+            <div ng-show="post.comments.length != 0">
+                <h3>Comments</h3>
+                <ol>
+                    <li ng-repeat="comment in post.comments">
+                        <p><span ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> [<a href ng-click="removeComment(post, comment);">delete</a>]</span></nobr></p>
+                    </li>
+                </ol>
+            </div>
+            <form ng-show="isLoggedIn" ng-submit="addComment(post)" class="post-comment-container well well-small">
+                <textarea ng-model="post.newcomment.body" rows="2" placeholder="comment" class="input-block-level"></textarea>
+                <input class="btn pull-right" type="submit" value="submit comment">
             </form>
-            <h3 ng-show="post.comments.length != 0">Comments</h3>
-            <ol ng-show="post.comments.length != 0">
-                <li ng-repeat="comment in post.comments">
-                    <p><span ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTH:mm:ssZ'}}<span ng-show="isOwner"> [<a href ng-click="removeComment(post, comment);">delete</a>]</span></nobr></p>
-                </li>
-            </ol>
+            <hr>
         </div>
     </div>
     <div>Nat&uuml;rlich in C gehackt, mit <a

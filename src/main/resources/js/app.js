@@ -150,7 +150,7 @@ app.controller('LoginController', function($scope, $http) {
     $scope.onSignInCallback = function(data) {
         /* User clicked `cancel' or simply closed the popup. */
         if ('undefined' != typeof data.error) {
-            $('.login-loader').hide();
+            $('#login-loader').hide();
         }
         /* Init the javascript client, try to load user data and promote login
            to the server */
@@ -161,7 +161,7 @@ app.controller('LoginController', function($scope, $http) {
             request.execute(function(profile) {
                 if ('undefined' != typeof profile.error) {
                     console.log('this is not login you are looking for...');
-                    $('.login-loader').hide();
+                    $('#login-loader').hide();
                     return;
                 }
                 $.ajax({
@@ -221,6 +221,6 @@ app.run(function() {
     /* Show ajax loader if user clicks on the gplus login button */
     $('#login-container').click(function() {
         toastr.info('Requesting login...');
-        $('.login-loader').show();
+        $('#login-loader').show();
     });
 });
