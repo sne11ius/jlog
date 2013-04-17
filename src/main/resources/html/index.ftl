@@ -39,7 +39,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
     <div ng-controller="LoginController" class="post blog-header">
         <h1>wasis.nu/mit/blog?</h1>
         <div ng-show="isLoggedIn" class="logout-container">{{username}} [ <a ng-click="disconnectServer()" href id="disconnect">logout</a> ]</div>
-        <div ng-show="!isLoggedIn" id="gConnect" style="float:right; position:relative; top:-2.1em;">
+        <div ng-show="!isLoggedIn" id="gConnect" class="login-container">
             <button id="g-signin" class="g-signin">
             </button>
         </div>

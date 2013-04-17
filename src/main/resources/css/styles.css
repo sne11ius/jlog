@@ -43,6 +43,12 @@ pre {
     margin-top:1.3em;
 }
 
+.login-container {
+	float: right;
+	position: relative;
+	top:-2.1em;
+}
+
 .logout-container {
 	float: right;
 	position: relative;
