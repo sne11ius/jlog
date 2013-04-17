@@ -91,7 +91,7 @@ app.controller('PostListController', function($scope, Post, $http) {
             $scope.isLoggedIn = true;
             $scope.isOwner = loginInfo.isOwner;
         }
-        $('.login-loader').hide();
+        $('#login-loader').hide();
         toastr.success('Login done.');
     });
     
