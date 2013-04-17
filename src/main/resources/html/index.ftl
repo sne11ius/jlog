@@ -23,6 +23,7 @@ $COMPRESS_BEGIN
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <style type="text/css" media="screen">
+        <#include "bootstrap.min.css">
         <#include "bootstrap-responsive.min.css">
     </style>
     <style type="text/css">
@@ -34,17 +35,30 @@ $COMPRESS_BEGIN
 </head>
 $COMPRESS_SINGLE_LINE_BEGIN
 <body>
-    <div id="login-loader">
-    </div>
-    <div ng-controller="LoginController">
-        <h1>wasis.nu/mit/blog?</h1>
-        <div ng-show="isLoggedIn" >{{username}} [ <a ng-click="disconnectServer()" href id="disconnect">logout</a> ]</div>
-        <div ng-show="!isLoggedIn" id="gConnect" >
-            <button id="g-signin">
-            </button>
+    <div id="login-loader"></div>
+    <div ng-controller="LoginController" class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <h1>wasis.nu/mit/blog?</h1>
+                <span ng-show="isLoggedIn" class="pull-right" id="logout-container">
+                    <span id="logout-username">
+                        {{username}}
+                        <span id="logout-seperator">
+                            &mdash;
+                        </span>
+                    </span>
+                    <a ng-click="disconnectServer()" href id="disconnect" class="btn">
+                        Logout
+                    </a>
+                </span>
+                <span ng-show="!isLoggedIn" class="pull-right" id="login-container">
+                    <button id="g-signin">
+                    </button>
+                </span>
+            </div>
         </div>
     </div>
-    <div ng-controller="PostListController">
+    <div ng-controller="PostListController" class="container">
         <div ng-show="isOwner">
             <form ng-submit="addPost()">
                 <input type="text" ng-model="postTitle" placeholder="title"></input>

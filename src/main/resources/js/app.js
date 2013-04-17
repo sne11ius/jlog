@@ -196,7 +196,7 @@ app.controller('LoginController', function($scope, $http) {
                 'accesstype'            : 'offline',
                 'callback'              : $scope.onSignInCallback,
                 'theme'                 : 'light',
-                'width'                 : 'iconOnly',
+                'width'                 : 'medium',
                 'cookiepolicy'          : 'single_host_origin'
             }
         );
@@ -219,7 +219,7 @@ angular.module('postService', ['ngResource']).factory('Post', function($resource
  */
 app.run(function() {
     /* Show ajax loader if user clicks on the gplus login button */
-    $('#gConnect').click(function() {
+    $('#login-container').click(function() {
         toastr.info('Requesting login...');
         $('.login-loader').show();
     });
