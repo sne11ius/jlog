@@ -1,4 +1,4 @@
-package nu.wasis.jlog;
+package nu.wasis.jlog.resource;
 
 import java.io.File;
 import java.io.IOException;
