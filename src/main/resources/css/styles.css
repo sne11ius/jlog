@@ -81,7 +81,7 @@ body {
 	padding-bottom: 38px;
 }
 
-/** enable sticky footer ******************************************************/
+/** footer ********************************************************************/
 .navbar.navbar-fixed-bottom.well {
 	border-radius: 0;
 	box-shadow: none;
