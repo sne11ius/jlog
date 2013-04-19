@@ -1,9 +1,9 @@
-/*******************************************************************************
+/***********************************************************************************************************************
  * Create the angular module `jlog'.
  */
 var app = angular.module( 'jlog', [ 'ngResource', 'postService' ] );
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Controls the post list ;)
  */
 app.controller('PostListController', function($scope, Post, $http) {
@@ -73,14 +73,16 @@ app.controller('PostListController', function($scope, Post, $http) {
         });
     };
     
-    /* Init scope-variables via freemarker, both will be either true or false
-       after rendering
-       TODO: remove these two, the should only exist in LoginController */
+    /*
+     * Init scope-variables via freemarker, both will be either true or false after rendering TODO: remove these two,
+     * the should only exist in LoginController
+     */
     $scope.isLoggedIn = ${loggedin?string};
     $scope.isOwner = ${isowner?string};
     
-    /* Handle the 'loginDone' event: simply set `isLoggedIn' and `isOwner', the
-       view will be updated autmagically. */
+    /*
+     * Handle the 'loginDone' event: simply set `isLoggedIn' and `isOwner', the view will be updated autmagically.
+     */
     $scope.$on('loginDone', function(event, loginInfo) {
         if(!$scope.$$phase) {
             $scope.$apply(function() {
@@ -95,8 +97,9 @@ app.controller('PostListController', function($scope, Post, $http) {
         toastr.success('Login done.');
     });
     
-    /* Handle the 'logoutDone' event: simply set `isLoggedIn' and `isOwner', the
-       view will be updated autmagically. */
+    /*
+     * Handle the 'logoutDone' event: simply set `isLoggedIn' and `isOwner', the view will be updated autmagically.
+     */
     $scope.$on('logoutDone', function(event) {
         if(!$scope.$$phase) {
             $scope.$apply(function() {
@@ -110,12 +113,13 @@ app.controller('PostListController', function($scope, Post, $http) {
     });
 });
 
-/*******************************************************************************
-* Controls the top login/logout stuff.
-*/
+/***********************************************************************************************************************
+ * Controls the top login/logout stuff.
+ */
 app.controller('LoginController', function($scope, $http) {
-    /* Init scope-variables via freemarker, both will be either true or false
-       after rendering. */
+    /*
+     * Init scope-variables via freemarker, both will be either true or false after rendering.
+     */
     $scope.isLoggedIn = ${loggedin?string};
     $scope.isOwner = ${isowner?string};
     
@@ -142,18 +146,19 @@ app.controller('LoginController', function($scope, $http) {
         });
     };
 
-    /* This function will be called from the google api after the user clicks
-       `accepd' or `cancel' in the popup window.
-       The function will also be called if an already logged in user visits the
-       page.
-       TODO: properly implement like in http://stackoverflow.com/a/9857988/649835 */
+    /*
+     * This function will be called from the google api after the user clicks `accepd' or `cancel' in the popup window.
+     * The function will also be called if an already logged in user visits the page. TODO: properly implement like in
+     * http://stackoverflow.com/a/9857988/649835
+     */
     $scope.onSignInCallback = function(data) {
         /* User clicked `cancel' or simply closed the popup. */
         if ('undefined' != typeof data.error) {
             $('#login-loader').hide();
         }
-        /* Init the javascript client, try to load user data and promote login
-           to the server */
+        /*
+         * Init the javascript client, try to load user data and promote login to the server
+         */
         gapi.client.load('plus', 'v1', function() {
             var request = gapi.client.plus.people.get({
                 'userId' : 'me'
@@ -185,8 +190,9 @@ app.controller('LoginController', function($scope, $http) {
         });
     };
     
-    /* Get all the login stuff running. $scope.onSignInCallback will be called
-       when google thinks the time is right */
+    /*
+     * Get all the login stuff running. $scope.onSignInCallback will be called when google thinks the time is right
+     */
     $scope.start = function() {
         gapi.signin.render(
            'g-signin', {
@@ -205,17 +211,16 @@ app.controller('LoginController', function($scope, $http) {
     $scope.start();
 });
 
-/*******************************************************************************
- * Create the angular module `postService' - the webservice for getting/adding/
- * deleting posts
+/***********************************************************************************************************************
+ * Create the angular module `postService' - the webservice for getting/adding/ deleting posts
  */
 angular.module('postService', ['ngResource']).factory('Post', function($resource){
     return $resource('./blog/posts/:postId', {postId:'@id'});
 });
 
-/*******************************************************************************
- * Define what we want to do if the app is `run', this could as well be omitted
- * and the jquery call put in global scope...
+/***********************************************************************************************************************
+ * Define what we want to do if the app is `run', this could as well be omitted and the jquery call put in global
+ * scope...
  */
 app.run(function() {
     /* Show ajax loader if user clicks on the gplus login button */
@@ -223,4 +228,44 @@ app.run(function() {
         toastr.info('Requesting login...');
         $('#login-loader').show();
     });
+    console.log();
+    
+    function getParam(variable){  
+        var query = window.location.search.substring(1);   
+        var vars = query.split("&");  
+        for (var i=0;i<vars.length;i++) {    
+            var pair = vars[i].split("=");   
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+    
+    function show(postId) {
+        $.scrollTo(
+            $('#' + postId),
+            700, {
+                onAfter: function() {
+                    $.scrollTo(
+                        '-=80px', 0
+                    );
+                    $('#' + postId).animate({
+                        'box-shadow': '0 0 40px #f00',
+                    },
+                    1000,
+                    function() {
+                        $('#' + postId).animate({
+                            'box-shadow': '0 0 0 #f00',
+                        }, 3000);
+                    });
+                }
+            }
+        );
+    }
+    window.setTimeout(function() {
+        console.log(getParam('postId'));
+        var postId = getParam('postId');
+        if (postId) {
+            show(postId);
+        }
+    }, 1);
 });
