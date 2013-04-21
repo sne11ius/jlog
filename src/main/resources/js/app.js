@@ -1,9 +1,9 @@
-/***********************************************************************************************************************
+/*******************************************************************************
  * Create the angular module `jlog'.
  */
 var app = angular.module( 'jlog', [ 'ngResource', 'postService' ] );
 
-/***********************************************************************************************************************
+/*******************************************************************************
  * Controls the post list ;)
  */
 app.controller('PostListController', function($scope, Post, $http) {
@@ -113,7 +113,7 @@ app.controller('PostListController', function($scope, Post, $http) {
     });
 });
 
-/***********************************************************************************************************************
+/*******************************************************************************
  * Controls the top login/logout stuff.
  */
 app.controller('LoginController', function($scope, $http) {
@@ -211,14 +211,65 @@ app.controller('LoginController', function($scope, $http) {
     $scope.start();
 });
 
-/***********************************************************************************************************************
+/*******************************************************************************
  * Create the angular module `postService' - the webservice for getting/adding/ deleting posts
  */
 angular.module('postService', ['ngResource']).factory('Post', function($resource){
     return $resource('./blog/posts/:postId', {postId:'@id'});
 });
 
-/***********************************************************************************************************************
+app.directive('postPanel', function($timeout) {
+
+    getQueryParam = function(variable){  
+        var query = window.location.search.substring(1);   
+        var vars = query.split('&');  
+        for (var i = 0; i < vars.length; i++) {    
+            var pair = vars[i].split('=');   
+            if(pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return(false);
+    };
+    
+    show = function(postId) {
+        var $elem = $('#' + postId);
+        $.scrollTo(
+            $elem,
+            700, {
+                onAfter: function() {
+                    $.scrollTo(
+                        '-=80px', 0
+                    );
+                    $elem.animate({
+                        'box-shadow': '0 0 20px 10px #f00',
+                        backgroundColor: '#f99'
+                    },
+                    400,
+                    function() {
+                        $elem.animate({
+                            'box-shadow': '0 0 0 0 #fff',
+                            backgroundColor: '#fff'
+                        }, 2000);
+                    });
+                }
+            }
+        );
+    };
+    
+    return {
+        link: function($scope, $elem, $attr) {
+            var postId = $scope.post.id;
+            $timeout(function() {
+                if (postId == getQueryParam('postId')) {
+                    show(postId);
+                }
+            });
+        }
+    };
+});
+
+/*******************************************************************************
  * Define what we want to do if the app is `run', this could as well be omitted and the jquery call put in global
  * scope...
  */
@@ -228,44 +279,4 @@ app.run(function() {
         toastr.info('Requesting login...');
         $('#login-loader').show();
     });
-    console.log();
-    
-    function getParam(variable){  
-        var query = window.location.search.substring(1);   
-        var vars = query.split("&");  
-        for (var i=0;i<vars.length;i++) {    
-            var pair = vars[i].split("=");   
-            if(pair[0] == variable){return pair[1];}
-        }
-        return(false);
-    }
-    
-    function show(postId) {
-        $.scrollTo(
-            $('#' + postId),
-            700, {
-                onAfter: function() {
-                    $.scrollTo(
-                        '-=80px', 0
-                    );
-                    $('#' + postId).animate({
-                        'box-shadow': '0 0 40px #f00',
-                    },
-                    1000,
-                    function() {
-                        $('#' + postId).animate({
-                            'box-shadow': '0 0 0 #f00',
-                        }, 3000);
-                    });
-                }
-            }
-        );
-    }
-    window.setTimeout(function() {
-        console.log(getParam('postId'));
-        var postId = getParam('postId');
-        if (postId) {
-            show(postId);
-        }
-    }, 1);
 });
