@@ -62,8 +62,8 @@ public class IndexResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress, @QueryParam("postId") final String postId) throws IOException,
-                                                                                                                                           TemplateException {
+    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress,
+                           @QueryParam("postId") final String postId) throws IOException, TemplateException {
         LOG.debug("compress = " + compress);
         LOG.debug("postId: " + postId);
         final HttpSession session = request.getSession(true);
@@ -75,6 +75,7 @@ public class IndexResource {
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
         final Map<String, Object> map = createTemplateMap(request, state, postId);
         template.process(map, writer);
+        LOG.debug(request.getRequestURL());
         return writer.toString();
     }
 
@@ -117,9 +118,10 @@ public class IndexResource {
         map.put("loggedin", GPlusUtils.isLoggedIn(request));
         map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
         map.put("GetPostsArrayCommand", getGetPostsArrayCommand(postId));
+        map.put("baseUrl", request.getRequestURL());
         return map;
     }
-    
+
     private String getGetPostsArrayCommand(final String postId) {
         if (null == postId) {
             return "Post.query()";

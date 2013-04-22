@@ -42,9 +42,9 @@ $COMPRESS_SINGLE_LINE_BEGIN
     <div ng-controller="LoginController" class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a href="http://wasis.nu/mit/blog"><h1>wasis.nu/mit/blog?</h1></a>
+                <a href="${baseUrl}"><h1>wasis.nu/mit/blog?</h1></a>
                 <span ng-show="isLoggedIn" class="pull-right" id="logout-container">
-                    <span id="logout-username">{{username}}<span id="logout-seperator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a>
+                    <span id="logout-username">{{username}}<span class="long-separator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a>
                 </span>
                 <span ng-show="!isLoggedIn" class="pull-right" id="login-container">
                     <button id="g-signin">
@@ -62,7 +62,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
             </form>
         </div>
         <div ng-repeat="post in posts" id="{{post.id}}">
-            <span class="pull-right">{{post.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> <a href ng-click="removePost(post);" class="btn btn-mini btn-danger">delete post</a></span></span>
+            <span class="pull-right">{{post.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span class="long-seperator">&mdash;</span><a href="${baseUrl}?postId={{post.id}}" class="btn btn-mini">link</a><span ng-show="isOwner"> <a href="#">{{post.link}}</a> <a href ng-click="removePost(post);" class="btn btn-mini btn-danger">delete post</a></span></span>
             <h2 ng-bind-html-unsafe="post.title" class="post-title"></h2>
             <p ng-bind-html-unsafe="post.body" class="post-body"></p>
             <div ng-show="post.comments.length != 0">

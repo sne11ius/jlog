@@ -57,7 +57,7 @@ app.controller('PostListController', function($scope, Post, $http) {
     /* Add new comment to post via webservice and ... show it in case of success ;) */
     $scope.addComment = function(post) {
         toastr.info('Submitting comment...<br>' + post.newcomment.body);
-        $http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
+        $http.post('${baseUrl}/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
             post.comments.push(comment);
             post.newcomment = '';
             toastr.success('Comment added.');
@@ -69,7 +69,7 @@ app.controller('PostListController', function($scope, Post, $http) {
     /* Remove comment ... */
     $scope.removeComment = function(post, comment) {
         toastr.info('Deleting comment...<br>' + comment.body);
-        $http.delete('./blog/posts/' + post.id + '/comments/' + comment.id).success(function(data) {
+        $http.delete('${baseUrl}/posts/' + post.id + '/comments/' + comment.id).success(function(data) {
             /* TODO: this is kind of ugly */
             for (var i = 0; i < post.comments.length; ++i) {
                 if (post.comments[i].id == comment.id) {
@@ -138,8 +138,7 @@ app.controller('LoginController', function($scope, $http) {
     /* Logout and update view, then raise `logoutDone' event */
     $scope.disconnectServer = function() {
         toastr.info('Disconnecting...');
-        var url = location.origin + location.pathname + '/session/disconnect';
-        $http.post(url).success(function() {
+        $http.post('${baseUrl}/session/disconnect').success(function() {
             toastr.success('Disconnected.');
             if(!$scope.$$phase) {
                 $scope.$apply(function() {
@@ -182,7 +181,7 @@ app.controller('LoginController', function($scope, $http) {
                 }
                 $http({
                     method: 'POST',
-                    url: location.origin + location.pathname + '/session/connect?state=${state}&gplus_id=' + profile.id,
+                    url: '${baseUrl}/session/connect?state=${state}&gplus_id=' + profile.id,
                     headers: {'Content-Type': 'application/octet-stream; charset=utf-8'},
                     data: data.code 
                 }).success(function(loginInfo) {
