@@ -138,7 +138,8 @@ app.controller('LoginController', function($scope, $http) {
     /* Logout and update view, then raise `logoutDone' event */
     $scope.disconnectServer = function() {
         toastr.info('Disconnecting...');
-        $http.post(window.location.href + '/session/disconnect').success(function() {
+        var url = location.origin + location.pathname + '/session/disconnect';
+        $http.post(url).success(function() {
             toastr.success('Disconnected.');
             if(!$scope.$$phase) {
                 $scope.$apply(function() {
@@ -179,22 +180,27 @@ app.controller('LoginController', function($scope, $http) {
                     $('#login-loader').hide();
                     return;
                 }
-                $.ajax({
-                    type : 'POST',
-                    url : window.location.href + '/session/connect?state=${state}&gplus_id=' + profile.id,
-                    contentType : 'application/octet-stream; charset=utf-8',
+                $http({
+                    method: 'POST',
+                    url: location.origin + location.pathname + '/session/connect?state=${state}&gplus_id=' + profile.id,
+                    headers: {'Content-Type': 'application/octet-stream; charset=utf-8'},
+                    data: data.code 
+                }).success(function(loginInfo) {
                     /* Update the view on success */
-                    success : function(loginInfo) {
+                    if(!$scope.$$phase) {
                         $scope.$apply(function() {
                             $scope.isLoggedIn = true;
                             $scope.username = loginInfo.user.firstname + ' ' + loginInfo.user.lastname;
                             $scope.isOwner = loginInfo.isOwner;
                         });
-                        /* Finally raise `loginDone' event */
-                        var $rootScope = angular.element(document).scope();
-                        $rootScope.$broadcast('loginDone', loginInfo);
-                    },
-                    data : data.code
+                    } else {
+                        $scope.isLoggedIn = true;
+                        $scope.username = loginInfo.user.firstname + ' ' + loginInfo.user.lastname;
+                        $scope.isOwner = loginInfo.isOwner;
+                    }
+                    /* Finally raise `loginDone' event */
+                    var $rootScope = angular.element(document).scope();
+                    $rootScope.$broadcast('loginDone', loginInfo);
                 });
             });
         });

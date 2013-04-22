@@ -61,7 +61,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
                 <input class="btn pull-right" type="submit" value="create post">
             </form>
         </div>
-        <div ng-repeat="post in posts">
+        <div ng-repeat="post in posts" id="{{post.id}}">
             <span class="pull-right">{{post.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span ng-show="isOwner"> <a href="#">{{post.link}}</a> <a href ng-click="removePost(post);" class="btn btn-mini btn-danger">delete post</a></span></span>
             <h2 ng-bind-html-unsafe="post.title" class="post-title"></h2>
             <p ng-bind-html-unsafe="post.body" class="post-body"></p>
