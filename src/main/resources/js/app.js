@@ -7,8 +7,18 @@ var app = angular.module( 'jlog', [ 'ngResource', 'postService' ] );
  * Controls the post list ;)
  */
 app.controller('PostListController', function($scope, Post, $http) {
-    /* Get all posts from the webservice */
-    $scope.posts = Post.query();
+    /* Get all posts from the webservice
+     * First method: query posts via webservice like so:
+     * 
+     * $scope.posts = Post.query();
+     * 
+     * Second method: for single-post view, the data will be inlined in this file like so:
+     * 
+     * $scope.posts = [{'title':'Post Title','body':'Post body text','comments':[...], etc.}];
+     * 
+     */
+    
+    $scope.posts = ${GetPostsArrayCommand?string};
     
     /* Init comment object for new comments */
     $scope.comment = {body: ''};
@@ -216,57 +226,6 @@ app.controller('LoginController', function($scope, $http) {
  */
 angular.module('postService', ['ngResource']).factory('Post', function($resource){
     return $resource('./blog/posts/:postId', {postId:'@id'});
-});
-
-app.directive('postPanel', function($timeout) {
-
-    getQueryParam = function(variable){  
-        var query = window.location.search.substring(1);   
-        var vars = query.split('&');  
-        for (var i = 0; i < vars.length; i++) {    
-            var pair = vars[i].split('=');   
-            if(pair[0] == variable) {
-                return pair[1];
-            }
-        }
-        return(false);
-    };
-    
-    show = function(postId) {
-        var $elem = $('#' + postId);
-        $.scrollTo(
-            $elem,
-            700, {
-                onAfter: function() {
-                    $.scrollTo(
-                        '-=80px', 0
-                    );
-                    $elem.animate({
-                        'box-shadow': '0 0 20px 10px #f00',
-                        backgroundColor: '#f99'
-                    },
-                    400,
-                    function() {
-                        $elem.animate({
-                            'box-shadow': '0 0 0 0 #fff',
-                            backgroundColor: '#fff'
-                        }, 2000);
-                    });
-                }
-            }
-        );
-    };
-    
-    return {
-        link: function($scope, $elem, $attr) {
-            var postId = $scope.post.id;
-            $timeout(function() {
-                if (postId == getQueryParam('postId')) {
-                    show(postId);
-                }
-            });
-        }
-    };
 });
 
 /*******************************************************************************

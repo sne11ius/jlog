@@ -20,11 +20,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import nu.wasis.jlog.model.Post;
+import nu.wasis.jlog.service.PostService;
 import nu.wasis.jlog.util.GPlusUtils;
 import nu.wasis.jlog.util.PrivateConstants;
 import nu.wasis.jlog.util.TemplateLoader;
 
 import org.apache.log4j.Logger;
+
+import com.sun.jersey.api.NotFoundException;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -58,9 +62,10 @@ public class IndexResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress) throws IOException,
+    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress, @QueryParam("postId") final String postId) throws IOException,
                                                                                                                                            TemplateException {
         LOG.debug("compress = " + compress);
+        LOG.debug("postId: " + postId);
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
@@ -68,7 +73,7 @@ public class IndexResource {
         final String templateFilename = getTemplateFilename(request);
         TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
-        final Map<String, Object> map = createTemplateMap(request, state);
+        final Map<String, Object> map = createTemplateMap(request, state, postId);
         template.process(map, writer);
         return writer.toString();
     }
@@ -104,14 +109,26 @@ public class IndexResource {
         return returnActualString ? actualString : "";
     }
 
-    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state) {
+    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final String postId) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("client_id", PrivateConstants.CLIENT_ID);
         map.put(STATE_ATTRIBUTE_KEY, state);
         map.put("username", GPlusUtils.getCurrentUsername(request));
         map.put("loggedin", GPlusUtils.isLoggedIn(request));
         map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
+        map.put("GetPostsArrayCommand", getGetPostsArrayCommand(postId));
         return map;
+    }
+    
+    private String getGetPostsArrayCommand(final String postId) {
+        if (null == postId) {
+            return "Post.query()";
+        }
+        final Post post = PostService.INSTANCE.getPost(postId);
+        if (null == post) {
+            throw new NotFoundException("No post with id `" + postId + "'.");
+        }
+        return "[" + GPlusUtils.GSON.toJson(post) + "]";
     }
 
 }
