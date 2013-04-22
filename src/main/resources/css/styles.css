@@ -46,6 +46,10 @@ body {
 	display: inline-block;
 }
 
+.navbar a {
+	color: black;
+}
+
 #login-container {
 	padding-top: 14px;
 }

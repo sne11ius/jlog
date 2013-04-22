@@ -42,7 +42,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
     <div ng-controller="LoginController" class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <h1>wasis.nu/mit/blog?</h1>
+                <a href="http://wasis.nu/mit/blog"><h1>wasis.nu/mit/blog?</h1></a>
                 <span ng-show="isLoggedIn" class="pull-right" id="logout-container">
                     <span id="logout-username">{{username}}<span id="logout-seperator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a>
                 </span>
