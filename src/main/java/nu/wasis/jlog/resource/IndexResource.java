@@ -64,8 +64,6 @@ public class IndexResource {
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress,
                            @QueryParam("postId") final String postId) throws IOException, TemplateException {
-        LOG.debug("compress = " + compress);
-        LOG.debug("postId: " + postId);
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
@@ -75,7 +73,6 @@ public class IndexResource {
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
         final Map<String, Object> map = createTemplateMap(request, state, postId);
         template.process(map, writer);
-        LOG.debug(request.getRequestURL());
         return writer.toString();
     }
 
