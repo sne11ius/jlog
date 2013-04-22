@@ -42,11 +42,11 @@ body {
 }
 
 /** Header ********************************************************************/
-.navbar h1 {
+.site-header h1 {
 	display: inline-block;
 }
 
-.navbar a {
+.site-header a {
 	color: black;
 }
 
@@ -93,4 +93,17 @@ body {
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
+}
+
+.github-badge a {
+	color: #333;
+}
+
+.github-badge a:hover {
+	text-decoration: none;
+	color: #08c;
+}
+
+.fefe-hommage {
+	margin-top: 10px;
 }
