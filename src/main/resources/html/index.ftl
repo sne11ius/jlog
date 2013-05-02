@@ -44,11 +44,11 @@ $COMPRESS_SINGLE_LINE_BEGIN
             <div class="container">
                 <a href="http://wasis.nu/mit/blog"><h1>wasis.nu/mit/blog?</h1></a>
                 <span ng-show="isLoggedIn" class="pull-right" id="logout-container">
-                    <span id="logout-username">{{username}}<span class="long-separator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a>
+                    <span id="logout-username">{{username}}<span class="long-separator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a><a href="http://wasis.nu/mit/blog/feed"><div class="syndication-link"></div></a>
                 </span>
                 <span ng-show="!isLoggedIn" class="pull-right" id="login-container">
                     <button id="g-signin">
-                    </button>
+                    </button><a href="http://wasis.nu/mit/blog/feed"><div class="syndication-link"></div></a>
                 </span>
             </div>
         </div>
