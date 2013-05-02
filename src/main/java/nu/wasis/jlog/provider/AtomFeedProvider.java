@@ -20,7 +20,6 @@ import nu.wasis.jlog.model.Post;
 import nu.wasis.jlog.util.HTMLUtils;
 import nu.wasis.jlog.util.PrivateConstants;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -33,14 +32,12 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
 @Provider
-public class FeedProvider implements MessageBodyWriter<List<Post>> {
+public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
 
-    private static final Logger LOG = Logger.getLogger(FeedProvider.class);
+    private static final Logger LOG = Logger.getLogger(AtomFeedProvider.class);
 
     private static final String FEED_TYPE_ATOM_1_0 = "atom_1.0";
     private static final String FEED_DESCRIPTION = "Blog about technical stuff.";
-
-    private static final int POST_DESCRIPTION_MAX_WIDTH = 300;
 
     @Override
     public long getSize(final List<Post> t, final Class<?> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
@@ -112,10 +109,8 @@ public class FeedProvider implements MessageBodyWriter<List<Post>> {
 
     private SyndContent createDescription(final Post post) {
         final SyndContent description = new SyndContentImpl();
-        description.setType(MediaType.TEXT_PLAIN);
-        // Only abbreviate if long enough: avoid IllegalArgumentException for crazily short posts ;)
-        final String body = HTMLUtils.stripHtmlTags(post.getBody());
-        description.setValue(post.getBody().length() >= 4 ? StringUtils.abbreviate(body, POST_DESCRIPTION_MAX_WIDTH) : body);
+        description.setType(MediaType.TEXT_HTML);
+        description.setValue(post.getBody());
         return description;
     }
 }
