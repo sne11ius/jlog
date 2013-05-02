@@ -40,7 +40,7 @@ public class FeedProvider implements MessageBodyWriter<List<Post>> {
     private static final String FEED_TYPE_ATOM_1_0 = "atom_1.0";
     private static final String FEED_DESCRIPTION = "Blog about technical stuff.";
 
-    private static final int POST_DESCRIPTION_MAX_WIDTH = 100;
+    private static final int POST_DESCRIPTION_MAX_WIDTH = 300;
 
     @Override
     public long getSize(final List<Post> t, final Class<?> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
