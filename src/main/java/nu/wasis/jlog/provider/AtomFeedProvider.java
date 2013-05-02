@@ -2,7 +2,8 @@ package nu.wasis.jlog.provider;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -64,14 +65,14 @@ public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
                         final MultivaluedMap<String, Object> httpHeaders, final OutputStream entityStream) throws IOException, WebApplicationException {
         final SyndFeed feed = createFeed(posts);
         final SyndFeedOutput output = new SyndFeedOutput();
-        final PrintWriter outputWriter = new PrintWriter(entityStream);
+        final Writer writer = new OutputStreamWriter(entityStream, "UTF-8");
         try {
-            output.output(feed, outputWriter);
+            output.output(feed, writer);
         } catch (final FeedException e) {
             LOG.error("Error writing feed.", e);
-            outputWriter.write("Error writing feed: " + e.getMessage());
+            writer.write("Error writing feed: " + e.getMessage());
         } finally {
-            outputWriter.close();
+            writer.close();
             entityStream.close();
         }
     }
