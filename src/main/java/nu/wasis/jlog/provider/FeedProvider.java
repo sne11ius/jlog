@@ -87,6 +87,7 @@ public class FeedProvider implements MessageBodyWriter<List<Post>> {
         feed.setLink(PrivateConstants.BASE_URL);
         feed.setDescription(FEED_DESCRIPTION);
         feed.setCopyright("(c) " + Calendar.getInstance().get(Calendar.YEAR) + " - wasis.nu");
+        feed.setEncoding("UTF-8");
 
         final List<SyndEntry> entries = new LinkedList<>();
         for (final Post post : posts) {
