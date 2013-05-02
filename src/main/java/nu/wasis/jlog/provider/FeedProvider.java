@@ -1,4 +1,4 @@
-package nu.wasis.jlog.util;
+package nu.wasis.jlog.provider;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,6 +17,8 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import nu.wasis.jlog.model.Post;
+import nu.wasis.jlog.util.HTMLUtils;
+import nu.wasis.jlog.util.PrivateConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -98,7 +100,7 @@ public class FeedProvider implements MessageBodyWriter<List<Post>> {
     private SyndEntry createEntry(final Post post) {
         final SyndEntry entry = new SyndEntryImpl();
 
-        entry.setTitle(post.getTitle());
+        entry.setTitle(HTMLUtils.stripHtmlTags(post.getTitle()));
         entry.setDescription(createDescription(post));
         entry.setAuthor(post.getAuthor().getName());
         entry.setPublishedDate(post.getDate());
@@ -111,7 +113,8 @@ public class FeedProvider implements MessageBodyWriter<List<Post>> {
         final SyndContent description = new SyndContentImpl();
         description.setType(MediaType.TEXT_PLAIN);
         // Only abbreviate if long enough: avoid IllegalArgumentException for crazily short posts ;)
-        description.setValue(post.getBody().length() >= 4 ? StringUtils.abbreviate(post.getBody(), POST_DESCRIPTION_MAX_WIDTH) : post.getBody());
+        final String body = HTMLUtils.stripHtmlTags(post.getBody());
+        description.setValue(post.getBody().length() >= 4 ? StringUtils.abbreviate(body, POST_DESCRIPTION_MAX_WIDTH) : body);
         return description;
     }
 }

@@ -1,4 +1,4 @@
-package nu.wasis.jlog.util;
+package nu.wasis.jlog.provider;
 
 import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.ANY;
 import static org.codehaus.jackson.map.DeserializationConfig.Feature.AUTO_DETECT_SETTERS;
