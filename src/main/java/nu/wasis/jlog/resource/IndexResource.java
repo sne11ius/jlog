@@ -76,6 +76,13 @@ public class IndexResource {
         return writer.toString();
     }
 
+    @GET
+    @Path("feed")
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    public List<Post> getFeed() {
+        return PostService.INSTANCE.getPosts();
+    }
+
     /*
      * private UserAgentInfo getUserAgentInfo(final HttpServletRequest request) { final String userAgent =
      * getUserAgent(request); final String httpAccept = getHttpAccept(request); return new UserAgentInfo(userAgent,
