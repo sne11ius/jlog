@@ -17,10 +17,7 @@ $COMPRESS_BEGIN
         <#include "bootstrap.min.js">
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "app.js">
-            <#include "jquery-color.js">
-            <#include "box-shadow-plugin.js">
         $COMPRESS_SINGLE_LINE_END
-        <#include "scrollto.js">
     </script>
     <script src='https://plus.google.com/js/client:plusone.js'>{"parsetags": "explicit"}</script>
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>

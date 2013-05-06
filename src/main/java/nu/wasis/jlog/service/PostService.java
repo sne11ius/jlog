@@ -1,13 +1,11 @@
 package nu.wasis.jlog.service;
 
-import java.util.Collections;
 import java.util.List;
 
 import nu.wasis.jlog.model.Comment;
 import nu.wasis.jlog.model.Post;
 import nu.wasis.jlog.util.Constants;
 import nu.wasis.jlog.util.MongoUtils;
-import nu.wasis.jlog.util.PostDateComparator;
 
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -29,10 +27,7 @@ public class PostService {
     }
 
     public List<Post> getPosts() {
-        final List<Post> allPosts = ds.find(Post.class).asList();
-        // TODO: mongo should do the sorting for us. Btw: isn't a date included in the id?
-        Collections.sort(allPosts, new PostDateComparator());
-        return allPosts;
+        return ds.find(Post.class).order("-date").asList();
     }
 
     public Post getPost(final String postId) {
