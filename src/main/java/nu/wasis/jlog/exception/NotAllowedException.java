@@ -1,5 +1,8 @@
 package nu.wasis.jlog.exception;
 
+/**
+ * Thrown if someone is not allowed to do something.
+ */
 public class NotAllowedException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

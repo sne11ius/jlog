@@ -11,6 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.NotFoundException;
 
+/**
+ * The default exception mapper. Builds the appropriate http response e.g. NotFoundException -> 404
+ */
 @Provider
 public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
 
@@ -27,8 +30,8 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
         if (e instanceof IllegalDataException) {
             return buildResponse(400, e);
         }
-        LOG.debug("Mapping unknown Exception of class: " + e.getClass().getName());
-        LOG.debug(e);
+        LOG.info("Mapping unknown Exception of class: " + e.getClass().getName());
+        LOG.info(e);
         return buildResponse(400, e);
     }
 

@@ -1,7 +1,7 @@
 package nu.wasis.jlog.exception;
 
 /**
- * Wird verwendet, wenn ungueltige Daten geposted werden.
+ * Thrown if someone tries to POST invalid data.
  */
 public class IllegalDataException extends RuntimeException {
 

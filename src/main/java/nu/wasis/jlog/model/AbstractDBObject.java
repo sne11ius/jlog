@@ -5,6 +5,9 @@ import org.bson.types.ObjectId;
 import com.github.jmkgreen.morphia.annotations.Id;
 import com.google.gson.Gson;
 
+/**
+ * Abstract base class for objects that will be stored in the db.
+ */
 public abstract class AbstractDBObject {
 
     public AbstractDBObject() {

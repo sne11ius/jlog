@@ -7,11 +7,14 @@ import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyWebContainerFactory;
 
 public class JLog {
+
+    private static final Logger LOG = Logger.getLogger(JLog.class);
 
     // We only want relative urls in the JAX-RS definitions, so put the absolute
     // part here.
@@ -45,7 +48,7 @@ public class JLog {
 
     public static void main(final String[] args) throws IOException {
         final HttpServer httpServer = startServer();
-        System.out.println("jlog app started\nHit enter to stop...");
+        LOG.info("jlog started\nHit enter to stop...");
         System.in.read();
         httpServer.stop();
     }

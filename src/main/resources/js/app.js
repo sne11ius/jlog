@@ -1,23 +1,20 @@
 /*******************************************************************************
  * Create the angular module `jlog'.
  */
-var app = angular.module( 'jlog', [ 'ngResource', 'postService' ] );
+var app = angular.module( 'jlog', ['ngResource', 'postService'] );
 
 /*******************************************************************************
- * Controls the post list ;)
+ * Create the post list controller.
  */
-app.controller('PostListController', function($scope, Post, $http) {
-    /* Get all posts from the webservice
-     * First method: query posts via webservice like so:
+app.controller('PostListController', function($scope, Post, $http, $timeout) {
+    /* Get all posts from the webservice.
      * 
+     * First method - query posts via webservice:
      * $scope.posts = Post.query();
      * 
-     * Second method: for single-post view, the data will be inlined in this file like so:
-     * 
+     * Second method: for single-post view, the data will be inlined in this file:
      * $scope.posts = [{'title':'Post Title','body':'Post body text','comments':[...], etc.}];
-     * 
      */
-    
     $scope.posts = ${GetPostsArrayCommand?string};
     
     /* Init comment object for new comments */
@@ -26,7 +23,7 @@ app.controller('PostListController', function($scope, Post, $http) {
     /* Create new post, save it via webservice and show it in case of success */
     $scope.addPost = function() {
         var post = new Post({title: $scope.postTitle, body: $scope.postBody});
-        toastr.info('Submitting post...<br>' + $scope.postBody);
+        toastr.info('Submitting post&hellip;<br>' + $scope.postTitle);
         post.$save(function(data) {
             $scope.posts.unshift(new Post(data));
             toastr.success('Post added.');
@@ -39,11 +36,11 @@ app.controller('PostListController', function($scope, Post, $http) {
     };
     
     /* Delete post via webservice and remove it from list in case of success */
-    $scope.removePost = function(item) {
-        toastr.info('Deleting post...<br>' + $scope.postBody);
-        item.$remove(function(data) {
+    $scope.removePost = function(post) {
+        toastr.info('Deleting post&hellip;<br>' + $scope.postBody);
+        post.$remove(function() {
             for (var i = 0; i < $scope.posts.length; ++i) {
-                if ($scope.posts[i].id == item.id) {
+                if ($scope.posts[i].id == post.id) {
                     $scope.posts.splice(i, 1);
                     toastr.success('Post deleted.');
                     return;
@@ -54,10 +51,12 @@ app.controller('PostListController', function($scope, Post, $http) {
         });
     };
     
-    /* Add new comment to post via webservice and ... show it in case of success ;) */
+    /* Add new comment to post via webservice and ... show it in case of
+     * success ;)
+     */
     $scope.addComment = function(post) {
-        toastr.info('Submitting comment...<br>' + post.newcomment.body);
-        $http.post('./posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
+        toastr.info('Submitting comment&hellip;<br>' + post.newcomment.body);
+        $http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
             post.comments.push(comment);
             post.newcomment = '';
             toastr.success('Comment added.');
@@ -68,8 +67,8 @@ app.controller('PostListController', function($scope, Post, $http) {
     
     /* Remove comment ... */
     $scope.removeComment = function(post, comment) {
-        toastr.info('Deleting comment...<br>' + comment.body);
-        $http.delete('./posts/' + post.id + '/comments/' + comment.id).success(function(data) {
+        toastr.info('Deleting comment&hellip;<br>' + comment.body);
+        $http.delete('./blog/posts/' + post.id + '/comments/' + comment.id).success(function(data) {
             /* TODO: this is kind of ugly */
             for (var i = 0; i < post.comments.length; ++i) {
                 if (post.comments[i].id == comment.id) {
@@ -84,51 +83,46 @@ app.controller('PostListController', function($scope, Post, $http) {
     };
     
     /*
-     * Init scope-variables via freemarker, both will be either true or false after rendering TODO: remove these two,
-     * the should only exist in LoginController
+     * Init scope-variables via freemarker, both will be either true or false
+     * after rendering.
+     * 
+     * TODO: remove these two, they should only exist in LoginController
      */
     $scope.isLoggedIn = ${loggedin?string};
     $scope.isOwner = ${isowner?string};
     
     /*
-     * Handle the 'loginDone' event: simply set `isLoggedIn' and `isOwner', the view will be updated autmagically.
+     * Handle the 'loginDone' event: simply set `isLoggedIn' and `isOwner', the
+     * view will be updated autmagically.
      */
     $scope.$on('loginDone', function(event, loginInfo) {
-        if(!$scope.$$phase) {
-            $scope.$apply(function() {
-                $scope.isLoggedIn = true;
-                $scope.isOwner = loginInfo.isOwner;
-            });
-        } else {
+        $timeout(function() {
             $scope.isLoggedIn = true;
             $scope.isOwner = loginInfo.isOwner;
-        }
+        });
         $('#login-loader').hide();
         toastr.success('Login done.');
     });
     
     /*
-     * Handle the 'logoutDone' event: simply set `isLoggedIn' and `isOwner', the view will be updated autmagically.
+     * Handle the 'logoutDone' event: simply set `isLoggedIn' and `isOwner', the
+     * view will be updated autmagically.
      */
     $scope.$on('logoutDone', function(event) {
-        if(!$scope.$$phase) {
-            $scope.$apply(function() {
-                $scope.isLoggedIn = false;
-                $scope.isOwner = false;
-            });
-        } else {
+        $timeout(function() {
             $scope.isLoggedIn = false;
             $scope.isOwner = false;
-        }
+        });
     });
 });
 
 /*******************************************************************************
  * Controls the top login/logout stuff.
  */
-app.controller('LoginController', function($scope, $http) {
+app.controller('LoginController', function($scope, $http, $timeout) {
     /*
-     * Init scope-variables via freemarker, both will be either true or false after rendering.
+     * Init scope-variables via freemarker, both will be either true or false
+     * after rendering.
      */
     $scope.isLoggedIn = ${loggedin?string};
     $scope.isOwner = ${isowner?string};
@@ -140,26 +134,23 @@ app.controller('LoginController', function($scope, $http) {
         toastr.info('Disconnecting...');
         $http.post('./blog/session/disconnect').success(function() {
             toastr.success('Disconnected.');
-            if(!$scope.$$phase) {
-                $scope.$apply(function() {
-                    $scope.isLoggedIn = false;
-                    $scope.isOwner = false;
-                });
-            } else {
+            $timeout(function() {
                 $scope.isLoggedIn = false;
                 $scope.isOwner = false;
-            }
-            var $rootScope = angular.element(document).scope();
-            $rootScope.$broadcast('logoutDone');
+            });
+            angular.element(document).scope().$broadcast('logoutDone');
         }).error(function(error) {
             toastr.error(error, 'Error during disconnect');
         });
     };
 
     /*
-     * This function will be called from the google api after the user clicks `accepd' or `cancel' in the popup window.
-     * The function will also be called if an already logged in user visits the page. TODO: properly implement like in
-     * http://stackoverflow.com/a/9857988/649835
+     * This function will be called from the google api after the user clicks
+     * `accepd' or `cancel' in the popup window.
+     * The function will also be called if an already logged in user visits the
+     * page.
+     * 
+     * TODO: properly implement like in http://stackoverflow.com/a/9857988/649835
      */
     $scope.onSignInCallback = function(data) {
         /* User clicked `cancel' or simply closed the popup. */
@@ -167,7 +158,8 @@ app.controller('LoginController', function($scope, $http) {
             $('#login-loader').hide();
         }
         /*
-         * Init the javascript client, try to load user data and promote login to the server
+         * Init the javascript client, try to load user data and promote login
+         * to the server
          */
         gapi.client.load('plus', 'v1', function() {
             var request = gapi.client.plus.people.get({
@@ -186,27 +178,21 @@ app.controller('LoginController', function($scope, $http) {
                     data: data.code 
                 }).success(function(loginInfo) {
                     /* Update the view on success */
-                    if(!$scope.$$phase) {
-                        $scope.$apply(function() {
-                            $scope.isLoggedIn = true;
-                            $scope.username = loginInfo.user.firstname + ' ' + loginInfo.user.lastname;
-                            $scope.isOwner = loginInfo.isOwner;
-                        });
-                    } else {
+                    $timeout(function() {
                         $scope.isLoggedIn = true;
                         $scope.username = loginInfo.user.firstname + ' ' + loginInfo.user.lastname;
                         $scope.isOwner = loginInfo.isOwner;
-                    }
+                    });
                     /* Finally raise `loginDone' event */
-                    var $rootScope = angular.element(document).scope();
-                    $rootScope.$broadcast('loginDone', loginInfo);
+                    angular.element(document).scope().$broadcast('loginDone', loginInfo);
                 });
             });
         });
     };
     
     /*
-     * Get all the login stuff running. $scope.onSignInCallback will be called when google thinks the time is right
+     * Get all the login stuff running. $scope.onSignInCallback will be called
+     * when google thinks the time is right
      */
     $scope.start = function() {
         gapi.signin.render(
@@ -227,15 +213,16 @@ app.controller('LoginController', function($scope, $http) {
 });
 
 /*******************************************************************************
- * Create the angular module `postService' - the webservice for getting/adding/ deleting posts
+ * Create the angular module `postService' - the webservice for getting/adding/
+ * deleting posts
  */
 angular.module('postService', ['ngResource']).factory('Post', function($resource){
     return $resource('./blog/posts/:postId', {postId:'@id'});
 });
 
 /*******************************************************************************
- * Define what we want to do if the app is `run', this could as well be omitted and the jquery call put in global
- * scope...
+ * Define what we want to do if the app is `run', this could as well be omitted
+ * and the jquery call put in global scope...
  */
 app.run(function() {
     /* Show ajax loader if user clicks on the gplus login button */
