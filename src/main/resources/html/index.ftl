@@ -6,6 +6,14 @@ $COMPRESS_BEGIN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>wasis.nu/mit/blog</title>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-39708123-1', 'wasis.nu');
+        ga('send', 'pageview');
+    </script>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
         $COMPRESS_SINGLE_LINE_END
