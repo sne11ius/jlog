@@ -71,10 +71,8 @@ public class PostsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Post addPost(@Context final HttpServletRequest request, final Post post) {
-        if (!GPlusUtils.isOwnerLoggedIn(request)) {
-            throw new NotAllowedException("Must be owner to do this.");
-        }
+    public Post savePost(@Context final HttpServletRequest request, final Post post) {
+        checkIsOwner(request);
         if (StringUtils.isBlank(post.getTitle()) || StringUtils.isBlank(post.getBody())) {
             throw new IllegalDataException("Title and body must not be empty.");
         }
@@ -83,12 +81,16 @@ public class PostsResource {
         return post;
     }
 
-    @DELETE
-    @Path("{postId}")
-    public void deletePost(@Context final HttpServletRequest request, @PathParam("postId") final String id) {
+    private void checkIsOwner(final HttpServletRequest request) {
         if (!GPlusUtils.isOwnerLoggedIn(request)) {
             throw new NotAllowedException("Must be owner to do this.");
         }
+    }
+
+    @DELETE
+    @Path("{postId}")
+    public void deletePost(@Context final HttpServletRequest request, @PathParam("postId") final String id) {
+        checkIsOwner(request);
         PostService.INSTANCE.deletePost(new ObjectId(id));
     }
 
@@ -115,9 +117,7 @@ public class PostsResource {
     @Path("{postId}/comments/{commentId}")
     public void deleteComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId,
                               @PathParam("commentId") final String commentId) {
-        if (!GPlusUtils.isOwnerLoggedIn(request)) {
-            throw new NotAllowedException("Must be owner to do this.");
-        }
+        checkIsOwner(request);
         PostService.INSTANCE.deleteComment(postId, commentId);
     }
 }

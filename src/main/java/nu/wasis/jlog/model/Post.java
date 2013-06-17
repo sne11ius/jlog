@@ -19,16 +19,14 @@ public class Post extends AbstractDBObject {
     private String body;
     private User author;
     private Date date = new Date();
+    private Date dateCreated = null;
+    private Date dateEdited = null;
 
     private List<Comment> comments = new LinkedList<>();
 
     public Post() {
-    }
-
-    public Post(final String title, final String body, final User author) {
-        this.title = title;
-        this.body = body;
-        this.author = author;
+        dateCreated = date;
+        dateEdited = date;
     }
 
     public void addComment(final Comment comment) {
@@ -83,6 +81,22 @@ public class Post extends AbstractDBObject {
 
     public void setComments(final List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(final Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateEdited() {
+        return dateEdited;
+    }
+
+    public void setDateEdited(final Date dateEdited) {
+        this.dateEdited = dateEdited;
     }
 
 }
