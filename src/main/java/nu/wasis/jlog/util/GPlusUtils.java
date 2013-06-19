@@ -89,10 +89,11 @@ public class GPlusUtils {
         }
         try {
             final Person me = getCurrentGPlusUser(tokenData);
+            final String id = me.getId();
             final String firstname = me.getDisplayName().split(" ")[0];
             final String lastname = me.getDisplayName().split(" ")[1];
             final String email = "";// me.getEmails().get(0).toString();
-            return new User(email, firstname, lastname);
+            return new User(id, email, firstname, lastname);
         } catch (final IOException e) {
             LOG.error(e);
             return null;

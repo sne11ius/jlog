@@ -11,6 +11,8 @@ Stack
  - (a little) freemarker
  - angularjs
  - bootstrap
+ - (tiny portions of) jquery
+ - flippant.js
 
 Screens
 =======

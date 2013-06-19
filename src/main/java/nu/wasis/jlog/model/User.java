@@ -5,6 +5,7 @@ import com.github.jmkgreen.morphia.annotations.Embedded;
 @Embedded
 public class User {
 
+    private String id;
     private String email;
     private String firstname;
     private String lastname;
@@ -12,10 +13,19 @@ public class User {
     public User() {
     }
 
-    public User(final String email, final String firstname, final String lastname) {
+    public User(final String id, final String email, final String firstname, final String lastname) {
+        this.setId(id);
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
     }
 
     public String getEmail() {
