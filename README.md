@@ -5,14 +5,15 @@ Simple java blog with gplus login.
 
 Stack
 =====
- - mongodb & com.github.jmkgreen.morphia
- - jersey
- - com.google.apis
- - (a little) freemarker
- - angularjs
- - bootstrap
- - (tiny portions of) jquery
- - flippant.js
+ - [mongodb](http://www.mongodb.org/) & [com.github.jmkgreen.morphia](https://github.com/jmkgreen/morphia)
+ - [jersey](https://jersey.java.net/)
+ - [com.google.apis](https://code.google.com/p/google-api-java-client/wiki/APIs)
+ - (a little) [freemarker](http://freemarker.sourceforge.net/)
+ - [angularjs](http://angularjs.org/)
+ - [bootstrap](http://twitter.github.io/bootstrap/)
+ - [toastr](https://github.com/CodeSeven/toastr)
+ - (tiny portions of) [jquery](http://jquery.com/)
+ - [flippant.js](https://github.com/mintchaos/flippant.js)
 
 Screens
 =======
