@@ -95,11 +95,10 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
     };
     
     $scope.cancelEdit = function() {
-    	$scope.closeEditors();
-    	console.log($scope.originalTitle);
-    	console.log($scope.originalBody);
-		$scope.editedPost = $scope.originalTitle;
-		$scope.editedPost = $scope.originalBody;
+		$scope.editedPost.title = $scope.originalTitle;
+		$scope.editedPost.body = $scope.originalBody;
+		$scope.editedPost = undefined;
+		$scope.closeEditors();
     };
     
     $scope.closeEditors = function() {
