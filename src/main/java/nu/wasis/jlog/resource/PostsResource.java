@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -81,10 +82,12 @@ public class PostsResource {
         return post;
     }
 
-    private void checkIsOwner(final HttpServletRequest request) {
-        if (!GPlusUtils.isOwnerLoggedIn(request)) {
-            throw new NotAllowedException("Must be owner to do this.");
-        }
+    @PUT
+    @Path("{postId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Post updatePost(@Context final HttpServletRequest request, final Post post) {
+        return savePost(request, post);
     }
 
     @DELETE
@@ -119,5 +122,11 @@ public class PostsResource {
                               @PathParam("commentId") final String commentId) {
         checkIsOwner(request);
         PostService.INSTANCE.deleteComment(postId, commentId);
+    }
+
+    private void checkIsOwner(final HttpServletRequest request) {
+        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+            throw new NotAllowedException("Must be owner to do this.");
+        }
     }
 }

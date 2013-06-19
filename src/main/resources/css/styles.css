@@ -138,3 +138,14 @@ body {
 .body-editor {
 	margin-bottom: 0.15em !important;
 }
+
+.editor-buttons {
+	background-color: yellow;
+	position: absolute;
+	right: 0;
+	top: -33px;
+}
+
+.editor-buttons .btn-success {
+	margin-right: 0.15em;
+}

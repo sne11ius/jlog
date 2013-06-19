@@ -30,6 +30,7 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
         if (e instanceof IllegalDataException) {
             return buildResponse(400, e);
         }
+        e.printStackTrace();
         LOG.info("Mapping unknown Exception of class: " + e.getClass().getName());
         LOG.info(e);
         return buildResponse(400, e);

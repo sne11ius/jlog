@@ -20,13 +20,13 @@ public class Post extends AbstractDBObject {
     private User author;
     private Date date = new Date();
     private Date dateCreated = null;
-    private Date dateEdited = null;
+    private Date dateUpdated = null;
 
     private List<Comment> comments = new LinkedList<>();
 
     public Post() {
         dateCreated = date;
-        dateEdited = date;
+        dateUpdated = date;
     }
 
     public void addComment(final Comment comment) {
@@ -91,12 +91,12 @@ public class Post extends AbstractDBObject {
         this.dateCreated = dateCreated;
     }
 
-    public Date getDateEdited() {
-        return dateEdited;
+    public Date getDateUpdated() {
+        return dateUpdated;
     }
 
-    public void setDateEdited(final Date dateEdited) {
-        this.dateEdited = dateEdited;
+    public void setDateUpdated(final Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
     }
 
 }

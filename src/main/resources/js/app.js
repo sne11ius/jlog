@@ -52,25 +52,59 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
     };
 
     $scope.enableEdit = function(post) {
-    	$scope.currentUpdatedBody = post.body;
-		var bodyElement = $('#' + post.id + ' p')[0];
-		var back_content = '<div id="back-content"><textarea ng-model="currentUpdatedBody" class="body-editor input-block-level"></textarea>'
-                         + '<a href ng-click="saveEdited();" class="btn btn-small btn-success">save</a>'
-                         + '<a href ng-click="cancelEdit();" class="btn btn-small btn-error">cancel</a></div>';
-		var back = flippant.flip(bodyElement, back_content);
-		$compile($('#back-content'))($scope);
-		$scope.editedPost = post;
-		$scope.editor = back;
+    	if ($scope.editedPost == post) {
+    		toastr.info('You are already editing this post, idiot.');
+    		return;
+    	}
+    	$scope.editedPost = post;
+    	$scope.originalTitle = post.title;
+    	$scope.originalBody = post.body;
+    	this.showBodyEditor(post);
+    	this.showTitleEditor(post);
+    };
+    
+    $scope.showBodyEditor = function(post) {
+    	var bodyElement     = $('#' + post.id + ' p')[0],
+		    bodyBackContent = '<div id="body-back-content">'
+		    	            +     '<textarea ng-model="editedPost.body" class="body-editor input-block-level"></textarea>'
+	                        +     '<div class="editor-buttons"><a href ng-click="saveEdited();" class="btn btn-small btn-success">save</a>'
+	                        +     '<a href ng-click="cancelEdit();" class="btn btn-small btn-danger">cancel</a></div>'
+	                        + '</div>',
+            bodyEditor      = flippant.flip(bodyElement, bodyBackContent);
+		$compile($('#body-back-content'))($scope);
+		$scope.bodyEditor = bodyEditor;
+    };
+    
+    $scope.showTitleEditor = function(post) {
+    	var titleElement     = $('#' + post.id + ' h2')[0],
+	    	titleBackContent = '<input id="title-back-content" type="text" ng-model="editedPost.title" class="title-editor input-block-level">',
+            titleEditor      = flippant.flip(titleElement, titleBackContent);
+    	$compile($('#title-back-content'))($scope);
+    	$scope.titleEditor = titleEditor;
     };
     
     $scope.saveEdited = function() {
-    	console.log($scope.currentUpdatedBody);
-    	$scope.editedPost.body = $scope.currentUpdatedBody;
-    	$scope.editor.close();
+    	$scope.closeEditors();
+    	toastr.info('Updating post&hellip;<br>' + $scope.editedPost.title);
+    	$http.put('./blog/posts/' + $scope.editedPost.id, $scope.editedPost).success(function(data) {
+    		/* nothing to do here... */
+    	}, function(error) {
+    		toastr.error(error, 'Error updating post');
+    	});
+    	$scope.editedPost = undefined;
     };
     
     $scope.cancelEdit = function() {
-    	$scope.editor.close();
+    	$scope.closeEditors();
+    	console.log($scope.originalTitle);
+    	console.log($scope.originalBody);
+		$scope.editedPost = $scope.originalTitle;
+		$scope.editedPost = $scope.originalBody;
+    };
+    
+    $scope.closeEditors = function() {
+    	$scope.bodyEditor.close();
+    	$scope.titleEditor.close();
     };
     
     /* Add new comment to post via webservice and ... show it in case of

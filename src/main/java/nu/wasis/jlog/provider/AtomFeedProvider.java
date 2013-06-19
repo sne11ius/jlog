@@ -102,7 +102,8 @@ public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
         entry.setTitle(HTMLUtils.stripHtmlTags(post.getTitle()));
         entry.setDescription(createDescription(post));
         entry.setAuthor(post.getAuthor().getName());
-        entry.setPublishedDate(post.getDate());
+        entry.setPublishedDate(post.getDateCreated());
+        entry.setUpdatedDate(post.getDateUpdated());
         entry.setLink(PrivateConstants.BASE_URL + "?postId=" + post.getId());
 
         return entry;
