@@ -28,6 +28,12 @@ $COMPRESS_BEGIN
         $COMPRESS_SINGLE_LINE_END
     </script>
     <script src='https://plus.google.com/js/client:plusone.js'>{"parsetags": "explicit"}</script>
+    <script>
+        <#include "flippant.min.js">
+    </script>
+    <style type="text/css" media="screen">
+        <#include "flippant.css">
+    </style>
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <style type="text/css" media="screen">
@@ -49,7 +55,17 @@ $COMPRESS_SINGLE_LINE_BEGIN
             <div class="container">
                 <a href="http://wasis.nu/mit/blog"><h1>wasis.nu/mit/blog?</h1></a>
                 <span ng-show="isLoggedIn" class="pull-right" id="logout-container">
-                    <span id="logout-username">{{username}}<span class="long-separator">&mdash;</span></span><a ng-click="disconnectServer()" href id="disconnect" class="btn">Logout</a><a href="http://wasis.nu/mit/blog/feed"><div class="syndication-link"></div></a>
+                    <span
+                        id="logout-username"
+                    >{{username}}<span
+                        class="long-separator"
+                    >&mdash;</span></span><a
+                        ng-click="disconnectServer()"
+                        href
+                        id="disconnect"
+                        class="btn">Logout</a><a
+                        href="http://wasis.nu/mit/blog/feed"><div
+                        class="syndication-link"></div></a>
                 </span>
                 <span ng-show="!isLoggedIn" class="pull-right" id="login-container">
                     <button id="g-signin">
@@ -67,14 +83,29 @@ $COMPRESS_SINGLE_LINE_BEGIN
             </form>
         </div>
         <div ng-repeat="post in posts" id="{{post.id}}">
-            <span class="pull-right">{{post.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span class="long-separator">&mdash;</span><a href="http://wasis.nu/mit/blog?postId={{post.id}}" class="btn btn-mini">link</a><span ng-show="isOwner"> <a href="#">{{post.link}}</a> <a href ng-click="removePost(post);" class="btn btn-mini btn-danger">delete post</a></span></span>
+            <span
+                class="pull-right">{{post.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span
+                class="long-separator">&mdash;</span><a
+                href="http://wasis.nu/mit/blog?postId={{post.id}}"
+                class="btn btn-mini">link</a><span
+                ng-show="isOwner"> <a
+                href
+                ng-click="enableEdit(post);"
+                class="btn btn-mini btn-action">edit</a> <a
+                href ng-click="removePost(post);"
+                class="btn btn-mini btn-danger">delete</a></span></span>
             <h2 ng-bind-html-unsafe="post.title" class="post-title"></h2>
             <p ng-bind-html-unsafe="post.body" class="post-body"></p>
             <div ng-show="post.comments.length != 0">
                 <h3>Comments</h3>
                 <ol>
                     <li ng-repeat="comment in post.comments">
-                        <p><span ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span ng-show="isOwner"> <a href ng-click="removeComment(post, comment);" class="btn btn-mini btn-danger">delete comment</a></span></nobr></p>
+                        <p><span
+                        ng-bind-html-unsafe="comment.body"></span> <nobr>&mdash;&nbsp;{{comment.author.firstname}} {{comment.author.lastname}} / {{comment.date | date:'yyyy-MM-ddTHH:mm:ss'}}<span
+                        ng-show="isOwner"> <a
+                        href
+                        ng-click="removeComment(post, comment);"
+                        class="btn btn-mini btn-danger">delete comment</a></span></nobr></p>
                     </li>
                 </ol>
             </div>

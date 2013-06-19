@@ -6,7 +6,7 @@ var app = angular.module( 'jlog', ['ngResource', 'postService'] );
 /*******************************************************************************
  * Create the post list controller.
  */
-app.controller('PostListController', function($scope, Post, $http, $timeout) {
+app.controller('PostListController', function($scope, Post, $http, $timeout, $compile) {
     /* Get all posts from the webservice.
      * 
      * First method - query posts via webservice:
@@ -49,6 +49,28 @@ app.controller('PostListController', function($scope, Post, $http, $timeout) {
         }, function(error) {
             toastr.error(error, 'Error deleting post');
         });
+    };
+
+    $scope.enableEdit = function(post) {
+    	$scope.currentUpdatedBody = post.body;
+		var bodyElement = $('#' + post.id + ' p')[0];
+		var back_content = '<div id="back-content"><textarea ng-model="currentUpdatedBody" class="body-editor input-block-level"></textarea>'
+                         + '<a href ng-click="saveEdited();" class="btn btn-small btn-success">save</a>'
+                         + '<a href ng-click="cancelEdit();" class="btn btn-small btn-error">cancel</a></div>';
+		var back = flippant.flip(bodyElement, back_content);
+		$compile($('#back-content'))($scope);
+		$scope.editedPost = post;
+		$scope.editor = back;
+    };
+    
+    $scope.saveEdited = function() {
+    	console.log($scope.currentUpdatedBody);
+    	$scope.editedPost.body = $scope.currentUpdatedBody;
+    	$scope.editor.close();
+    };
+    
+    $scope.cancelEdit = function() {
+    	$scope.editor.close();
     };
     
     /* Add new comment to post via webservice and ... show it in case of

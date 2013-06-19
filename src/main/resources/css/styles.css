@@ -129,3 +129,12 @@ body {
 .fefe-hommage {
 	margin-top: 10px;
 }
+
+/** edit *********************************************************************/
+.title-editor {
+	margin-bottom: 0 !important;
+}
+
+.body-editor {
+	margin-bottom: 0.15em !important;
+}
