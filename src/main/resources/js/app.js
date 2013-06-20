@@ -61,6 +61,7 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
     	$scope.originalBody = post.body;
     	this.showBodyEditor(post);
     	this.showTitleEditor(post);
+    	this.fixFlipperStyles();
     };
     
     $scope.showBodyEditor = function(post) {
@@ -81,6 +82,14 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
             titleEditor      = flippant.flip(titleElement, titleBackContent);
     	$compile($('#title-back-content'))($scope);
     	$scope.titleEditor = titleEditor;
+    };
+    
+    $scope.fixFlipperStyles = function() {
+    	var $titleParent = $('#title-back-content').parent('.flippant-back'), 
+    	    $bodyParent = $('#body-back-content').parent('.flippant-back');
+    	$titleParent.css('min-height', 0);
+		$bodyParent.css('height', parseInt($bodyParent.css('min-height').replace('px', '')) + 10 + 'px');
+		$titleParent.css('width', $bodyParent.width() - 300 + 'px');
     };
     
     $scope.saveEdited = function() {

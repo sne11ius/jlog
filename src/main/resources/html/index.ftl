@@ -31,9 +31,11 @@ $COMPRESS_BEGIN
     <script>
         <#include "flippant.min.js">
     </script>
+    $COMPRESS_SINGLE_LINE_BEGIN
     <style type="text/css" media="screen">
         <#include "flippant.css">
     </style>
+    $COMPRESS_SINGLE_LINE_END
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <style type="text/css" media="screen">

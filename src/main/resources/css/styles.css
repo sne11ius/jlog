@@ -137,6 +137,11 @@ body {
 
 .body-editor {
 	margin-bottom: 0.15em !important;
+	height: 100%;
+}
+
+#body-back-content {
+	height: 100%;
 }
 
 .editor-buttons {
