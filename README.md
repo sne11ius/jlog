@@ -8,6 +8,7 @@ Stack
  - [mongodb](http://www.mongodb.org/) & [com.github.jmkgreen.morphia](https://github.com/jmkgreen/morphia)
  - [jersey](https://jersey.java.net/)
  - [com.google.apis](https://code.google.com/p/google-api-java-client/wiki/APIs)
+ - [rome](https://rometools.jira.com/secure/Dashboard.jspa)
  - (a little) [freemarker](http://freemarker.sourceforge.net/)
  - [angularjs](http://angularjs.org/)
  - [bootstrap](http://twitter.github.io/bootstrap/)
