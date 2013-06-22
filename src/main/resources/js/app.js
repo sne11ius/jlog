@@ -273,6 +273,24 @@ app.controller('LoginController', function($scope, $http, $timeout) {
         );
     };
     
+    $scope.twitterSignIn = function() {
+    	console.log('twitter sign in requested...');
+    	$http({
+            method: 'GET',
+            url: './blog/twitterSession/signIn'/*,
+            headers: {'Content-Type': 'application/octet-stream; charset=utf-8'},
+            data: data.code
+            */
+        }).success(function(authenticationURL) {
+        	console.log('authenticationURL:');
+        	console.log(authenticationURL);
+        	window.open(authenticationURL, 'twitterSignInPopup', 'status=0,toolbar=0');
+        }).error(function(error) {
+        	console.log('error:');
+        	console.log(error);
+        });
+    };
+    
     $scope.start();
 });
 
