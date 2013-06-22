@@ -6,6 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
+import nu.wasis.jlog.util.PrivateConstants;
+
 import org.apache.log4j.Logger;
 
 import twitter4j.Twitter;
@@ -22,9 +24,11 @@ public class TwitterSessionResource {
     @Path("signIn")
     public String signIn(@Context final HttpServletRequest request) throws TwitterException {
         final Twitter twitter = new TwitterFactory().getInstance();
-        final StringBuffer callbackURL = request.getRequestURL();
-        final int index = callbackURL.lastIndexOf("/");
-        callbackURL.replace(index, callbackURL.length(), "").append("/callback");
+        /*
+         * final StringBuffer callbackURL = request.getRequestURL(); final int index = callbackURL.lastIndexOf("/");
+         * callbackURL.replace(index, callbackURL.length(), "").append("/callback");
+         */
+        final String callbackURL = PrivateConstants.BASE_URL + "/twitterSession/callback";
         final RequestToken requestToken = twitter.getOAuthRequestToken(callbackURL.toString());
         request.getSession().setAttribute("requestToken", requestToken);
         final String authenticationURL = requestToken.getAuthenticationURL();
