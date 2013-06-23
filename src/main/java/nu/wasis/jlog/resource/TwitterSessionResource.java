@@ -39,11 +39,17 @@ public class TwitterSessionResource {
 
     @GET
     @Path("callback")
-    public void callback(@QueryParam("oauth_token") final String oAuthToken, @QueryParam("oauth_verifier") final String oAuthVerifier) {
+    public void callback(@Context final HttpServletRequest request, @QueryParam("oauth_token") final String oAuthToken,
+                         @QueryParam("oauth_verifier") final String oAuthVerifier) throws TwitterException {
         LOG.debug("oAuthToken:");
         LOG.debug(oAuthToken);
         LOG.debug("oAuthVerifier:");
         LOG.debug(oAuthVerifier);
+        final Twitter twitter = new TwitterFactory().getInstance();
+        final RequestToken requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
+        twitter.getOAuthAccessToken(requestToken, oAuthVerifier);
+        request.getSession().removeAttribute("requestToken");
+        // response.sendRedirect(request.getContextPath() + "/");
     }
 
 }
