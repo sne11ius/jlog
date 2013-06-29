@@ -14,7 +14,7 @@ app.controller('LoginController', function($scope, $http, $timeout) {
     /* Logout and update view, then raise `logoutDone' event */
     $scope.disconnectServer = function() {
         toastr.info('Disconnecting...');
-        $http.post('./blog/session/disconnect').success(function() {
+        $http.post('./blog/session/gplus/logout').success(function() {
             toastr.success('Disconnected.');
             $timeout(function() {
                 $scope.isLoggedIn = false;
@@ -55,7 +55,7 @@ app.controller('LoginController', function($scope, $http, $timeout) {
                 }
                 $http({
                     method: 'POST',
-                    url: './blog/session/connect?state=${state}&gplus_id=' + profile.id,
+                    url: './blog/session/gplus/login?state=${state}&gplus_id=' + profile.id,
                     headers: {'Content-Type': 'application/octet-stream; charset=utf-8'},
                     data: data.code 
                 }).success(function(loginInfo) {
@@ -95,7 +95,7 @@ app.controller('LoginController', function($scope, $http, $timeout) {
     	console.log('twitter sign in requested...');
     	$http({
             method: 'GET',
-            url: './blog/twitterSession/signIn'
+            url: './blog/session/twitter/login'
         }).success(function(authenticationURL) {
         	console.log('authenticationURL:');
         	console.log(authenticationURL);

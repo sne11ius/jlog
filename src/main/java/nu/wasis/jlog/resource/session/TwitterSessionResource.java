@@ -1,4 +1,4 @@
-package nu.wasis.jlog.resource;
+package nu.wasis.jlog.resource.session;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -15,14 +15,14 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.RequestToken;
 
-@Path("twitterSession")
+@Path("session/twitter")
 public class TwitterSessionResource {
 
     private static final Logger LOG = Logger.getLogger(TwitterSessionResource.class);
 
     @GET
-    @Path("signIn")
-    public String signIn(@Context final HttpServletRequest request) throws TwitterException {
+    @Path("login")
+    public String login(@Context final HttpServletRequest request) throws TwitterException {
         final Twitter twitter = new TwitterFactory().getInstance();
         /*
          * final StringBuffer callbackURL = request.getRequestURL(); final int index = callbackURL.lastIndexOf("/");

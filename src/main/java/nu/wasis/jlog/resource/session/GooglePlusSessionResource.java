@@ -1,4 +1,4 @@
-package nu.wasis.jlog.resource;
+package nu.wasis.jlog.resource.session;
 
 import java.io.IOException;
 
@@ -21,14 +21,14 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
 
-@Path("session")
-public class SessionResource {
+@Path("session/gplus")
+public class GooglePlusSessionResource {
 
     @POST
-    @Path("connect")
+    @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response connect(@Context final HttpServletRequest request, @QueryParam("state") final String state,
-                            @QueryParam("gplus_id") final String gplusId, final String body) throws IOException {
+    public Response login(@Context final HttpServletRequest request, @QueryParam("state") final String state, @QueryParam("gplus_id") final String gplusId,
+                          final String body) throws IOException {
         final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData != null) {
             return Response.status(400).entity("{\"message\": \"Already connected.\"}").build();
@@ -43,18 +43,13 @@ public class SessionResource {
 
         final String code = body;
         // Upgrade the authorization code into an access and refresh token.
-        final GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
-                                                                                          GPlusUtils.TRANSPORT,
-                                                                                          GPlusUtils.JSON_FACTORY,
-                                                                                          PrivateConstants.CLIENT_ID,
-                                                                                          PrivateConstants.CLIENT_SECRET,
-                                                                                          code, "postmessage").execute();
+        final GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY,
+                                                                                          PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET, code,
+                                                                                          "postmessage").execute();
         // Create a credential representation of the token data.
-        final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY)
-                                                                          .setTransport(GPlusUtils.TRANSPORT)
-                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID,
-                                                                                            PrivateConstants.CLIENT_SECRET)
-                                                                          .build().setFromTokenResponse(tokenResponse);
+        final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY).setTransport(GPlusUtils.TRANSPORT)
+                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET).build()
+                                                                          .setFromTokenResponse(tokenResponse);
 
         // Check that the token is valid.
         final Oauth2 oauth2 = new Oauth2.Builder(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY, credential).build();
@@ -74,14 +69,14 @@ public class SessionResource {
         // Store the token in the session for later use.
         request.getSession(true).setAttribute("token", tokenResponse.toString());
         return Response.ok()
-                       .entity("{\"user\":" + GPlusUtils.GSON.toJson(GPlusUtils.getCurrentUser(request))
-                                       + ", \"isOwner\":" + GPlusUtils.isOwnerLoggedIn(request) + "}").build();
+                       .entity("{\"user\":" + GPlusUtils.GSON.toJson(GPlusUtils.getCurrentUser(request)) + ", \"isOwner\":"
+                                       + GPlusUtils.isOwnerLoggedIn(request) + "}").build();
     }
 
     @POST
-    @Path("disconnect")
+    @Path("logout")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response disconnect(@Context final HttpServletRequest request) throws IOException {
+    public Response logout(@Context final HttpServletRequest request) throws IOException {
         final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData == null) {
             return Response.status(401).entity("Current user not connected.").build();
@@ -89,16 +84,14 @@ public class SessionResource {
         // Build credential from stored token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY)
                                                                           .setTransport(GPlusUtils.TRANSPORT)
-                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID,
-                                                                                            PrivateConstants.CLIENT_SECRET)
+                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET)
                                                                           .build()
                                                                           .setFromTokenResponse(GPlusUtils.JSON_FACTORY.fromString(tokenData,
                                                                                                                                    GoogleTokenResponse.class));
         // Execute HTTP GET request to revoke current token.
         GPlusUtils.TRANSPORT.createRequestFactory()
-                            .buildGetRequest(new GenericUrl(
-                                                            String.format("https://accounts.google.com/o/oauth2/revoke?token=%s",
-                                                                          credential.getAccessToken()))).execute();
+                            .buildGetRequest(new GenericUrl(String.format("https://accounts.google.com/o/oauth2/revoke?token=%s", credential.getAccessToken())))
+                            .execute();
         // Reset the user's session.
         request.getSession(true).removeAttribute("token");
         return Response.ok().entity("{\"message\":\"Successfully disconnected.\"}").build();
