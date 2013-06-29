@@ -25,6 +25,9 @@ $COMPRESS_BEGIN
         <#include "bootstrap.min.js">
         $COMPRESS_SINGLE_LINE_BEGIN
             <#include "app.js">
+            <#include "PostListController.js">
+            <#include "LoginController.js">
+            <#include "PostService.js">
         $COMPRESS_SINGLE_LINE_END
     </script>
     <script src='https://plus.google.com/js/client:plusone.js'>{"parsetags": "explicit"}</script>

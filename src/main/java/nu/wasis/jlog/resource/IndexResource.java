@@ -47,7 +47,7 @@ public class IndexResource {
      * private static final String USER_AGENT_HEADER = "User-Agent"; private static final String HTTP_ACCEPT = "Accept";
      */
 
-    private static final List<String> templateDirectories = Arrays.asList("css", "html", "js", "bootstrap/css", "bootstrap/img", "bootstrap/js");
+    private static final List<String> templateDirectories = Arrays.asList("css", "html", "js/app", "js/libs", "bootstrap/css", "bootstrap/img", "bootstrap/js");
 
     static {
         for (final String templateDirectoryPath : templateDirectories) {
