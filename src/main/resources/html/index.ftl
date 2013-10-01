@@ -34,6 +34,7 @@ $COMPRESS_BEGIN
     <script>
         <#include "flippant.min.js">
     </script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
     $COMPRESS_SINGLE_LINE_BEGIN
     <style type="text/css" media="screen">
         <#include "flippant.css">
