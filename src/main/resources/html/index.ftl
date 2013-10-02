@@ -33,9 +33,8 @@ $COMPRESS_BEGIN
     <script src='https://plus.google.com/js/client:plusone.js'>{"parsetags": "explicit"}</script>
     <script>
         <#include "flippant.min.js">
-    </script>
-    <script>
         <#include "prettify.min.js">
+        <#include "lang-clj.js">
     </script>
     $COMPRESS_SINGLE_LINE_BEGIN
     <style type="text/css">
