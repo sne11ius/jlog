@@ -8,25 +8,6 @@ pre, pre *, code, code * {
 	font-family: 'Droid Sans Mono', sans-serif;
 }
 
-/** Fixes for google-code-prettify sunburst skin ******************************/
-.linenums li {
-    padding-left: 3px !important;
-    margin-left: 7px !important;
-}
-
-li.L1, li.L3, li.L5, li.L7, li.L9 {
-    background: #1D1D1D !important;
-}
-
-li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 {
-    list-style-type: decimal !important;
-}
-
-pre.prettyprint, code.prettyprint {
-	background-color: #111116 !important;
-	border-radius: 5px !important;
-}
-
 /** Fix header hiding content *************************************************/
 body {
 	padding-top: 70px;

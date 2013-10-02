@@ -33,11 +33,12 @@ $COMPRESS_BEGIN
     <script src='https://plus.google.com/js/client:plusone.js'>{"parsetags": "explicit"}</script>
     <script>
         <#include "flippant.min.js">
+        <#include "prettify.min.js">
     </script>
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>
     $COMPRESS_SINGLE_LINE_BEGIN
-    <style type="text/css" media="screen">
+    <style type="text/css">
         <#include "flippant.css">
+        <#include "prettify-sunburst.css">
     </style>
     $COMPRESS_SINGLE_LINE_END
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'/>
