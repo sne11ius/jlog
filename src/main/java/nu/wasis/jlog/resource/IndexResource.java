@@ -62,7 +62,7 @@ public class IndexResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("true") final boolean compress,
+    public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("false") final boolean compress,
                            @QueryParam("postId") final String postId) throws IOException, TemplateException {
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
