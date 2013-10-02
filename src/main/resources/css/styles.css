@@ -6,6 +6,7 @@
 
 pre, pre *, code, code * {
 	font-family: 'Droid Sans Mono', sans-serif;
+	font-size: 12px;
 }
 
 /** Fix header hiding content *************************************************/
