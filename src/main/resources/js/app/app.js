@@ -13,4 +13,10 @@ app.run(function() {
         toastr.info('Requesting login...');
         $('#login-loader').show();
     });
+    /* Hack to enable prettyPrint */
+    window.setInterval(function() {
+    	if ('function' === typeof prettyPrint) {
+    		prettyPrint();
+    	}
+    }, 500);
 });
