@@ -10,12 +10,12 @@ pre, pre *, code, code * {
 
 /** Fixes for google-code-prettify sunburst skin ******************************/
 .linenums li {
-    padding-left: 3px;
-    margin-left: 7px;
+    padding-left: 3px !important;
+    margin-left: 7px !important;
 }
 
 li.L1, li.L3, li.L5, li.L7, li.L9 {
-    background: #1D1D1D;
+    background: #1D1D1D !important;
 }
 
 li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 {
