@@ -40,7 +40,8 @@ public class TemplateLoader {
             String templateSource = readAndReplace(file, replacements);
             if (isStripCommentsEnabled()) {
                 // from http://ostermiller.org/findcomment.html
-                templateSource = templateSource.replaceAll("/\\*(?:.|[\\n\\r])*?\\*/", "");
+//                templateSource = templateSource.replaceAll("/\\*(?:.|[\\n\\r])*?\\*/", "");
+                templateSource = templateSource.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
                 // LOG.debug("result for " + file.getPath() + ":");
                 // LOG.debug(templateSource);
             }
