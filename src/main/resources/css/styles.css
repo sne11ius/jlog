@@ -4,7 +4,7 @@
 	font-family: 'Vollkorn', serif;
 }
 
-pre {
+pre, pre *, code, code * {
 	font-family: 'Droid Sans Mono', sans-serif;
 }
 
