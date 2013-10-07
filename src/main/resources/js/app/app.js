@@ -23,7 +23,7 @@ app.run(function() {
 				var clip = new ZeroClipboard(this);
 				var that = this;
 				jQuery(that).tooltip({
-					title: 'Click this element to copy to clipboard.',
+					title: 'Click to copy.',
 					container: 'body',
 					trigger: 'manual'
 				});
