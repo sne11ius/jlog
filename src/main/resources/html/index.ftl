@@ -35,7 +35,7 @@ $COMPRESS_BEGIN
         <#include "flippant.min.js">
         <#include "prettify.min.js">
         <#include "lang-clj.js">
-        <#include "ZeroClipboard.js">
+        <#include "ZeroClipboard.min.js">
         ZeroClipboard.setDefaults( { moviePath: 'http://wasis.nu/ZeroClipboard.swf' } );
     </script>
     $COMPRESS_SINGLE_LINE_BEGIN
