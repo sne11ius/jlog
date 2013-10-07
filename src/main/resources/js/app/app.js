@@ -13,7 +13,7 @@ app.run(function() {
         toastr.info('Requesting login...');
         $('#login-loader').show();
     });
-    /* Hack to enable prettyPrint */
+    /* Hack to enable prettyPrint & ZeroClipboard */
     window.setInterval(function() {
     	if ('function' === typeof prettyPrint) {
     		prettyPrint();
