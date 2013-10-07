@@ -4,7 +4,7 @@
 	font-family: 'Vollkorn', serif;
 }
 
-pre, pre *, code, code * {
+pre, pre *, code, code *, .tooltip, .tooltip * {
 	font-family: 'Droid Sans Mono', sans-serif;
 	font-size: 12px;
 }
