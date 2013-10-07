@@ -37,6 +37,9 @@ app.run(function() {
 				clip.on('mouseout', function(client, args) {
 					jQuery(this).tooltip('toggle');
 				});
+				clip.on('complete', function(client, args) {
+					toastr.success('Code copied for your pleasure&hellip;');
+				});
 			}
     	);
     }, 500);
