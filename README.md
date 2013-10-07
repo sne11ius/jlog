@@ -15,6 +15,7 @@ Stack
  - [toastr](https://github.com/CodeSeven/toastr)
  - (tiny portions of) [jquery](http://jquery.com/)
  - [flippant.js](https://github.com/mintchaos/flippant.js)
+ - [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
 
 Screens
 =======
