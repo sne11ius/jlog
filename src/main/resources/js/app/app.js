@@ -18,26 +18,26 @@ app.run(function() {
     	if ('function' === typeof prettyPrint) {
     		prettyPrint();
     	}
+    	jQuery('pre').each(
+			function(idx, val) {
+				var clip = new ZeroClipboard(this);
+				var that = this;
+				jQuery(that).tooltip({
+					title: 'Click this element to copy to clipboard.',
+					container: 'body',
+					trigger: 'manual'
+				});
+				clip.on('dataRequested', function(client, args) {
+					var text = jQuery(this).text();
+					client.setText(text);
+				});
+				clip.on('mouseover', function(client, args) {
+					jQuery(this).tooltip('show');
+				});
+				clip.on('mouseout', function(client, args) {
+					jQuery(this).tooltip('toggle');
+				});
+			}
+    	);
     }, 500);
-    jQuery('pre').each(
-	    function(idx, val) {
-			var clip = new ZeroClipboard(this);
-			var that = this;
-			jQuery(that).tooltip({
-				title: 'Click this element to copy to clipboard.',
-				container: 'body',
-				trigger: 'manual'
-			});
-	        clip.on('dataRequested', function(client, args) {
-				var text = jQuery(this).text();
-	            client.setText(text);
-	        });
-			clip.on('mouseover', function(client, args) {
-				jQuery(this).tooltip('show');
-			});
-			clip.on('mouseout', function(client, args) {
-			    jQuery(this).tooltip('toggle');
-			});
-	    }
-	);
 });
