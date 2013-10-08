@@ -38,7 +38,7 @@ app.run(function() {
 					jQuery(this).tooltip('toggle');
 				});
 				clip.on('complete', function(client, args) {
-					toastr.success('Code copied for your pleasure&hellip;');
+					toastr.success('Code copied&hellip;');
 				});
 			}
     	);
