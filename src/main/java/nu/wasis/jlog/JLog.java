@@ -48,7 +48,7 @@ public class JLog {
 
     public static void main(final String[] args) throws IOException {
         final HttpServer httpServer = startServer();
-        LOG.info("jlog started\nHit enter to stop...");
+        LOG.info("jlog started @ localhost:4567\nHit enter to stop...");
         System.in.read();
         httpServer.stop();
     }

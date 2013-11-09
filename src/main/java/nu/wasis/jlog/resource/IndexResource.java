@@ -26,6 +26,9 @@ import nu.wasis.jlog.util.GPlusUtils;
 import nu.wasis.jlog.util.PrivateConstants;
 import nu.wasis.jlog.util.TemplateLoader;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.NotFoundException;
@@ -63,7 +66,7 @@ public class IndexResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("false") final boolean compress,
-                           @QueryParam("postId") final String postId) throws IOException, TemplateException {
+                           @QueryParam("postId") final String postId, @QueryParam("inTitle") final String titleSubstring) throws IOException, TemplateException {
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
@@ -71,7 +74,7 @@ public class IndexResource {
         final String templateFilename = getTemplateFilename(request);
         TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
-        final Map<String, Object> map = createTemplateMap(request, state, postId);
+        final Map<String, Object> map = createTemplateMap(request, state, postId, titleSubstring);
         template.process(map, writer);
         return writer.toString();
     }
@@ -114,27 +117,52 @@ public class IndexResource {
         return returnActualString ? actualString : "";
     }
 
-    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final String postId) {
+    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final String postId, final String titleSubstring) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("client_id", PrivateConstants.CLIENT_ID);
         map.put(STATE_ATTRIBUTE_KEY, state);
         map.put("username", GPlusUtils.getCurrentUsername(request));
         map.put("loggedin", GPlusUtils.isLoggedIn(request));
         map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
-        map.put("GetPostsArrayCommand", getGetPostsArrayCommand(postId));
+        map.put("GetPostsArrayCommand", getGetPostsArrayCommand(postId, titleSubstring));
         map.put("baseUrl", request.getRequestURL());
         return map;
     }
 
-    private String getGetPostsArrayCommand(final String postId) {
-        if (null == postId) {
-            return "Post.query()";
+    private String getGetPostsArrayCommand(final String postId, final String titleSubstring) {
+        if (!StringUtils.isEmpty(postId)) {
+            final Post post = PostService.INSTANCE.getPost(postId);
+            if (null == post) {
+                throw new NotFoundException("No post with id `" + postId + "'.");
+            }
+            return "[" + GPlusUtils.GSON.toJson(post) + "]";
         }
-        final Post post = PostService.INSTANCE.getPost(postId);
-        if (null == post) {
-            throw new NotFoundException("No post with id `" + postId + "'.");
+        if (!StringUtils.isEmpty(titleSubstring)) {
+            final List<Post> posts = PostService.INSTANCE.getPosts();
+            // FIXME: Get this done in morphia D:
+            CollectionUtils.filter(posts, new PostTitleMatchPredicate(titleSubstring.replace("_", " ")));
+            String postsString = "[";
+            for (int i = 0; i < posts.size() - 1; ++i) {
+                postsString += GPlusUtils.GSON.toJson(posts.get(i)) + ", ";
+            }
+            postsString += GPlusUtils.GSON.toJson(posts.get(posts.size() - 1)) + "]";
+            LOG.debug(postsString);
+            return postsString;
         }
-        return "[" + GPlusUtils.GSON.toJson(post) + "]";
+        return "Post.query()";
     }
 
+    private static final class PostTitleMatchPredicate implements Predicate {
+
+        private final String titleSubstring;
+
+        public PostTitleMatchPredicate(final String titleSubstring) {
+            this.titleSubstring = titleSubstring.toLowerCase();
+        }
+
+        @Override
+        public boolean evaluate(final Object object) {
+            return ((Post) object).getTitle().toLowerCase().contains(titleSubstring);
+        }
+    }
 }
