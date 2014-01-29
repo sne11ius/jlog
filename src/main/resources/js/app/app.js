@@ -8,6 +8,8 @@ var app = angular.module( 'jlog', ['ngResource', 'postService'] );
  * and the jquery call put in global scope...
  */
 app.run(function() {
+    /* Show content for JS users */
+    $('#js_container').show();
     /* Show ajax loader if user clicks on the gplus login button */
     $('#login-container').click(function() {
         toastr.info('Requesting login...');

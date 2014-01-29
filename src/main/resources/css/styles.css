@@ -22,6 +22,22 @@ body {
 	}
 }
 
+/** Annoy scriptless users ****************************************************/
+#js_container {
+    display: none; /* This style will be removed by JS. */
+}
+
+#no-script {
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    width: 500px;
+    height: 300px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
 /** Overlays ******************************************************************/
 #login-loader {
 	position: fixed;

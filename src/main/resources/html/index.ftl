@@ -59,6 +59,10 @@ $COMPRESS_BEGIN
 </head>
 $COMPRESS_SINGLE_LINE_BEGIN
 <body>
+    <noscript>
+        <div id="no-script">Y u no JS? Go away D:</div>
+    </noscript>
+    <div id="js_container">
     <div id="login-loader"></div>
     <div ng-controller="LoginController" class="navbar navbar-fixed-top site-header">
         <div class="navbar-inner">
@@ -143,6 +147,7 @@ $COMPRESS_SINGLE_LINE_BEGIN
                      href="http://blog.refefe.de/faq.html">&trade;</a>
             </div>
         </div>
+    </div>
     </div>
 </body>
 $COMPRESS_SINGLE_LINE_END
