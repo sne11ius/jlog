@@ -60,7 +60,7 @@ $COMPRESS_BEGIN
 $COMPRESS_SINGLE_LINE_BEGIN
 <body>
     <noscript>
-        <div id="no-script">Y u no JS? Go away D:</div>
+        <div id="no-script"><img src="http://cdn.memegenerator.net/instances/300x300/38822277.jpg"></div>
     </noscript>
     <div id="js_container">
     <div id="login-loader"></div>
