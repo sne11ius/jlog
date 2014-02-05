@@ -11,8 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nu.wasis.jlog.config.Configuration;
 import nu.wasis.jlog.util.GPlusUtils;
-import nu.wasis.jlog.util.PrivateConstants;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -28,7 +28,7 @@ public class GooglePlusSessionResource {
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@Context final HttpServletRequest request, @QueryParam("state") final String state, @QueryParam("gplus_id") final String gplusId,
-                          final String body) throws IOException {
+            final String body) throws IOException {
         final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData != null) {
             return Response.status(400).entity("{\"message\": \"Already connected.\"}").build();
@@ -44,12 +44,13 @@ public class GooglePlusSessionResource {
         final String code = body;
         // Upgrade the authorization code into an access and refresh token.
         final GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY,
-                                                                                          PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET, code,
-                                                                                          "postmessage").execute();
+ Configuration.getInstance().getGoogleApiClientId(),
+                Configuration.getInstance().getGoogleApiClientSecret(), code,
+                "postmessage").execute();
         // Create a credential representation of the token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY).setTransport(GPlusUtils.TRANSPORT)
-                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET).build()
-                                                                          .setFromTokenResponse(tokenResponse);
+                .setClientSecrets(Configuration.getInstance().getGoogleApiClientId(), Configuration.getInstance().getGoogleApiClientSecret()).build()
+                .setFromTokenResponse(tokenResponse);
 
         // Check that the token is valid.
         final Oauth2 oauth2 = new Oauth2.Builder(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY, credential).build();
@@ -63,14 +64,14 @@ public class GooglePlusSessionResource {
             return Response.status(401).entity("Token's user ID doesn't match given user ID.").build();
         }
         // Make sure the token we got is for our app.
-        if (!tokenInfo.getIssuedTo().equals(PrivateConstants.CLIENT_ID)) {
+        if (!tokenInfo.getIssuedTo().equals(Configuration.getInstance().getGoogleApiClientId())) {
             return Response.status(401).entity("Token's client ID does not match app's.").build();
         }
         // Store the token in the session for later use.
         request.getSession(true).setAttribute("token", tokenResponse.toString());
         return Response.ok()
-                       .entity("{\"user\":" + GPlusUtils.GSON.toJson(GPlusUtils.getCurrentUser(request)) + ", \"isOwner\":"
-                                       + GPlusUtils.isOwnerLoggedIn(request) + "}").build();
+                .entity("{\"user\":" + GPlusUtils.GSON.toJson(GPlusUtils.getCurrentUser(request)) + ", \"isOwner\":"
+                        + GPlusUtils.isOwnerLoggedIn(request) + "}").build();
     }
 
     @POST
@@ -83,15 +84,15 @@ public class GooglePlusSessionResource {
         }
         // Build credential from stored token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY)
-                                                                          .setTransport(GPlusUtils.TRANSPORT)
-                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET)
-                                                                          .build()
-                                                                          .setFromTokenResponse(GPlusUtils.JSON_FACTORY.fromString(tokenData,
-                                                                                                                                   GoogleTokenResponse.class));
+                .setTransport(GPlusUtils.TRANSPORT)
+                .setClientSecrets(Configuration.getInstance().getGoogleApiClientId(), Configuration.getInstance().getGoogleApiClientSecret())
+                .build()
+                .setFromTokenResponse(GPlusUtils.JSON_FACTORY.fromString(tokenData,
+                        GoogleTokenResponse.class));
         // Execute HTTP GET request to revoke current token.
         GPlusUtils.TRANSPORT.createRequestFactory()
-                            .buildGetRequest(new GenericUrl(String.format("https://accounts.google.com/o/oauth2/revoke?token=%s", credential.getAccessToken())))
-                            .execute();
+        .buildGetRequest(new GenericUrl(String.format("https://accounts.google.com/o/oauth2/revoke?token=%s", credential.getAccessToken())))
+        .execute();
         // Reset the user's session.
         request.getSession(true).removeAttribute("token");
         return Response.ok().entity("{\"message\":\"Successfully disconnected.\"}").build();

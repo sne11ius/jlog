@@ -20,10 +20,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import nu.wasis.jlog.config.Configuration;
 import nu.wasis.jlog.model.Post;
 import nu.wasis.jlog.service.PostService;
 import nu.wasis.jlog.util.GPlusUtils;
-import nu.wasis.jlog.util.PrivateConstants;
 import nu.wasis.jlog.util.TemplateLoader;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -55,7 +55,7 @@ public class IndexResource {
     static {
         for (final String templateDirectoryPath : templateDirectories) {
             try {
-                final File templateDirectory = new File(PrivateConstants.BASE_TEMPLATE_PATH + File.separator + templateDirectoryPath);
+                final File templateDirectory = new File(Configuration.getInstance().getBaseTemplatePath() + File.separator + templateDirectoryPath);
                 TemplateLoader.INSTANCE.addDirectory(templateDirectory);
             } catch (final IOException e) {
                 LOG.error("Initialization of TemplateLoader failed:", e);
@@ -66,7 +66,7 @@ public class IndexResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("false") final boolean compress,
-                           @QueryParam("postId") final String postId, @QueryParam("inTitle") final String titleSubstring) throws IOException, TemplateException {
+            @QueryParam("postId") final String postId, @QueryParam("inTitle") final String titleSubstring) throws IOException, TemplateException {
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
@@ -119,7 +119,7 @@ public class IndexResource {
 
     private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final String postId, final String titleSubstring) {
         final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("client_id", PrivateConstants.CLIENT_ID);
+        map.put("client_id", Configuration.getInstance().getGoogleApiClientId());
         map.put(STATE_ATTRIBUTE_KEY, state);
         map.put("username", GPlusUtils.getCurrentUsername(request));
         map.put("loggedin", GPlusUtils.isLoggedIn(request));

@@ -7,6 +7,9 @@ import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
 
+import nu.wasis.jlog.config.Configuration;
+import nu.wasis.jlog.exception.InvalidConfigurationException;
+
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 
@@ -29,6 +32,7 @@ public class JLog {
             try {
                 return Integer.parseInt(httpPort);
             } catch (final NumberFormatException e) {
+                LOG.warn("Cannot parse value for `jersey.test.port': " + httpPort);
             }
         }
         return defaultPort;
@@ -47,9 +51,20 @@ public class JLog {
     }
 
     public static void main(final String[] args) throws IOException {
+        if (null == args || 1 > args.length) {
+            LOG.error("Plz point to configuration file in args[0]. I can't do shit without it.");
+            return;
+        }
+        try {
+            Configuration.load(args[0]);
+        } catch (final InvalidConfigurationException e) {
+            LOG.error(e.getMessage());
+            return;
+        }
         final HttpServer httpServer = startServer();
         LOG.info("jlog started @ localhost:4567\nHit enter to stop...");
         System.in.read();
         httpServer.stop();
     }
+
 }

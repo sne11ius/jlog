@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import nu.wasis.jlog.config.Configuration;
 import nu.wasis.jlog.model.User;
 
 import org.apache.log4j.Logger;
@@ -48,7 +49,7 @@ public class GPlusUtils {
     }
 
     public static boolean isOwnerLoggedIn(final HttpServletRequest request) {
-        return getCurrentUserId(request).equals(PrivateConstants.OWNER_ID);
+        return getCurrentUserId(request).equals(Configuration.getInstance().getOwnerGoogleUserId());
     }
 
     public static String getCurrentUserId(final HttpServletRequest request) {
@@ -102,9 +103,9 @@ public class GPlusUtils {
 
     private static Person getCurrentGPlusUser(final String tokenData) throws IOException {
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(JSON_FACTORY).setTransport(TRANSPORT)
-                                                                          .setClientSecrets(PrivateConstants.CLIENT_ID, PrivateConstants.CLIENT_SECRET).build()
-                                                                          .setFromTokenResponse(JSON_FACTORY.fromString(tokenData, GoogleTokenResponse.class));
-        final Plus service = new Plus.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(PrivateConstants.APPLICATION_NAME).build();
+                .setClientSecrets(Configuration.getInstance().getGoogleApiClientId(), Configuration.getInstance().getGoogleApiClientSecret()).build()
+                .setFromTokenResponse(JSON_FACTORY.fromString(tokenData, GoogleTokenResponse.class));
+        final Plus service = new Plus.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(Configuration.getInstance().getApplicationName()).build();
         final Person me = service.people().get("me").execute();
         return me;
     }

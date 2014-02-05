@@ -17,9 +17,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import nu.wasis.jlog.config.Configuration;
 import nu.wasis.jlog.model.Post;
 import nu.wasis.jlog.util.HTMLUtils;
-import nu.wasis.jlog.util.PrivateConstants;
 
 import org.apache.log4j.Logger;
 import org.displaytag.util.HtmlTagUtil;
@@ -36,13 +36,13 @@ import com.sun.syndication.io.SyndFeedOutput;
 @Provider
 public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
 
-	private static final Logger LOG = Logger.getLogger(AtomFeedProvider.class);
+    private static final Logger LOG = Logger.getLogger(AtomFeedProvider.class);
 
     private static final String FEED_TYPE_ATOM_1_0 = "atom_1.0";
     private static final String FEED_DESCRIPTION = "Blog about technical stuff.";
 
     private static final int ABBREVIATED_CHAR_COUNT = 1_000;
-	private static final String ABBREVIATION_HINT = " [This post abbrev. due to popular demand (tm). See original for full version.]";
+    private static final String ABBREVIATION_HINT = " [This post abbrev. due to popular demand (tm). See original for full version.]";
 
     @Override
     public long getSize(final List<Post> t, final Class<?> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
@@ -66,7 +66,7 @@ public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
 
     @Override
     public void writeTo(final List<Post> posts, final Class<?> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType,
-                        final MultivaluedMap<String, Object> httpHeaders, final OutputStream entityStream) throws IOException, WebApplicationException {
+            final MultivaluedMap<String, Object> httpHeaders, final OutputStream entityStream) throws IOException, WebApplicationException {
         final SyndFeed feed = createFeed(posts);
         final SyndFeedOutput output = new SyndFeedOutput();
         final Writer writer = new OutputStreamWriter(entityStream, "UTF-8");
@@ -86,7 +86,7 @@ public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
 
         feed.setFeedType(FEED_TYPE_ATOM_1_0);
         feed.setTitle("wasis.nu/mit/blog?");
-        feed.setLink(PrivateConstants.BASE_URL);
+        feed.setLink(Configuration.getInstance().getBaseUrl());
         feed.setDescription(FEED_DESCRIPTION);
         feed.setCopyright("(c) " + Calendar.getInstance().get(Calendar.YEAR) + " - wasis.nu");
         feed.setEncoding("UTF-8");
@@ -108,7 +108,7 @@ public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
         entry.setAuthor(post.getAuthor().getName());
         entry.setPublishedDate(post.getDateCreated());
         entry.setUpdatedDate(post.getDateUpdated());
-        entry.setLink(PrivateConstants.BASE_URL + "?postId=" + post.getId());
+        entry.setLink(Configuration.getInstance().getBaseUrl() + "?postId=" + post.getId());
 
         return entry;
     }
@@ -119,7 +119,7 @@ public class AtomFeedProvider implements MessageBodyWriter<List<Post>> {
         final StringBuffer descriptionBuffer = new StringBuffer(ABBREVIATED_CHAR_COUNT);
         descriptionBuffer.append(HtmlTagUtil.abbreviateHtmlString(post.getBody(), ABBREVIATED_CHAR_COUNT, false));
         if (descriptionBuffer.length() < post.getBody().length()) {
-        	descriptionBuffer.append(ABBREVIATION_HINT);
+            descriptionBuffer.append(ABBREVIATION_HINT);
         }
         description.setValue(descriptionBuffer.toString());
         return description;

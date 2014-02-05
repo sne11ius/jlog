@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
-import nu.wasis.jlog.util.PrivateConstants;
+import nu.wasis.jlog.config.Configuration;
 
 import org.apache.log4j.Logger;
 
@@ -28,7 +28,7 @@ public class TwitterSessionResource {
          * final StringBuffer callbackURL = request.getRequestURL(); final int index = callbackURL.lastIndexOf("/");
          * callbackURL.replace(index, callbackURL.length(), "").append("/callback");
          */
-        final String callbackURL = PrivateConstants.BASE_URL + "/twitterSession/callback";
+        final String callbackURL = Configuration.getInstance().getBaseUrl() + "/twitterSession/callback";
         final RequestToken requestToken = twitter.getOAuthRequestToken(callbackURL.toString());
         request.getSession().setAttribute("requestToken", requestToken);
         final String authenticationURL = requestToken.getAuthenticationURL();
@@ -40,7 +40,7 @@ public class TwitterSessionResource {
     @GET
     @Path("callback")
     public void callback(@Context final HttpServletRequest request, @QueryParam("oauth_token") final String oAuthToken,
-                         @QueryParam("oauth_verifier") final String oAuthVerifier) throws TwitterException {
+            @QueryParam("oauth_verifier") final String oAuthVerifier) throws TwitterException {
         LOG.debug("oAuthToken:");
         LOG.debug(oAuthToken);
         LOG.debug("oAuthVerifier:");
