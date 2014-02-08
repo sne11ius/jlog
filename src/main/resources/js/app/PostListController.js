@@ -91,7 +91,7 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
     $scope.saveEdited = function() {
     	$scope.closeEditors();
     	toastr.info('Updating post&hellip;<br>' + $scope.editedPost.title);
-    	$http.put('./posts/' + $scope.editedPost.id, $scope.editedPost).success(function(data) {
+    	$http.put('./blog/posts/' + $scope.editedPost.id, $scope.editedPost).success(function(data) {
     		/* nothing to do here... */
     	}, function(error) {
     		toastr.error(error, 'Error updating post');
@@ -116,7 +116,7 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
      */
     $scope.addComment = function(post) {
         toastr.info('Submitting comment&hellip;<br>' + post.newcomment.body);
-        $http.post('./posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
+        $http.post('./blog/posts/' + post.id + '/comments', post.newcomment).success(function(comment) {
             post.comments.push(comment);
             post.newcomment = '';
             toastr.success('Comment added.');
@@ -128,7 +128,7 @@ app.controller('PostListController', function($scope, Post, $http, $timeout, $co
     /* Remove comment ... */
     $scope.removeComment = function(post, comment) {
         toastr.info('Deleting comment&hellip;<br>' + comment.body);
-        $http.delete('./posts/' + post.id + '/comments/' + comment.id).success(function(data) {
+        $http.delete('./blog/posts/' + post.id + '/comments/' + comment.id).success(function(data) {
             /* TODO: this is kind of ugly */
             for (var i = 0; i < post.comments.length; ++i) {
                 if (post.comments[i].id == comment.id) {
