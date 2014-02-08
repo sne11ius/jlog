@@ -10,6 +10,7 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
@@ -17,8 +18,8 @@ import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.JsonSerializerProvider;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.introspect.VisibilityChecker.Std;
 import org.codehaus.jackson.map.module.SimpleModule;
 
@@ -44,7 +45,7 @@ public class ObjectIdProvider implements ContextResolver<ObjectMapper> {
         mapper.setVisibilityChecker(Std.defaultInstance().withFieldVisibility(ANY));
 
         mapper.registerModule(new SimpleModule("jersey", new Version(1, 0, 0, null)).addSerializer(_id, _idSerializer())
-                                                                                    .addDeserializer(_id, _idDeserializer()));
+                .addDeserializer(_id, _idDeserializer()));
         return mapper;
     }
 
@@ -62,9 +63,8 @@ public class ObjectIdProvider implements ContextResolver<ObjectMapper> {
     private static JsonSerializer<Object> _idSerializer() {
         return new JsonSerializer<Object>() {
             @Override
-            public void serialize(final Object obj, final JsonGenerator jsonGenerator, final SerializerProvider provider) throws IOException,
-                                                                                                                         JsonProcessingException {
-                jsonGenerator.writeString(obj == null ? null : obj.toString());
+            public void serialize(final Object value, final JsonGenerator jsonGenerator, final JsonSerializerProvider provider) throws IOException, JsonGenerationException {
+                jsonGenerator.writeString(value == null ? null : value.toString());
             }
         };
     }

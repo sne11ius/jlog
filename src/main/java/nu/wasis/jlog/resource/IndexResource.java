@@ -10,10 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -31,31 +36,35 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.NotFoundException;
-
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
  * Renders the html/index.ftl file.
  */
+@Stateless
+@Resource
 @Path("/")
 public class IndexResource {
+
+    @Inject
+    private Configuration configuration;
+
+    @Inject
+    private GPlusUtils gPlusUtils;
 
     private static final String STATE_ATTRIBUTE_KEY = "state";
 
     private static final Logger LOG = Logger.getLogger(IndexResource.class);
 
-    /*
-     * private static final String USER_AGENT_HEADER = "User-Agent"; private static final String HTTP_ACCEPT = "Accept";
-     */
-
     private static final List<String> templateDirectories = Arrays.asList("css", "html", "js/app", "js/libs", "bootstrap/css", "bootstrap/img", "bootstrap/js");
 
-    static {
+    @PostConstruct
+    public void init() {
+        LOG.info("initializing...");
         for (final String templateDirectoryPath : templateDirectories) {
             try {
-                final File templateDirectory = new File(Configuration.getInstance().getBaseTemplatePath() + File.separator + templateDirectoryPath);
+                final File templateDirectory = new File(configuration.getBaseTemplatePath() + File.separator + templateDirectoryPath);
                 TemplateLoader.INSTANCE.addDirectory(templateDirectory);
             } catch (final IOException e) {
                 LOG.error("Initialization of TemplateLoader failed:", e);
@@ -119,11 +128,11 @@ public class IndexResource {
 
     private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final String postId, final String titleSubstring) {
         final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("client_id", Configuration.getInstance().getGoogleApiClientId());
+        map.put("client_id", configuration.getGoogleApiClientId());
         map.put(STATE_ATTRIBUTE_KEY, state);
-        map.put("username", GPlusUtils.getCurrentUsername(request));
-        map.put("loggedin", GPlusUtils.isLoggedIn(request));
-        map.put("isowner", GPlusUtils.isOwnerLoggedIn(request));
+        map.put("username", gPlusUtils.getCurrentUsername(request));
+        map.put("loggedin", gPlusUtils.isLoggedIn(request));
+        map.put("isowner", gPlusUtils.isOwnerLoggedIn(request));
         map.put("GetPostsArrayCommand", getGetPostsArrayCommand(postId, titleSubstring));
         map.put("baseUrl", request.getRequestURL());
         return map;

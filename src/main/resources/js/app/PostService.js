@@ -3,5 +3,5 @@
  * deleting posts
  */
 angular.module('postService', ['ngResource']).factory('Post', function($resource){
-    return $resource('./blog/posts/:postId', {postId:'@id'});
+    return $resource('./posts/:postId', {postId:'@id'});
 });

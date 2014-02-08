@@ -2,6 +2,9 @@ package nu.wasis.jlog.resource.session;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,8 +24,13 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
 
+@Stateless
+@Resource
 @Path("session/gplus")
 public class GooglePlusSessionResource {
+
+    @Inject
+    private GPlusUtils gPlusUtils;
 
     @POST
     @Path("login")
@@ -44,7 +52,7 @@ public class GooglePlusSessionResource {
         final String code = body;
         // Upgrade the authorization code into an access and refresh token.
         final GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY,
- Configuration.getInstance().getGoogleApiClientId(),
+                Configuration.getInstance().getGoogleApiClientId(),
                 Configuration.getInstance().getGoogleApiClientSecret(), code,
                 "postmessage").execute();
         // Create a credential representation of the token data.
@@ -70,8 +78,7 @@ public class GooglePlusSessionResource {
         // Store the token in the session for later use.
         request.getSession(true).setAttribute("token", tokenResponse.toString());
         return Response.ok()
-                .entity("{\"user\":" + GPlusUtils.GSON.toJson(GPlusUtils.getCurrentUser(request)) + ", \"isOwner\":"
-                        + GPlusUtils.isOwnerLoggedIn(request) + "}").build();
+                .entity("{\"user\":" + GPlusUtils.GSON.toJson(gPlusUtils.getCurrentUser(request)) + ", \"isOwner\":" + gPlusUtils.isOwnerLoggedIn(request) + "}").build();
     }
 
     @POST

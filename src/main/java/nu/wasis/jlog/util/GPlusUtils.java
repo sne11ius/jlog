@@ -2,6 +2,9 @@ package nu.wasis.jlog.util;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import nu.wasis.jlog.config.Configuration;
@@ -20,9 +23,13 @@ import com.google.api.services.plus.model.Person;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+@Stateless
+@Resource
 public class GPlusUtils {
 
     private static final Logger LOG = Logger.getLogger(GPlusUtils.class);
+    @Inject
+    private Configuration configuration;
 
     /**
      * Default HTTP transport to use to make HTTP requests.
@@ -44,15 +51,15 @@ public class GPlusUtils {
         GSON = gb.create();
     }
 
-    public static boolean isLoggedIn(final HttpServletRequest request) {
+    public boolean isLoggedIn(final HttpServletRequest request) {
         return null != request.getSession().getAttribute("token");
     }
 
-    public static boolean isOwnerLoggedIn(final HttpServletRequest request) {
-        return getCurrentUserId(request).equals(Configuration.getInstance().getOwnerGoogleUserId());
+    public boolean isOwnerLoggedIn(final HttpServletRequest request) {
+        return getCurrentUserId(request).equals(configuration.getOwnerGoogleUserId());
     }
 
-    public static String getCurrentUserId(final HttpServletRequest request) {
+    public String getCurrentUserId(final HttpServletRequest request) {
         final String tokenData = (String) request.getSession().getAttribute("token");
         if (tokenData == null) {
             LOG.error("Not logged in.");
@@ -67,7 +74,7 @@ public class GPlusUtils {
         }
     }
 
-    public static String getCurrentUsername(final HttpServletRequest request) {
+    public String getCurrentUsername(final HttpServletRequest request) {
         final String tokenData = (String) request.getSession().getAttribute("token");
         if (tokenData == null) {
             LOG.error("Not logged in.");
@@ -82,7 +89,7 @@ public class GPlusUtils {
         }
     }
 
-    public static User getCurrentUser(final HttpServletRequest request) {
+    public User getCurrentUser(final HttpServletRequest request) {
         final String tokenData = (String) request.getSession().getAttribute("token");
         if (tokenData == null) {
             LOG.error("Not logged in.");
@@ -101,11 +108,11 @@ public class GPlusUtils {
         }
     }
 
-    private static Person getCurrentGPlusUser(final String tokenData) throws IOException {
+    private Person getCurrentGPlusUser(final String tokenData) throws IOException {
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(JSON_FACTORY).setTransport(TRANSPORT)
-                .setClientSecrets(Configuration.getInstance().getGoogleApiClientId(), Configuration.getInstance().getGoogleApiClientSecret()).build()
+                .setClientSecrets(configuration.getGoogleApiClientId(), configuration.getGoogleApiClientSecret()).build()
                 .setFromTokenResponse(JSON_FACTORY.fromString(tokenData, GoogleTokenResponse.class));
-        final Plus service = new Plus.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(Configuration.getInstance().getApplicationName()).build();
+        final Plus service = new Plus.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(configuration.getApplicationName()).build();
         final Person me = service.people().get("me").execute();
         return me;
     }

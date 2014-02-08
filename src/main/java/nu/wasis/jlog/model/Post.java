@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.NotFoundException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.bson.types.ObjectId;
 
 import com.github.jmkgreen.morphia.annotations.Entity;
-import com.sun.jersey.api.NotFoundException;
 
 @XmlRootElement
 @Entity("Posts")

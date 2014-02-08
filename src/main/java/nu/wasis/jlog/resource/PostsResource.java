@@ -2,10 +2,14 @@ package nu.wasis.jlog.resource;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,10 +30,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
-import com.sun.jersey.api.NotFoundException;
-
+@Stateless
+@Resource
 @Path("/posts")
 public class PostsResource {
+
+    @Inject
+    private GPlusUtils gPlusUtils;
 
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(PostsResource.class);
@@ -77,7 +84,7 @@ public class PostsResource {
         if (StringUtils.isBlank(post.getTitle()) || StringUtils.isBlank(post.getBody())) {
             throw new IllegalDataException("Title and body must not be empty.");
         }
-        post.setAuthor(GPlusUtils.getCurrentUser(request));
+        post.setAuthor(gPlusUtils.getCurrentUser(request));
         PostService.INSTANCE.save(post);
         return post;
     }
@@ -102,14 +109,14 @@ public class PostsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Comment addComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId, final Comment comment) {
-        if (!GPlusUtils.isLoggedIn(request)) {
+        if (!gPlusUtils.isLoggedIn(request)) {
             throw new NotAllowedException("Must be logged in to do this.");
         }
         if (StringUtils.isBlank(comment.getBody())) {
             throw new IllegalDataException("Body must not be empty.");
         }
-        comment.setAuthor(GPlusUtils.getCurrentUser(request));
-        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+        comment.setAuthor(gPlusUtils.getCurrentUser(request));
+        if (!gPlusUtils.isOwnerLoggedIn(request)) {
             comment.setBody(StringEscapeUtils.escapeHtml(comment.getBody()));
         }
         PostService.INSTANCE.addComment(postId, comment);
@@ -119,13 +126,13 @@ public class PostsResource {
     @DELETE
     @Path("{postId}/comments/{commentId}")
     public void deleteComment(@Context final HttpServletRequest request, @PathParam("postId") final String postId,
-                              @PathParam("commentId") final String commentId) {
+            @PathParam("commentId") final String commentId) {
         checkIsOwner(request);
         PostService.INSTANCE.deleteComment(postId, commentId);
     }
 
     private void checkIsOwner(final HttpServletRequest request) {
-        if (!GPlusUtils.isOwnerLoggedIn(request)) {
+        if (!gPlusUtils.isOwnerLoggedIn(request)) {
             throw new NotAllowedException("Must be owner to do this.");
         }
     }

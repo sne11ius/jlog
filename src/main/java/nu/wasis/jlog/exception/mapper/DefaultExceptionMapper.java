@@ -9,8 +9,6 @@ import nu.wasis.jlog.exception.NotAllowedException;
 
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.NotFoundException;
-
 /**
  * The default exception mapper. Builds the appropriate http response e.g. NotFoundException -> 404
  */
@@ -21,9 +19,6 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(final Throwable e) {
-        if (e instanceof NotFoundException) {
-            return buildResponse(404, e);
-        }
         if (e instanceof NotAllowedException) {
             return buildResponse(403, e);
         }
