@@ -3,14 +3,13 @@ package nu.wasis.jlog;
 import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
 
-import org.apache.log4j.Logger;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.ResourceConfig;
 
 @ApplicationPath("/")
 public class JLog extends ResourceConfig {
 
-    private static final Logger LOG = Logger.getLogger(JLog.class);
+    // private static final Logger LOG = Logger.getLogger(JLog.class);
 
     @Inject
     public JLog(final ServiceLocator serviceLocator) {
