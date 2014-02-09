@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Stateless
-@Resource
+@Resource(type = GPlusUtils.class, name = "GPlusUtils")
 public class GPlusUtils {
 
     private static final Logger LOG = Logger.getLogger(GPlusUtils.class);
