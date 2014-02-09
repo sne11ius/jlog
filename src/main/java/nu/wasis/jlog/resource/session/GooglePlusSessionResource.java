@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -25,18 +26,27 @@ import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
 
 @Stateless
-@Resource
+@Resource(type = GooglePlusSessionResource.class, name = "GooglePlusSessionResource")
 @Path("session/gplus")
 public class GooglePlusSessionResource {
 
     @Inject
+    private Configuration configuration;
+
+    @Inject
     private GPlusUtils gPlusUtils;
+
+    @GET
+    @Path("hello")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello() {
+        return "hello";
+    }
 
     @POST
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@Context final HttpServletRequest request, @QueryParam("state") final String state, @QueryParam("gplus_id") final String gplusId,
-            final String body) throws IOException {
+    public Response login(@Context final HttpServletRequest request, @QueryParam("state") final String state, @QueryParam("gplus_id") final String gplusId, final String body) throws IOException {
         final String tokenData = (String) request.getSession(true).getAttribute("token");
         if (tokenData != null) {
             return Response.status(400).entity("{\"message\": \"Already connected.\"}").build();
@@ -52,12 +62,12 @@ public class GooglePlusSessionResource {
         final String code = body;
         // Upgrade the authorization code into an access and refresh token.
         final GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(GPlusUtils.TRANSPORT, GPlusUtils.JSON_FACTORY,
-                Configuration.getInstance().getGoogleApiClientId(),
-                Configuration.getInstance().getGoogleApiClientSecret(), code,
+                configuration.getGoogleApiClientId(),
+                configuration.getGoogleApiClientSecret(), code,
                 "postmessage").execute();
         // Create a credential representation of the token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY).setTransport(GPlusUtils.TRANSPORT)
-                .setClientSecrets(Configuration.getInstance().getGoogleApiClientId(), Configuration.getInstance().getGoogleApiClientSecret()).build()
+                .setClientSecrets(configuration.getGoogleApiClientId(), configuration.getGoogleApiClientSecret()).build()
                 .setFromTokenResponse(tokenResponse);
 
         // Check that the token is valid.
@@ -72,7 +82,7 @@ public class GooglePlusSessionResource {
             return Response.status(401).entity("Token's user ID doesn't match given user ID.").build();
         }
         // Make sure the token we got is for our app.
-        if (!tokenInfo.getIssuedTo().equals(Configuration.getInstance().getGoogleApiClientId())) {
+        if (!tokenInfo.getIssuedTo().equals(configuration.getGoogleApiClientId())) {
             return Response.status(401).entity("Token's client ID does not match app's.").build();
         }
         // Store the token in the session for later use.
@@ -92,7 +102,7 @@ public class GooglePlusSessionResource {
         // Build credential from stored token data.
         final GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(GPlusUtils.JSON_FACTORY)
                 .setTransport(GPlusUtils.TRANSPORT)
-                .setClientSecrets(Configuration.getInstance().getGoogleApiClientId(), Configuration.getInstance().getGoogleApiClientSecret())
+                .setClientSecrets(configuration.getGoogleApiClientId(), configuration.getGoogleApiClientSecret())
                 .build()
                 .setFromTokenResponse(GPlusUtils.JSON_FACTORY.fromString(tokenData,
                         GoogleTokenResponse.class));

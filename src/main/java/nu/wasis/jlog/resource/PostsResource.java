@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
 @Stateless
-@Resource
+@Resource(type = PostsResource.class, name = "PostsResource")
 @Path("/posts")
 public class PostsResource {
 

@@ -43,7 +43,7 @@ import freemarker.template.TemplateException;
  * Renders the html/index.ftl file.
  */
 @Stateless
-@Resource
+@Resource(type = IndexResource.class, name = "IndexResource")
 @Path("/")
 public class IndexResource {
 
