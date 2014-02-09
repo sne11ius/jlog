@@ -2,6 +2,7 @@ package nu.wasis.jlog.resource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -45,13 +46,15 @@ import freemarker.template.TemplateException;
 @SessionScoped
 @Resource(type = IndexResource.class, name = "IndexResource")
 @Path("/")
-public class IndexResource {
+public class IndexResource implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
-    private Configuration configuration;
+    private transient Configuration configuration;
 
     @Inject
-    private GPlusUtils gPlusUtils;
+    private transient GPlusUtils gPlusUtils;
 
     private static final String STATE_ATTRIBUTE_KEY = "state";
 

@@ -1,6 +1,7 @@
 package nu.wasis.jlog.resource.session;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
@@ -29,15 +30,17 @@ import com.google.api.services.oauth2.model.Tokeninfo;
 @SessionScoped
 @Resource(type = GooglePlusSessionResource.class, name = "GooglePlusSessionResource")
 @Path("session/gplus")
-public class GooglePlusSessionResource {
+public class GooglePlusSessionResource implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = Logger.getLogger(GooglePlusSessionResource.class);
 
     @Inject
-    private Configuration configuration;
+    private transient Configuration configuration;
 
     @Inject
-    private GPlusUtils gPlusUtils;
+    private transient GPlusUtils gPlusUtils;
 
     @POST
     @Path("login")

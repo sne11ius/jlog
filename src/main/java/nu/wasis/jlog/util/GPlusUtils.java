@@ -1,6 +1,7 @@
 package nu.wasis.jlog.util;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -25,7 +26,9 @@ import com.google.gson.GsonBuilder;
 
 @Stateless
 @Resource(type = GPlusUtils.class, name = "GPlusUtils")
-public class GPlusUtils {
+public class GPlusUtils implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = Logger.getLogger(GPlusUtils.class);
     @Inject

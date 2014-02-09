@@ -1,6 +1,7 @@
 package nu.wasis.jlog.config;
 
 import java.io.FileReader;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -11,7 +12,9 @@ import org.apache.log4j.Logger;
 import com.google.gson.GsonBuilder;
 
 @Singleton
-public class Configuration {
+public class Configuration implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = Logger.getLogger(Configuration.class);
 
