@@ -18,6 +18,8 @@ import javax.ws.rs.core.Response;
 import nu.wasis.jlog.config.Configuration;
 import nu.wasis.jlog.util.GPlusUtils;
 
+import org.apache.log4j.Logger;
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
@@ -29,6 +31,8 @@ import com.google.api.services.oauth2.model.Tokeninfo;
 @Resource(type = GooglePlusSessionResource.class, name = "GooglePlusSessionResource")
 @Path("session/gplus")
 public class GooglePlusSessionResource {
+
+    private static final Logger LOG = Logger.getLogger(GooglePlusSessionResource.class);
 
     @Inject
     private Configuration configuration;
@@ -56,6 +60,8 @@ public class GooglePlusSessionResource {
         // sending us this connect request is the user that was supposed to.
         final String sessionState = (String) request.getSession(true).getAttribute("state");
         if (!state.equals(sessionState)) {
+            LOG.debug("Session state: " + sessionState);
+            LOG.debug("Request state: " + state);
             return Response.status(400).entity("Invalid state parameter.").build();
         }
 
