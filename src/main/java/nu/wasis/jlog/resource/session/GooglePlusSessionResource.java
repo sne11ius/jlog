@@ -3,10 +3,9 @@ package nu.wasis.jlog.resource.session;
 import java.io.IOException;
 
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -27,7 +26,7 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
 
-@Stateless
+@ApplicationScoped
 @Resource(type = GooglePlusSessionResource.class, name = "GooglePlusSessionResource")
 @Path("session/gplus")
 public class GooglePlusSessionResource {
@@ -39,13 +38,6 @@ public class GooglePlusSessionResource {
 
     @Inject
     private GPlusUtils gPlusUtils;
-
-    @GET
-    @Path("hello")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "hello";
-    }
 
     @POST
     @Path("login")
