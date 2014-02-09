@@ -1,5 +1,7 @@
 package nu.wasis.jlog.exception.mapper;
 
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -25,6 +27,9 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
         if (e instanceof IllegalDataException) {
             return buildResponse(400, e);
         }
+        if (e instanceof NotFoundException) {
+            return buildResponse(404, e);
+        }
         e.printStackTrace();
         LOG.info("Mapping unknown Exception of class: " + e.getClass().getName());
         LOG.info(e);
@@ -32,7 +37,7 @@ public class DefaultExceptionMapper implements ExceptionMapper<Throwable> {
     }
 
     private Response buildResponse(final int status, final Throwable e) {
-        return Response.status(status).entity(e.getMessage()).build();
+        return Response.status(status).entity("JLog say: " + e.getMessage()).type(MediaType.TEXT_PLAIN).build();
     }
 
 }
