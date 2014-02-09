@@ -79,6 +79,7 @@ public class IndexResource {
         final HttpSession session = request.getSession(true);
         final String state = new BigInteger(130, new SecureRandom()).toString(32);
         session.setAttribute(STATE_ATTRIBUTE_KEY, state);
+        LOG.debug("state: " + state);
         final StringWriter writer = new StringWriter();
         final String templateFilename = getTemplateFilename(request);
         TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
