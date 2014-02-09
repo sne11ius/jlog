@@ -12,7 +12,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,7 +42,7 @@ import freemarker.template.TemplateException;
 /**
  * Renders the html/index.ftl file.
  */
-@ApplicationScoped
+@SessionScoped
 @Resource(type = IndexResource.class, name = "IndexResource")
 @Path("/")
 public class IndexResource {
