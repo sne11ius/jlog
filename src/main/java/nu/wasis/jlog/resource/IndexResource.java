@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +14,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -56,7 +53,7 @@ public class IndexResource implements Serializable {
     @Inject
     private transient GPlusUtils gPlusUtils;
 
-    private static final String STATE_ATTRIBUTE_KEY = "state";
+    // private static final String STATE_ATTRIBUTE_KEY = "state";
 
     private static final Logger LOG = Logger.getLogger(IndexResource.class);
 
@@ -79,15 +76,16 @@ public class IndexResource implements Serializable {
     @Produces(MediaType.TEXT_HTML)
     public String getIndex(@Context final HttpServletRequest request, @QueryParam("compress") @DefaultValue("false") final boolean compress,
             @QueryParam("postId") final String postId, @QueryParam("inTitle") final String titleSubstring) throws IOException, TemplateException {
-        final HttpSession session = request.getSession(true);
-        final String state = new BigInteger(130, new SecureRandom()).toString(32);
-        session.setAttribute(STATE_ATTRIBUTE_KEY, state);
-        LOG.debug("state: " + state);
+        // final HttpSession session = request.getSession(true);
+        // final String state = new BigInteger(130, new
+        // SecureRandom()).toString(32);
+        // session.setAttribute(STATE_ATTRIBUTE_KEY, state);
+        // LOG.debug("state: " + state);
         final StringWriter writer = new StringWriter();
         final String templateFilename = getTemplateFilename(request);
         TemplateLoader.INSTANCE.setStripCommentsEnabled(compress);
         final Template template = TemplateLoader.INSTANCE.getTemplate(templateFilename, buildReplacements(compress));
-        final Map<String, Object> map = createTemplateMap(request, state, postId, titleSubstring);
+        final Map<String, Object> map = createTemplateMap(request, /* state, */postId, titleSubstring);
         template.process(map, writer);
         return writer.toString();
     }
@@ -130,10 +128,10 @@ public class IndexResource implements Serializable {
         return returnActualString ? actualString : "";
     }
 
-    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String state, final String postId, final String titleSubstring) {
+    private Map<String, Object> createTemplateMap(final HttpServletRequest request, final String titleSubstring, final String postId) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("client_id", configuration.getGoogleApiClientId());
-        map.put(STATE_ATTRIBUTE_KEY, state);
+        // map.put(STATE_ATTRIBUTE_KEY, state);
         map.put("username", gPlusUtils.getCurrentUsername(request));
         map.put("loggedin", gPlusUtils.isLoggedIn(request));
         map.put("isowner", gPlusUtils.isOwnerLoggedIn(request));
