@@ -3,7 +3,7 @@ jlog
 
 Simple java blog with gplus login.
 
-[![Build Status](http://build.wasis.nu/jenkins/buildStatus/icon?job=jlog_continuous_deploy)](http://build.wasis.nu/jenkins/job/jlog_continuous_deploy/)
+[![Build Status](http://build.wasis.nu/buildStatus/icon?job=jlog_continuous_deploy)](http://build.wasis.nu/job/jlog_continuous_deploy/)
 
 Stack
 =====
