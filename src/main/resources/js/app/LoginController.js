@@ -55,7 +55,7 @@ app.controller('LoginController', function($scope, $http, $timeout) {
                 }
                 $http({
                     method: 'POST',
-                    url: './blog/session/gplus/login?state=${state}&gplus_id=' + profile.id,
+                    url: './blog/session/gplus/login?gplus_id=' + profile.id,
                     headers: {'Content-Type': 'application/octet-stream; charset=utf-8'},
                     data: data.code 
                 }).success(function(loginInfo) {
