@@ -3,8 +3,7 @@ package nu.wasis.jlog.resource.session;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.annotation.Resource;
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
@@ -25,8 +24,9 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
 
-@SessionScoped
-@Resource(type = GooglePlusSessionResource.class, name = "GooglePlusSessionResource")
+//@SessionScoped
+//@Resource(type = GooglePlusSessionResource.class, name = "GooglePlusSessionResource")
+@Stateless
 @Path("session/gplus")
 public class GooglePlusSessionResource implements Serializable {
 

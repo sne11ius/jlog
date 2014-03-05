@@ -2,7 +2,6 @@ package nu.wasis.jlog.resource;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
 @Stateless
-@Resource(type = PostsResource.class, name = "PostsResource")
+// @Resource(type = PostsResource.class, name = "PostsResource")
 @Path("/posts")
 public class PostsResource {
 

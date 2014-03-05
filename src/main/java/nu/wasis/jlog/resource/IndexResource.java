@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
@@ -40,8 +39,9 @@ import freemarker.template.TemplateException;
 /**
  * Renders the html/index.ftl file.
  */
-@SessionScoped
-@Resource(type = IndexResource.class, name = "IndexResource")
+// @SessionScoped
+// @Resource(type = IndexResource.class, name = "IndexResource")
+@Stateless
 @Path("/")
 public class IndexResource implements Serializable {
 
