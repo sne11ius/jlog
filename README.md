@@ -1,3 +1,8 @@
+Warning
+=======
+
+This project is outdated. See [playlog](https://github.com/sne11ius/playlog)
+
 jlog
 ====
 
